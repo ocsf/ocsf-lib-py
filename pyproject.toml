@@ -19,6 +19,7 @@ termcolor = "^2.4.0"
 ruff = "^0.4.2"
 pyright = "^1.1.361"
 pytest = "^8.2.0"
+sphinx = "^7.3.7"
 
 [tool.poetry.scripts]
 compare = "ocsf.compare.__main__:main"

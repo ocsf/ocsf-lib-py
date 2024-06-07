@@ -11,7 +11,17 @@ from .model import (
     OcsfType,
     OcsfVersion,
 )
-from .json import from_json, to_json, to_dict, from_file, to_file, keys_to_names, names_to_keys
+from .json import (
+    from_json,
+    to_json,
+    to_dict,
+    from_file,
+    to_file,
+    keys_to_names,
+    names_to_keys,
+    from_dict,
+    SchemaOptions,
+)
 
 __all__ = [
     "OcsfAttr",
@@ -32,4 +42,6 @@ __all__ = [
     "to_dict",
     "to_file",
     "to_json",
+    "from_dict",
+    "SchemaOptions",
 ]

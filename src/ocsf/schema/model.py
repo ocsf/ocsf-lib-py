@@ -64,6 +64,9 @@ class OcsfAttr(OcsfModel):
     observable: Optional[int] = None
     profile: Optional[str | list[str]] = None
     sibling: Optional[str] = None
+    object_type: Optional[str] = None
+    object_name: Optional[str] = None
+    type_name: Optional[str] = None
 
 
 @dataclass
@@ -99,6 +102,31 @@ class OcsfEvent(OcsfModel):
 
 
 @dataclass
+class OcsfProfile(OcsfModel):
+    """A profile definition."""
+
+    caption: str
+    name: str
+    meta: str = "profile"
+    description: Optional[str] = None
+    attributes: dict[str, OcsfAttr] = field(default_factory=dict)
+    deprecated: Optional[OcsfDeprecationInfo] = None
+    annotations: Optional[dict[str, str]] = None
+
+
+@dataclass
+class OcsfExtension(OcsfModel):
+    """An extension definition."""
+
+    name: str
+    version: str
+    uid: int
+    caption: str
+    description: Optional[str] = None
+    deprecated: Optional[OcsfDeprecationInfo] = None
+
+
+@dataclass
 class OcsfSchema(OcsfModel):
     """An OCSF schema as represented in the OCSF server's export endpoint."""
 
@@ -107,6 +135,8 @@ class OcsfSchema(OcsfModel):
     objects: dict[str, OcsfObject] = field(default_factory=dict)
     types: dict[str, OcsfType] = field(default_factory=dict)
     base_event: Optional[OcsfEvent] = None
+    profiles: Optional[dict[str, OcsfProfile]] = None
+    extensions: Optional[dict[str, OcsfExtension]] = None
 
 
 # A type variable constrained to OCSF models.

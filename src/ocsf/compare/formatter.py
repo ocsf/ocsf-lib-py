@@ -3,6 +3,7 @@
 This modules prints a ChangedModel to stdout in a format similar to diff with
 color coding.
 """
+
 from typing import Any, cast
 
 from textwrap import shorten
@@ -15,6 +16,7 @@ from .model import ChangedModel, Difference, SimpleDifference, Addition, Change,
 def _display(value: Any, line_length: int = 80) -> str:
     """Shorten the string representation of a value to fit within a certain width."""
     return shorten(str(value), width=line_length, placeholder="...")
+
 
 def _format(value: SimpleDifference[Any], path: tuple[str, ...], collapse_changes: bool = True) -> None:
     """Format simple differences: Addition, Removal, and Change."""
@@ -36,6 +38,7 @@ def _format(value: SimpleDifference[Any], path: tuple[str, ...], collapse_change
     else:
         raise ValueError(f"Unknown SimpleDifference type: {type(value)}")
 
+
 def format(value: ChangedModel[OcsfT], path: tuple[str, ...] = (), collapse_changes: bool = True) -> None:
     """Format a ChangedModel recursively."""
 
@@ -51,7 +54,7 @@ def format(value: ChangedModel[OcsfT], path: tuple[str, ...] = (), collapse_chan
 
         elif isinstance(attr_val, ChangedModel):
             # Recursively format nested ChangedModels
-            format(attr_val, path + (attr_name,), collapse_changes) # type:ignore
+            format(attr_val, path + (attr_name,), collapse_changes)  # type:ignore
 
         elif isinstance(attr_val, dict):
             # Format nested dictionaries
@@ -65,4 +68,3 @@ def format(value: ChangedModel[OcsfT], path: tuple[str, ...] = (), collapse_chan
         else:
             # NoChange
             ...
-        

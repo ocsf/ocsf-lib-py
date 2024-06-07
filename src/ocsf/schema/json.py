@@ -9,10 +9,10 @@ schema = from_file("schema.json")
 """
 
 import json
-from dataclasses import asdict
-from typing import Any, cast
+import dacite
 
-from dacite import from_dict
+from dataclasses import asdict, dataclass
+from typing import Any, cast
 
 from .model import OcsfSchema
 
@@ -26,6 +26,15 @@ _NAME_TRANSFORMS = {
     "deprecated": "@deprecated",
     "include": "$include",
 }
+
+
+@dataclass
+class SchemaOptions:
+    """Options for hydrating OCSF schema properties."""
+
+    resolve_object_types: bool = True
+    """If true, replace object_t attribute types with the object type name as it
+    appears in the attribute dictionary."""
 
 
 def keys_to_names(d: dict[str, Any]) -> dict[str, Any]:
@@ -59,9 +68,22 @@ def names_to_keys(d: dict[str, Any]) -> dict[str, Any]:
     return d
 
 
-def from_json(data: str) -> OcsfSchema:
+def from_dict(data: dict[str, Any], options: SchemaOptions = SchemaOptions()) -> OcsfSchema:
+    """Parse an OCSF schema from a dictionary."""
+    schema = dacite.from_dict(OcsfSchema, keys_to_names(data))
+
+    if options.resolve_object_types:
+        for thing in list(schema.classes.values()) + list(schema.objects.values()):
+            for attr in thing.attributes.values():
+                if attr.type == "object_t" and attr.object_type is not None and attr.object_type in schema.objects:
+                    attr.type = attr.object_type
+
+    return schema
+
+
+def from_json(data: str, options: SchemaOptions = SchemaOptions()) -> OcsfSchema:
     """Parse an OCSF schema from a JSON string."""
-    return from_dict(OcsfSchema, keys_to_names(json.loads(data)))  # type: ignore
+    return from_dict(json.loads(data), options)
 
 
 def to_dict(schema: OcsfSchema) -> dict[str, Any]:
@@ -74,7 +96,7 @@ def to_json(schema: OcsfSchema) -> str:
     return json.dumps(to_dict(schema))
 
 
-def from_file(path: str) -> OcsfSchema:
+def from_file(path: str, options: SchemaOptions = SchemaOptions()) -> OcsfSchema:
     """Parse an OCSF schema from a JSON file."""
     with open(path, "r") as f:
         return from_json(f.read())
