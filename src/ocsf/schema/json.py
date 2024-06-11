@@ -14,7 +14,7 @@ import dacite
 from dataclasses import asdict, dataclass
 from typing import Any, cast
 
-from .model import OcsfSchema
+from .model import OcsfSchema, WithAttributes
 
 # Certain OCSF properties have special characters in their names.
 _KEY_TRANSFORMS = {
@@ -68,15 +68,31 @@ def names_to_keys(d: dict[str, Any]) -> dict[str, Any]:
     return d
 
 
+def resolve_object_types(things: dict[str, WithAttributes] | OcsfSchema | WithAttributes) -> None:
+    if isinstance(things, WithAttributes):
+        for attr in things.attributes.values():
+            if attr.type == "object_t" and attr.object_type is not None:
+                attr.type = attr.object_type
+        return
+
+    if isinstance(things, OcsfSchema):
+        items = list(things.classes.values()) + list(things.objects.values())
+
+        if things.profiles is not None:
+            items += list(things.profiles.values())
+    else:
+        items = list(things.values())
+
+    for thing in items:
+        resolve_object_types(thing)
+
+
 def from_dict(data: dict[str, Any], options: SchemaOptions = SchemaOptions()) -> OcsfSchema:
     """Parse an OCSF schema from a dictionary."""
     schema = dacite.from_dict(OcsfSchema, keys_to_names(data))
 
     if options.resolve_object_types:
-        for thing in list(schema.classes.values()) + list(schema.objects.values()):
-            for attr in thing.attributes.values():
-                if attr.type == "object_t" and attr.object_type is not None and attr.object_type in schema.objects:
-                    attr.type = attr.object_type
+        resolve_object_types(schema)
 
     return schema
 

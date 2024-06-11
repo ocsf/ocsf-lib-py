@@ -141,6 +141,7 @@ class OcsfSchema(OcsfModel):
 
 # A type variable constrained to OCSF models.
 OcsfT = TypeVar("OcsfT", bound=OcsfModel, covariant=True)
+WithAttributes = OcsfEvent | OcsfObject | OcsfProfile
 
 
 class OcsfElementType(StrEnum):

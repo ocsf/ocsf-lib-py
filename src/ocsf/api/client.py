@@ -20,13 +20,23 @@ import json
 from dataclasses import dataclass
 from urllib.request import urlopen
 from urllib.parse import urljoin
-from typing import Optional
+from typing import Optional, Any, cast
 from semver import Version
 from pathlib import Path
 
 from dacite import from_dict
 
-from ocsf.schema import OcsfSchema, from_json, from_file, to_file
+from ocsf.schema import (
+    OcsfSchema,
+    OcsfProfile,
+    OcsfExtension,
+    SchemaOptions,
+    WithAttributes,
+    from_json,
+    from_file,
+    to_file,
+    resolve_object_types,
+)
 
 
 LOG = logging.getLogger(__name__)
@@ -61,38 +71,78 @@ class OcsfApiClient:
     repeating requests to the OCSF server.
     """
 
-    def __init__(self, base_url: str = "https://schema.ocsf.io", cache_dir: Optional[str | Path] = None):
+    def __init__(
+        self,
+        base_url: str = "https://schema.ocsf.io",
+        cache_dir: Optional[str | Path] = None,
+        schema_options: SchemaOptions = SchemaOptions(),
+        fetch_profiles: bool = True,
+        fetch_extensions: bool = True,
+    ):
         """Create a new client.
 
         Args:
             base_url: The base URL of the OCSF server.
             cache_dir: The directory to store cached schemas in.
+            schema_options: Options for Schema reification.
+            fetch_profiles: If True, fetch available profiles when fetching a schema.
+            fetch_extensions: If True, fetch available extensions when fetching a schema.
         """
         self._base_url = base_url
         self._versions: Optional[SchemaVersions] = None
+        self._fetch_profiles = fetch_profiles
+        self._fetch_extensions = fetch_extensions
+        self._schema_options = schema_options
+
         if cache_dir is not None and not isinstance(cache_dir, Path):
             self._cache_dir = Path(cache_dir)
         else:
             self._cache_dir = cache_dir
 
+    def _versioned_url(self, version: Optional[str] = None) -> str:
+        """Get the URL for a specific schema version."""
+        if version is not None:
+            return urljoin(self._base_url, f"{version}/")
+        else:
+            return self._base_url
+
     def _fetch_schema(self, version: Optional[str] = None) -> OcsfSchema:
         """Fetch a schema from the server."""
-        if version is not None:
-            url = urljoin(self._base_url, f"{version}/")
-        else:
-            url = self._base_url
-
-        url = urljoin(url, "export/schema")
+        url = urljoin(self._versioned_url(version), "export/schema")
 
         LOG.debug(f"Fetching schema from {url} (version {version})")
         json_str = urlopen(url).read()
-        return from_json(json_str)
+        return from_json(json_str, self._schema_options)
 
     def _fetch_versions(self) -> SchemaVersions:
         """Fetch the available versions from the server."""
         url = urljoin(self._base_url, "api/versions")
         data = json.loads(urlopen(url).read())
         return from_dict(SchemaVersions, data)
+
+    def get_profiles(self, version: Optional[str] = None) -> dict[str, OcsfProfile]:
+        """Fetch the profiles for a specific schema version."""
+        url = urljoin(self._versioned_url(version), "api/profiles")
+        response = json.loads(urlopen(url).read())
+
+        profiles: dict[str, OcsfProfile] = {}
+        for name, data in cast(dict[str, dict[str, Any]], response).items():
+            profiles[name] = from_dict(OcsfProfile, data)
+
+        if self._schema_options.resolve_object_types:
+            resolve_object_types(cast(dict[str, WithAttributes], profiles))
+        return profiles
+
+    def get_extensions(self, version: Optional[str] = None) -> dict[str, OcsfExtension]:
+        """Fetch the extensions for a specific schema version."""
+        url = urljoin(self._versioned_url(version), "api/extensions")
+        response = json.loads(urlopen(url).read())
+
+        extensions: dict[str, OcsfExtension] = {}
+        for name, data in cast(dict[str, dict[str, Any]], response).items():
+            extensions[name] = from_dict(OcsfExtension, data)
+
+        return extensions
 
     def get_versions(self) -> list[str]:
         """Return the available schema versions on the server."""
@@ -132,6 +182,8 @@ class OcsfApiClient:
             ValueError: If the version requested is not found on the server or
                 if the requested version is invalid.
         """
+        cached: Optional[OcsfSchema] = None
+
         if version is not None:
             # Ensure version is a valid semantic version string.
             if not _is_semver(version):
@@ -146,7 +198,7 @@ class OcsfApiClient:
                 file = self._cache_dir / f"schema-{version}.json"
                 if file.exists():
                     LOG.info(f"Reading schema from cache: {file}")
-                    return from_file(str(file))
+                    cached = from_file(str(file), self._schema_options)
                 else:
                     LOG.debug(f"Cache miss: {file}")
 
@@ -154,11 +206,28 @@ class OcsfApiClient:
             if version not in self.get_versions():
                 raise ValueError(f"Version {version} not found on server")
 
-        # Fetch the schema from the server.
-        schema = self._fetch_schema(version)
+        if cached is None:
+            # Fetch the schema from the server.
+            schema = self._fetch_schema(version)
+        else:
+            # Use the cached schema
+            schema = cached
 
-        # Cache the schema.
-        if self._cache_dir is not None:
+        if schema.profiles is None and self._fetch_profiles:
+            # Fetch the profiles for the schema.
+            schema.profiles = self.get_profiles(version)
+
+        if schema.extensions is None and self._fetch_extensions:
+            # Fetch the extensions for the schema.
+            schema.extensions = self.get_extensions(version)
+
+        # Cache the schema if caching is enabled and any of the following are true:
+        #   - The schema is not cached
+        #   - Profiles were retrieved from the OCSF server
+        #   - Extensions were retrieved from the OCSF server
+        if self._cache_dir is not None and (
+            cached is None or cached.profiles != schema.profiles or cached.extensions != schema.extensions
+        ):
             ver = Version.parse(schema.version)
             if ver.prerelease != "dev":
                 dest = str(self._cache_dir / f"schema-{schema.version}.json")
