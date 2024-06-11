@@ -119,9 +119,9 @@ class OcsfExtension(OcsfModel):
     """An extension definition."""
 
     name: str
-    version: str
     uid: int
     caption: str
+    version: Optional[str] = None
     description: Optional[str] = None
     deprecated: Optional[OcsfDeprecationInfo] = None
 

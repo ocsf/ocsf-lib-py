@@ -189,7 +189,7 @@ class ChangedProfile(ChangedModel[OcsfProfile]):
 @dataclass
 class ChangedExtension(ChangedModel[OcsfExtension]):
     name: Difference[str] = field(default_factory=NoChange)
-    version: Difference[str] = field(default_factory=NoChange)
+    version: Difference[Optional[str]] = field(default_factory=NoChange)
     uid: Difference[int] = field(default_factory=NoChange)
     caption: Difference[str] = field(default_factory=NoChange)
     description: Difference[Optional[str]] = field(default_factory=NoChange)
