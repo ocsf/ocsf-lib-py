@@ -1,6 +1,6 @@
 import pytest
 
-from ocsf.api import OcsfApiClient
+from ocsf.api import OcsfApiClient, SchemaVersion, SchemaVersions
 from ocsf.schema.model import OcsfSchema, OcsfProfile, OcsfExtension
 
 from semver import Version
@@ -26,6 +26,26 @@ def test_get_versions():
 def test_get_schema_default():
     """Test fetching the schema from the OCSF server without a version number."""
     s = setup().get_schema()
+    assert isinstance(s, OcsfSchema)
+    assert isinstance(Version.parse(s.version), Version)
+    assert len(s.classes) > 0
+    assert len(s.objects) > 0
+    assert s.profiles is None
+    assert s.extensions is None
+
+
+@pytest.mark.integration
+def test_get_schema_latest():
+    """Test fetching the schema from the OCSF server using version keywords."""
+    s = setup().get_schema(SchemaVersion.LATEST)
+    assert isinstance(s, OcsfSchema)
+    assert isinstance(Version.parse(s.version), Version)
+    assert len(s.classes) > 0
+    assert len(s.objects) > 0
+    assert s.profiles is None
+    assert s.extensions is None
+
+    s = setup().get_schema(SchemaVersion.LATEST_STABLE)
     assert isinstance(s, OcsfSchema)
     assert isinstance(Version.parse(s.version), Version)
     assert len(s.classes) > 0
@@ -68,3 +88,17 @@ def test_get_extensions():
     assert isinstance(extensions["linux"], OcsfExtension)
     assert "win" in extensions
     assert isinstance(extensions["win"], OcsfExtension)
+
+
+def test_latest_version():
+    """Test fetching the latest version from the OCSF server."""
+    version_list = [
+        SchemaVersion(version="1.0.0"),
+        SchemaVersion(version="1.2.0"),
+        SchemaVersion(version="1.1.0"),
+        SchemaVersion(version="1.3.0-dev"),
+    ]
+    versions = SchemaVersions(default=SchemaVersion(version="1.2.0"), versions=version_list)
+
+    assert versions.latest().version == "1.3.0-dev"
+    assert versions.latest_stable().version == "1.2.0"

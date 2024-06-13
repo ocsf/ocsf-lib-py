@@ -20,7 +20,7 @@ import json
 from dataclasses import dataclass
 from urllib.request import urlopen
 from urllib.parse import urljoin
-from typing import Optional, Any, cast
+from typing import Optional, Any, cast, ClassVar
 from semver import Version
 from pathlib import Path
 
@@ -51,17 +51,36 @@ def _is_semver(version: str) -> bool:
         return False
 
 
+def _semver_sort_key(version: Version) -> int:
+    """Return a sort key for a semantic version."""
+    return version.major * 1000 + version.minor * 10 + version.patch
+
+
 # Models representing the response from the OCSF server's /api/versions endpoint.
 @dataclass
 class SchemaVersion:
-    url: str
+    LATEST: ClassVar[str] = "latest"
+    LATEST_STABLE: ClassVar[str] = "latest-stable"
+
     version: str
+    url: str = ""
+
+    def semver(self) -> Version:
+        return Version.parse(self.version)
 
 
 @dataclass
 class SchemaVersions:
     default: SchemaVersion
     versions: list[SchemaVersion]
+
+    def latest(self) -> SchemaVersion:
+        return max(self.versions, key=lambda v: _semver_sort_key(v.semver()))
+
+    def latest_stable(self) -> SchemaVersion:
+        return max(
+            (v for v in self.versions if v.semver().prerelease is None), key=lambda v: _semver_sort_key(v.semver())
+        )
 
 
 class OcsfApiClient:
@@ -120,6 +139,24 @@ class OcsfApiClient:
         data = json.loads(urlopen(url).read())
         return from_dict(SchemaVersions, data)
 
+    def _resolve_version(self, version: str | None) -> str:
+        """Resolve a version string to a specific version."""
+        if version is None:
+            return self.get_default_version()
+        else:
+            # Ensure versions are fetched
+            self.get_versions()
+            assert self._versions is not None
+
+            if version == SchemaVersion.LATEST:
+                return self._versions.latest().version
+            elif version == SchemaVersion.LATEST_STABLE:
+                return self._versions.latest_stable().version
+            elif _is_semver(version):
+                return version
+            else:
+                raise ValueError(f"Invalid version string: {version}")
+
     def get_profiles(self, version: Optional[str] = None) -> dict[str, OcsfProfile]:
         """Fetch the profiles for a specific schema version."""
         url = urljoin(self._versioned_url(version), "api/profiles")
@@ -173,7 +210,8 @@ class OcsfApiClient:
 
         Args:
             version: The version of the schema to fetch. If None, the server's
-                default version is used.
+                default version is used. The keywords `latest` and `latest-stable`
+                may also be used.
 
         Returns:
             The requested OcsfSchema.
@@ -186,8 +224,7 @@ class OcsfApiClient:
 
         if version is not None:
             # Ensure version is a valid semantic version string.
-            if not _is_semver(version):
-                raise ValueError(f"Invalid version: {version}")
+            version = self._resolve_version(version)
 
             # Check the cache first.
             if self._cache_dir is not None:
