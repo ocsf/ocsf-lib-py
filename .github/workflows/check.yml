@@ -4,12 +4,12 @@ on:
   - pull_request
 
 jobs:
-  ruff:
+  linting:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup python and poetry
         uses: ./.github/actions/poetry
@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup python and poetry
         uses: ./.github/actions/poetry
@@ -34,7 +34,7 @@ jobs:
           source $VENV
           poetry run pyright --warnings
 
-  tests:
+  testing:
     strategy:
       matrix:
         python-version:
@@ -44,7 +44,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup python and poetry
         uses: ./.github/actions/poetry
