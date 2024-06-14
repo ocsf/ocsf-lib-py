@@ -1,0 +1,44 @@
+name: Setup python and poetry
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Load asdf config
+      id:   asdf
+      run: |
+        echo poetry-version=$(grep '^poetry ' .tool-versions | awk '{print $2}') >> $GITHUB_OUTPUT
+        echo python-version=$(grep '^python ' .tool-versions | awk '{print $2}') >> $GITHUB_OUTPUT
+      shell: sh
+
+    - name: Install python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ steps.asdf.outputs.python-version }}
+
+    - name: Report python version
+      run:  python --version
+      shell: sh
+
+    - name: Load cached venv
+      id:   load-cached-venv
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key:  venv-${{ runner.os }}-${{ steps.asdf.outputs.poetry-version }}-${{ steps.asdf.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Load cached poetry
+      uses: actions/cache@v3
+      with:
+        path: ~/.local # OS-dependent
+        key:  poetry.${{ steps.asdf.outputs.poetry-version }}.${{ steps.asdf.outputs.python-version }}-k1
+
+    - name: Install poetry
+      uses: snok/install-poetry@v1
+      with:
+        version:                ${{ steps.asdf.outputs.poetry-version }}
+        virtualenvs-in-project: true
+
+    - name: Install dependencies
+      run:  poetry install --no-interaction
+      if:   steps.load-cached-venv.outputs.cache-hit != 'true'
+      shell: sh

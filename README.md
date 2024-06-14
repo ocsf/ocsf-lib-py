@@ -1,7 +1,9 @@
-# OCSF Schema Tools
-Tools for working with the OCSF schema in Python.
+# OCSF Library for Python
+
+Tools for building Python scripts and applications leveraging the OCSF.
 
 ## About
+
 This project began with two goals:
 
 1. Provide the OCSF community with a validator that tests for breaking changes
@@ -13,27 +15,40 @@ This project began with two goals:
 The scope of this project may grow to include things like a reference
 implementation OCSF schema compiler.
 
-The project targets Python 3.11 for a balance of capability and availability, is
-divided into discrete packages.
+The project targets Python 3.11 for a balance of capability and availability.
+The root level package, `ocsf`, is a namespace package so that other
+repositories and artifacts can also use the `ocsf` namespace.
 
-### The Schema Package
-The `ocsf_tools.schema` package contains Python data classes that represent an
-OCSF schema as compiled and exported by the OCSF server's `export/schema`
-endpoint.
+This library is divided into several discrete packages.
 
-It also includes utilities to parse the schema from a JSON string or file, as
-well as a lightweight HTTP client that can retrieve a version of the schema over
-HTTP and cache it on the local filesystem.
+### ocsf.util: The utilities package
 
-The easiest way to instantiate a schema is with the `get_schema` function, which
-accepts a filename or a semver.
+The `ocsf.util` package provides the `get_schema` function. This function
+leverages the functionality in the `ocsf.schema` and `ocsf.api` packages (below)
+to easily build an OCSF schema from a file on disk or from the API.
 
 ```python
 schema = get_schema("1.1.0")
 schema = get_schema("./1.3.0-dev.json")
 ```
 
-### The Compare Package
+### ocsf.schema: The Schema Package
+
+The `ocsf.schema` package contains Python data classes that represent an
+OCSF schema as represented from the OCSF server's API endpoints. See the
+`ocsf.schema.model` module for the data model definitions.
+
+It also includes utilities to parse the schema from a JSON string or file.
+
+### ocsf.api: The API Package
+
+The `ocsf.api` package exports an `OcsfApiClient`, which is a lightweight HTTP
+client that can retrieve a version of the schema over HTTP and cache it on the
+local filesystem. It uses thes `export/schema`, `api/versions`, `api/profiles`,
+and `api/extensions` endpoints of the OCSF server.
+
+### ocsf.compare: The Compare Package
+
 The `ocsf_tools.compare` package compares two versions of the OCSF schema and
 generates a type safe difference. Its aim is to make schema comparisons easy to
 work with.
@@ -51,6 +66,7 @@ $ poetry run python -m ocsf_tools.compare 1.0.0 1.2.0
 ```
 
 The comparison API is straightforward. Want to look for removed events?
+
 ```python
 diff = compare(get_schema("1.0.0", "1.1.0"))
 for name, event in diff.classes.items():
@@ -59,6 +75,7 @@ for name, event in diff.classes.items():
 ```
 
 Or changed data types?
+
 ```python
 diff = compare(get_schema("1.0.0", "1.1.0"))
 for name, event in diff.classes.items():
@@ -70,6 +87,7 @@ for name, event in diff.classes.items():
 ```
 
 Or new objects?
+
 ```python
 diff = compare(get_schema("1.0.0", "1.1.0"))
 for name, obj in diff.objects.items():
@@ -78,32 +96,26 @@ for name, obj in diff.objects.items():
 ```
 
 
-### The Validation Package 
-The `ocsf_tools.validation` package provides a lightweight framework for
+### ocsf.validate.framework: The Validation Framework Package 
+
+The `ocsf.valide.framework` package provides a lightweight framework for
 validators. It was inspired by the needs of `ocsf-validator`, which may be
 ported to this framework in the future.
 
-### The Compatibility Package
-The `ocsf_tools.compatibility` package uses the other packages to provide a
-validator that compares two OCSF schema and looks for breaking changes as
-defined in the OCSF FAQ.
-
-The compatibility validator can be run as follows:
-```sh
-$ poetry run python -m ocsf_tools.compatibility --before 1.0.0 --after 1.2.0 --cache ./cache
-```
 
 ## Getting Started
 
 ### PyPI
-The easiest way to install `ocsf-tools` is from PyPI using `pip` or `poetry`:
+
+The easiest way to install `ocsf-lib` is from PyPI using `pip` or `poetry`:
+
 ```sh
-$ pip install ocsf-tools
+$ pip install ocsf-lib
 ```
-**NOTE**: This is not actually published to PyPI yet.
 
 
 ### From Source
+
 If you want to work with the source, the recommended installation is with `asdf`
 and `poetry`.
 
@@ -113,10 +125,12 @@ $ poetry install
 ```
 
 ## Contributing
+
 This project uses `ruff` for formatting and linting, `pyright` for type
 checking, and `pytest` as its test runner.
 
 Before submitting a PR, make sure you've run following:
+
 ```sh
 $ poetry run ruff format
 $ poetry run ruff check
@@ -125,6 +139,7 @@ $ poetry run pytest
 ```
 
 ### Type Checking
+
 With great effort, this library passes pyright's strict mode type checking. Keep
 it that way! The OCSF schema is big, and even the metaschema is a lot to hold in
 your head. Having the type checker identify mistakes for you can be very
@@ -137,14 +152,17 @@ me, I can't figure it out. I blame pyright but it's probably my own fault.
 ### Tests
 
 Running unit tests:
+
 ```sh
 $ poetry run pytest -m "not integration"
 ```
 
 Running integration tests:
+
 ```sh
 $ poetry run pytest -m integration
 ```
+
 **NOTE**: Some of the integration tests require an OCSF server instance, and are
 using the public instance at [https://schema.ocsf.io](https://schema.ocsf.io).
 This should probably use a local instance of the OCSF server instead.
