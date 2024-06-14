@@ -15,26 +15,30 @@ Example:
 from typing import cast
 
 from ocsf.schema import (
-    OcsfSchema,
-    OcsfEvent,
-    OcsfObject,
     OcsfAttr,
     OcsfDeprecationInfo,
+    OcsfEnumMember,
+    OcsfEvent,
+    OcsfExtension,
+    OcsfObject,
+    OcsfProfile,
+    OcsfSchema,
+    OcsfT,
     OcsfType,
     OcsfVersion,
-    OcsfEnumMember,
-    OcsfT,
 )
 from .model import (
-    ChangedSchema,
-    ChangedEvent,
-    ChangedObject,
     ChangedAttr,
     ChangedDeprecationInfo,
+    ChangedEnumMember,
+    ChangedEvent,
+    ChangedExtension,
     ChangedModel,
+    ChangedObject,
+    ChangedProfile,
+    ChangedSchema,
     ChangedType,
     ChangedVersion,
-    ChangedEnumMember,
 )
 
 
@@ -71,6 +75,10 @@ def create_diff(model: OcsfT) -> ChangedModel[OcsfT]:
             ret = ChangedVersion()
         case OcsfEnumMember():
             ret = ChangedEnumMember()
+        case OcsfExtension():
+            ret = ChangedExtension()
+        case OcsfProfile():
+            ret = ChangedProfile()
         case OcsfType():
             ret = ChangedType()
         case _:

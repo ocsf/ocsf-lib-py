@@ -1,3 +1,3 @@
-from .client import OcsfApiClient
+from .client import OcsfApiClient, SchemaVersion, SchemaVersions
 
-__all__ = ["OcsfApiClient"]
+__all__ = ["OcsfApiClient", "SchemaVersion", "SchemaVersions"]

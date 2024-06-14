@@ -49,15 +49,17 @@ from typing import Any, TypeVar, Generic, Optional
 from abc import ABC
 
 from ocsf.schema import (
-    OcsfVersion,
-    OcsfT,
-    OcsfEnumMember,
     OcsfAttr,
     OcsfDeprecationInfo,
-    OcsfType,
-    OcsfObject,
+    OcsfEnumMember,
     OcsfEvent,
+    OcsfExtension,
+    OcsfObject,
+    OcsfProfile,
     OcsfSchema,
+    OcsfT,
+    OcsfType,
+    OcsfVersion,
 )
 
 
@@ -174,9 +176,32 @@ class ChangedEvent(ChangedModel[OcsfEvent]):
 
 
 @dataclass
+class ChangedProfile(ChangedModel[OcsfProfile]):
+    caption: Difference[str] = field(default_factory=NoChange)
+    name: Difference[str] = field(default_factory=NoChange)
+    meta: Difference[str] = field(default_factory=NoChange)
+    description: Difference[Optional[str]] = field(default_factory=NoChange)
+    attributes: dict[str, Difference[OcsfAttr]] = field(default_factory=dict)
+    deprecated: Difference[Optional[OcsfDeprecationInfo]] = field(default_factory=NoChange)
+    annotations: dict[str, Difference[str]] = field(default_factory=dict)
+
+
+@dataclass
+class ChangedExtension(ChangedModel[OcsfExtension]):
+    name: Difference[str] = field(default_factory=NoChange)
+    version: Difference[Optional[str]] = field(default_factory=NoChange)
+    uid: Difference[int] = field(default_factory=NoChange)
+    caption: Difference[str] = field(default_factory=NoChange)
+    description: Difference[Optional[str]] = field(default_factory=NoChange)
+    deprecated: Difference[Optional[OcsfDeprecationInfo]] = field(default_factory=NoChange)
+
+
+@dataclass
 class ChangedSchema(ChangedModel[OcsfSchema]):
     classes: dict[str, Difference[OcsfEvent]] = field(default_factory=dict)
     objects: dict[str, Difference[OcsfObject]] = field(default_factory=dict)
     version: Difference[OcsfVersion] = field(default_factory=NoChange)
     types: dict[str, ChangedType] = field(default_factory=dict)
     base_event: Difference[Optional[OcsfEvent]] = field(default_factory=NoChange)
+    profiles: dict[str, Difference[OcsfProfile]] = field(default_factory=dict)
+    extensions: dict[str, Difference[OcsfExtension]] = field(default_factory=dict)

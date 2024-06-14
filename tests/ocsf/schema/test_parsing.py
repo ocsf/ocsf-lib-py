@@ -1,5 +1,5 @@
 import os
-from ocsf.schema import OcsfEvent, from_json
+from ocsf.schema import OcsfEvent, from_json, SchemaOptions
 
 LOCATION = os.path.dirname(os.path.abspath(__file__))
 SCHEMA_JSON = os.path.join(LOCATION, "../..", "schema_cache/schema-1.1.0.json")
@@ -65,3 +65,40 @@ def test_decode_file():
     assert len(schema.classes) > 0
     assert "authentication" in schema.classes
     assert isinstance(schema.classes["authentication"], OcsfEvent)
+
+
+def test_no_resolve_object_types():
+    json_str = """{
+        "version": "1.0.0",
+        "types": { },
+        "objects": {
+            "stuff": {
+                "name": "stuff",
+                "caption": "Stuff",
+                "attributes": { }
+            }
+        },
+        "classes": {
+            "event": {
+                "name": "event",
+                "caption": "Event",
+                "attributes": {
+                    "thing": {
+                        "caption": "Thing",
+                        "type": "object_t",
+                        "requirement": "required",
+                        "description": "An object",
+                        "object_type": "stuff"
+                    }
+                }
+            }
+        }
+    }"""
+
+    schema = from_json(json_str, SchemaOptions(resolve_object_types=True))
+    assert "event" in schema.classes
+    assert schema.classes["event"].attributes["thing"].type == "stuff"
+
+    schema = from_json(json_str, SchemaOptions(resolve_object_types=False))
+    assert "event" in schema.classes
+    assert schema.classes["event"].attributes["thing"].type == "object_t"
