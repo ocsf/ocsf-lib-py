@@ -21,13 +21,13 @@ runs:
 
     - name: Load cached venv
       id:   load-cached-venv
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .venv
         key:  venv-${{ runner.os }}-${{ steps.asdf.outputs.poetry-version }}-${{ steps.asdf.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
 
     - name: Load cached poetry
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.local # OS-dependent
         key:  poetry.${{ steps.asdf.outputs.poetry-version }}.${{ steps.asdf.outputs.python-version }}-k1
