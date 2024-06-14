@@ -1,0 +1,61 @@
+name: Check
+
+on:
+  - pull_request
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+
+    environment: release
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup python and poetry
+        uses: ./.github/actions/poetry
+
+      - name: Check formatting
+        run: |
+          source $VENV
+          poetry run ruff check
+
+  types:
+    runs-on: ubuntu-latest
+
+    environment: release
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup python and poetry
+        uses: ./.github/actions/poetry
+
+      - name: Type check
+        run: |
+          source $VENV
+          poetry run pyright --warnings
+
+  tests:
+    strategy:
+      matrix:
+        python-version:
+          - "3.11.2"
+
+    runs-on: ubuntu-latest
+
+    environment: release
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup python and poetry
+        uses: ./.github/actions/poetry
+
+      - name: Run tests
+        run: |
+          source $VENV
+          poetry run pytest
