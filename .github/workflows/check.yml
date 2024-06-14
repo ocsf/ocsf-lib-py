@@ -19,7 +19,7 @@ jobs:
           source $VENV
           poetry run ruff check
 
-  types:
+  type-checking:
     runs-on: ubuntu-latest
 
     steps:
