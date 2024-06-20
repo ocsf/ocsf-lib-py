@@ -92,7 +92,7 @@ class OcsfApiClient:
 
     def __init__(
         self,
-        base_url: str = "https://schema.ocsf.io",
+        base_url: Optional[str] = None,
         cache_dir: Optional[str | Path] = None,
         schema_options: SchemaOptions = SchemaOptions(),
         fetch_profiles: bool = True,
@@ -107,7 +107,7 @@ class OcsfApiClient:
             fetch_profiles: If True, fetch available profiles when fetching a schema.
             fetch_extensions: If True, fetch available extensions when fetching a schema.
         """
-        self._base_url = base_url
+        self._base_url = base_url or "https://schema.ocsf.io"
         self._versions: Optional[SchemaVersions] = None
         self._fetch_profiles = fetch_profiles
         self._fetch_extensions = fetch_extensions
