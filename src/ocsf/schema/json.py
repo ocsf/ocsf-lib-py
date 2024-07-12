@@ -19,12 +19,12 @@ from .model import OcsfSchema, WithAttributes
 # Certain OCSF properties have special characters in their names.
 _KEY_TRANSFORMS = {
     "@deprecated": "deprecated",
-    "$include": "include",
+    "$include": "include_",
 }
 
 _NAME_TRANSFORMS = {
     "deprecated": "@deprecated",
-    "include": "$include",
+    "include_": "$include",
 }
 
 
