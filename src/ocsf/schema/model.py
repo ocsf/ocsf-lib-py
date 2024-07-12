@@ -54,8 +54,8 @@ class OcsfAttr(OcsfModel):
     """An attribute definition."""
 
     caption: str
-    requirement: str
     type: str
+    requirement: str = "optional"
     description: Optional[str] = None
     is_array: bool = False
     deprecated: Optional[OcsfDeprecationInfo] = None
