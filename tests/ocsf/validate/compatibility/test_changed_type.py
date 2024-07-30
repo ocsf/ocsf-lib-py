@@ -43,14 +43,14 @@ def test_int_to_long():
         objects={
             "process_activity": ChangedObject(
                 attributes={
-                    "process_name": ChangedAttr(type=Change("int_t", "long_t")),
+                    "process_name": ChangedAttr(type=Change("integer_t", "long_t")),
                 }
             ),
         },
         classes={
             "process_activity": ChangedEvent(
                 attributes={
-                    "process_name": ChangedAttr(type=Change("int_t", "long_t")),
+                    "process_name": ChangedAttr(type=Change("integer_t", "long_t")),
                 }
             ),
         }
