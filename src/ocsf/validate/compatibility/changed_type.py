@@ -37,6 +37,8 @@ class NoChangedTypesRule(Rule[ChangedSchema]):
                 for attr_name, attr in event.attributes.items():
                     if isinstance(attr, ChangedAttr):
                         if isinstance(attr.type, Change):
+                            if attr.type.before == "int_t" and attr.type.after == "long_t":
+                                continue
                             findings.append(
                                 ChangedTypeFinding(
                                     OcsfElementType.EVENT, name, attr_name, attr.type.before, attr.type.after
@@ -48,6 +50,8 @@ class NoChangedTypesRule(Rule[ChangedSchema]):
                 for attr_name, attr in obj.attributes.items():
                     if isinstance(attr, ChangedAttr):
                         if isinstance(attr.type, Change):
+                            if attr.type.before == "int_t" and attr.type.after == "long_t":
+                                continue
                             findings.append(
                                 ChangedTypeFinding(
                                     OcsfElementType.OBJECT, name, attr_name, attr.type.before, attr.type.after
