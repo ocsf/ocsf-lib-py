@@ -25,9 +25,9 @@ def test_can_update():
 def test_can_update_overwrite():
     r = _perform_tests(MergeOptions(overwrite=True))
     # We don't care if the first argument is True or False
-    assert r[1] == False
-    assert r[2] == True
-    assert r[3] == True
+    assert r[1] is False
+    assert r[2] is True
+    assert r[3] is True
 
 
 def test_can_update_allowed_field():
@@ -36,9 +36,9 @@ def test_can_update_allowed_field():
 
 def test_can_update_allowed_field_overwrite():
     r = _perform_tests(MergeOptions(overwrite=True, allowed_fields=["prop"]))
-    assert r[1] == False
-    assert r[2] == True
-    assert r[3] == True
+    assert r[1] is False
+    assert r[2] is True
+    assert r[3] is True
 
 
 def test_can_update_not_allowed_field_overwrite():

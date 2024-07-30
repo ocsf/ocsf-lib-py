@@ -1,5 +1,6 @@
 # TODO this file is a stub for testing and should be converted into an example
 
+from pprint import pprint
 from ocsf.repository import read_repo
 
 from .compiler import Compilation
@@ -15,7 +16,6 @@ compiler = Compilation(repo)
 TARGET = "objects/process.json"
 # TARGET = "extensions/windows/events/prefetch_query.json"
 # TARGET = "includes/classification.json"
-from pprint import pprint
 
 analysis = compiler.analyze()
 order = compiler.order()

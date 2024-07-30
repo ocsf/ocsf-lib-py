@@ -75,7 +75,7 @@ def test_versus():
 
             assert event.associations is not None
             check_dict(event.associations, "associations")
-            
+
             check_dict(event.constraints, "constraints")
 
             if not isinstance(event.deprecated, NoChange):
@@ -108,7 +108,7 @@ def test_versus():
 
                 # Suspected bug in OCSF server not always assigning profiles
                 assert isinstance(change.profile, NoChange) or (
-                    isinstance(change.profile, Change) and change.profile.before is None #type:ignore
+                    isinstance(change.profile, Change) and change.profile.before is None  # type:ignore
                 )
 
                 if name not in ("ntp_activity", "tunnel_activity") and attr != "type_uid":
@@ -204,7 +204,7 @@ def test_versus():
                     "type",
                     # TODO security_control.action.sibling is set to action_id
                     # in this implementation but not by the OCSF server. Why?
-                    #"sibling",
+                    # "sibling",
                     "is_array",
                     "group",
                 ]:

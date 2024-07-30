@@ -6,7 +6,11 @@ from ocsf.repository import read_repo
 from ocsf.compile import Compilation, CompilationOptions
 
 
-def get_schema(versionOrFile: Optional[str] = None, client: Optional[OcsfApiClient] = None, compile_options: CompilationOptions = CompilationOptions()) -> OcsfSchema:
+def get_schema(
+    versionOrFile: Optional[str] = None,
+    client: Optional[OcsfApiClient] = None,
+    compile_options: CompilationOptions = CompilationOptions(),
+) -> OcsfSchema:
     """Fetch a schema from a filename or version.
 
     This is a convenience function.
