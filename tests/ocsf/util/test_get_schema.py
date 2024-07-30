@@ -11,8 +11,6 @@ CACHE = os.path.join(LOCATION, "../../..", "schema_cache")
 REPO = os.environ["COMPILE_REPO_PATH"]
 
 
-
-
 def test_get_schema_file():
     """Test fetching a schema from a file."""
     schema = get_schema(os.path.join(CACHE, "schema-1.1.0.json"))
@@ -31,6 +29,7 @@ def test_get_schema_version_cache():
     assert len(schema.classes) > 0
     assert len(schema.objects) > 0
 
+
 def test_get_schema_repo():
     """Test fetching a schema from a repository."""
     schema = get_schema(REPO)
@@ -38,6 +37,7 @@ def test_get_schema_repo():
     assert schema.version == "1.2.0"
     assert len(schema.classes) > 0
     assert len(schema.objects) > 0
+
 
 @pytest.mark.integration
 def test_get_schema_version_server():

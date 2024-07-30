@@ -37,6 +37,7 @@ def test_changed_type_object():
     assert len(findings) == 1
     assert isinstance(findings[0], ChangedTypeFinding)
 
+
 def test_int_to_long():
     """Test that changing an int to a long is allowed."""
     s = ChangedSchema(
@@ -53,7 +54,7 @@ def test_int_to_long():
                     "process_name": ChangedAttr(type=Change("integer_t", "long_t")),
                 }
             ),
-        }
+        },
     )
     rule = NoChangedTypesRule()
     findings = rule.validate(s)

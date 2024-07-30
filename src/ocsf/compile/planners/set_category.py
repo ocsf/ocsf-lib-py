@@ -30,7 +30,7 @@ class SetCategoryOp(Operation):
         categories = schema[SpecialFiles.CATEGORIES].data
         assert isinstance(categories, CategoriesDefn)
         if not isinstance(categories.attributes, dict):
-            raise ValueError(f"categories.json file is missing attributes")
+            raise ValueError("categories.json file is missing attributes")
 
         if category not in categories.attributes:
             raise ValueError(f"Unknown category: {category}")
