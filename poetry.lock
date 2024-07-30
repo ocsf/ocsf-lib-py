@@ -111,6 +111,23 @@ pluggy = ">=1.5,<2.0"
 dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
 
 [[package]]
+name = "pytest-env"
+version = "1.1.3"
+description = "pytest plugin that allows you to add environment variables."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pytest_env-1.1.3-py3-none-any.whl", hash = "sha256:aada77e6d09fcfb04540a6e462c58533c37df35fa853da78707b17ec04d17dfc"},
+    {file = "pytest_env-1.1.3.tar.gz", hash = "sha256:fcd7dc23bb71efd3d35632bde1bbe5ee8c8dc4489d6617fb010674880d96216b"},
+]
+
+[package.dependencies]
+pytest = ">=7.4.3"
+
+[package.extras]
+test = ["covdefaults (>=2.3)", "coverage (>=7.3.2)", "pytest-mock (>=3.12)"]
+
+[[package]]
 name = "ruff"
 version = "0.4.9"
 description = "An extremely fast Python linter and code formatter, written in Rust."
@@ -164,4 +181,4 @@ tests = ["pytest", "pytest-cov"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "b36d2c01f00c7ad5647fd29b61f2b7e645c1c8e909dd9c62b883147627a2e3da"
+content-hash = "0cd39969388c7ac127c91256c9bb7e231425ea3b3c6a06d3d00df7d270ff5068"

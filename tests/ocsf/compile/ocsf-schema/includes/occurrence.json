@@ -1,0 +1,29 @@
+{
+  "caption": "Occurrence",
+  "description": "The attributes that specify when the event occurred, duration, and aggregations.",
+  "annotations": {
+    "group": "occurrence"
+  },
+  "attributes": {
+    "count": {
+      "requirement": "optional"
+    },
+    "duration": {
+      "requirement": "optional"
+    },
+    "end_time": {
+      "description": "The end time of a time period, or the time of the most recent event included in the aggregate event.",
+      "requirement": "optional"
+    },
+    "start_time": {
+      "description": "The start time of a time period, or the time of the least recent event included in the aggregate event.",
+      "requirement": "optional"
+    },
+    "time": {
+      "requirement": "required"
+    },
+    "timezone_offset": {
+      "requirement": "recommended"
+    }
+  }
+}

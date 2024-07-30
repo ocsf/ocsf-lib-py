@@ -1,0 +1,58 @@
+{
+  "caption": "Email",
+  "description": "The Email object describes the email metadata such as sender, recipients, and direction. Defined by D3FEND <a target='_blank' href='https://d3fend.mitre.org/dao/artifact/d3f:Email/'>d3f:Email</a>.",
+  "name": "email",
+  "extends": "object",
+  "observable": 22,
+  "profiles": [
+    "data_classification"
+  ],
+  "attributes": {
+    "$include": [
+      "profiles/data_classification.json"
+    ],
+    "cc": {
+      "requirement": "optional"
+    },
+    "delivered_to": {
+      "requirement": "optional"
+    },
+    "from": {
+      "requirement": "required"
+    },
+    "message_uid": {
+      "requirement": "recommended"
+    },
+    "raw_header": {
+      "requirement": "optional"
+    },
+    "reply_to": {
+      "requirement": "recommended"
+    },
+    "size": {
+      "description": "The size in bytes of the email, including attachments.",
+      "requirement": "recommended"
+    },
+    "smtp_from": {
+      "requirement": "recommended"
+    },
+    "smtp_to": {
+      "requirement": "recommended"
+    },
+    "subject": {
+      "caption": "Subject",
+      "description": "The email header Subject value, as defined by RFC 5322."
+    },
+    "to": {
+      "requirement": "required"
+    },
+    "x_originating_ip": {
+      "requirement": "optional"
+    },
+    "uid": {
+      "caption": "Email UID",
+      "description": "The email unique identifier.",
+      "requirement": "recommended"
+    }
+  }
+}
