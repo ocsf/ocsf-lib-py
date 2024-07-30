@@ -31,6 +31,7 @@ from .planners.uid import UidPlanner
 from .planners.object_type import ObjectTypePlanner
 from .planners.uid_names import UidSiblingPlanner
 from .planners.datetime import DateTimePlanner
+from .planners.observable import MarkObservablesPlanner
 from .merge import MergeResult
 
 FileOperations = dict[RepoPath, list[Operation]]
@@ -69,6 +70,7 @@ class Compilation:
                 ObjectTypePlanner(self._proto, options),
                 UidSiblingPlanner(self._proto, options),
                 DateTimePlanner(self._proto, options),
+                MarkObservablesPlanner(self._proto, options),
                 ExtensionCopyPlanner(self._proto, options),
             ],
         ]

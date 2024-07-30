@@ -53,6 +53,10 @@ Validate schemata but don't worry about removed enum members:
 
     $ python -m ocsf_tools.compatibility --config ./config.toml --info RemovedEnumMember
 
+Validate a working copy of the OCSF schema repository against the latest stable version:
+
+    $ python -m ocsf_tools.compatibility --before latest-stable --after ./src/ocsf-schema
+
 """
 
 import tomllib

@@ -2,7 +2,9 @@
 
 Example:
 
-    $ python -m ocsf_diff old_schema.json new_schema.json
+    $ python -m ocsf.compare old_schema.json new_schema.json
+    $ python -m ocsf.compare 1.2.0 new_schema.json
+    $ python -m ocsf.compare new_schema.json path/to/ocsf-schema
 
 """
 
@@ -21,8 +23,8 @@ from .formatter import format
 def main():
     parser = ArgumentParser(description="Compare two OCSF schemata")
 
-    parser.add_argument("old_schema", help="Path to the old schema file or the old schema version.")
-    parser.add_argument("new_schema", help="Path to the new schema file or the new schema version.")
+    parser.add_argument("old_schema", help="Path to the old schema file, old schema repository, or the old schema version.")
+    parser.add_argument("new_schema", help="Path to the new schema file, new schema repository, or the new schema version.")
     parser.add_argument(
         "--expand-changes",
         dest="collapse_changes",
