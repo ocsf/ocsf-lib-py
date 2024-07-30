@@ -2,6 +2,18 @@
 
 Tools for building Python scripts and applications leveraging the OCSF.
 
+## Quick Start
+
+If you just want to use this library as a CLI tool, install it with `pip` or
+`poetry` and try the following commands:
+
+```sh
+python -m ocsf.compile path/to/ocsf-schema
+python -m ocsf.compare my-schema-export.json path/to/ocsf-schema
+python -m ocsf.schema 1.2.0
+python -m ocsf.validate.compatibility path/to/ocsf-schema 1.2.0
+```
+
 ## About
 
 This project began with two goals:
@@ -25,11 +37,13 @@ This library is divided into several discrete packages.
 
 The `ocsf.util` package provides the `get_schema` function. This function
 leverages the functionality in the `ocsf.schema` and `ocsf.api` packages (below)
-to easily build an OCSF schema from a file on disk or from the API.
+to easily build an OCSF schema from a file on disk, a working copy of an OCSF
+repository, or from the API.
 
 ```python
 schema = get_schema("1.1.0")
 schema = get_schema("./1.3.0-dev.json")
+schema = get_schema("path/to/ocsf-schema")
 ```
 
 ### ocsf.schema: The Schema Package
@@ -39,6 +53,24 @@ OCSF schema as represented from the OCSF server's API endpoints. See the
 `ocsf.schema.model` module for the data model definitions.
 
 It also includes utilities to parse the schema from a JSON string or file.
+
+### ocsf.repository: The Repository Package
+
+The `ocsf.repository` package contains a typed Python representation of a
+working copy of an OCSF schema repository. Said another way, it represents the
+OCSF metaschema and repository contents in Python.
+
+It also includes the `read_repo` function to read a repository from disk.
+
+### ocsf.compile: An OCSF Compiler
+
+The `ocsf.compile` package "compiles" the OCSF schema from a repository just as
+the OCSF server does (with very few exceptions). It is meant to provide:
+
+ 1. An easy to use CLI tool to compile a repository into a single JSON schema
+    file.
+ 2. A reference implementation for others looking to better understand OCSF
+    compilation or to create their own compiler.
 
 ### ocsf.api: The API Package
 
@@ -98,10 +130,15 @@ for name, obj in diff.objects.items():
 
 ### ocsf.validate.framework: The Validation Framework Package 
 
-The `ocsf.valide.framework` package provides a lightweight framework for
+The `ocsf.validate.framework` package provides a lightweight framework for
 validators. It was inspired by the needs of `ocsf-validator`, which may be
 ported to this framework in the future.
 
+### ocsf.validate.compatibility: The Backwards Compatibility Validator
+
+The `ocsf.validate.compatibility` provides a backwards compatibility validator
+for OCSF schema. This compares the changes between two OCSF schemata and reports
+any breaking changes between the old and new version.
 
 ## Getting Started
 

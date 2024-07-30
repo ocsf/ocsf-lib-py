@@ -26,3 +26,8 @@ class CompilationOptions:
     references to objects, as per the original OCSF server. If False, the type 
     field will refer directly to the object type.
     """
+
+    set_observable: bool = False
+    """If True, set the observable field on attributes to the corresponding
+    Observable Type ID where applicable.
+    """
