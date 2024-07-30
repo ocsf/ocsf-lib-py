@@ -155,7 +155,7 @@ class ChangedObject(ChangedModel[OcsfObject]):
     extends: Difference[Optional[str]] = field(default_factory=NoChange)
     observable: Difference[Optional[int]] = field(default_factory=NoChange)
     profiles: Difference[Optional[list[str]]] = field(default_factory=NoChange)
-    constraints: Difference[Optional[dict[str, list[str]]]] = field(default_factory=NoChange)
+    constraints: dict[str, Difference[list[str]]] = field(default_factory=dict)
     deprecated: Difference[Optional[OcsfDeprecationInfo]] = field(default_factory=NoChange)
 
 
@@ -169,8 +169,8 @@ class ChangedEvent(ChangedModel[OcsfEvent]):
     category: Difference[Optional[str]] = field(default_factory=NoChange)
     extends: Difference[Optional[str]] = field(default_factory=NoChange)
     profiles: Difference[Optional[list[str]]] = field(default_factory=NoChange)
-    associations: Difference[Optional[dict[str, list[str]]]] = field(default_factory=NoChange)
-    constraints: Difference[Optional[dict[str, list[str]]]] = field(default_factory=NoChange)
+    associations: dict[str, Difference[list[str]]] = field(default_factory=dict)
+    constraints: dict[str, Difference[list[str]]] = field(default_factory=dict)
     include: Difference[Optional[str]] = field(default_factory=NoChange)
     deprecated: Difference[Optional[OcsfDeprecationInfo]] = field(default_factory=NoChange)
 

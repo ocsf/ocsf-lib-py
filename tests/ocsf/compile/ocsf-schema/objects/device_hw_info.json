@@ -1,0 +1,48 @@
+{
+  "caption": "Device Hardware Info",
+  "name": "device_hw_info",
+  "description": "The Device Hardware Information object contains details and specifications of the physical components that make up a device. This information provides an overview of the hardware capabilities, configuration, and characteristics of the device.",
+  "extends": "object",
+  "attributes": {
+    "bios_date": {
+      "requirement": "optional"
+    },
+    "bios_manufacturer": {
+      "requirement": "optional"
+    },
+    "bios_ver": {
+      "requirement": "optional"
+    },
+    "chassis": {
+      "requirement": "optional"
+    },
+    "cpu_bits": {
+        "requirement": "optional"
+    },
+    "cpu_count": {
+      "requirement": "optional"
+    },
+    "cpu_cores": {
+      "requirement": "optional"
+    },
+    "cpu_speed": {
+      "requirement": "optional"
+    },
+    "cpu_type": {
+      "requirement": "optional"
+    },
+    "desktop_display": {
+      "requirement": "optional"
+    },
+    "keyboard_info": {
+      "requirement": "optional"
+    },
+    "ram_size": {
+      "requirement": "optional"
+    },
+    "serial_number": {
+      "description": "The device manufacturer serial number.",
+      "requirement": "optional"
+    }
+  }
+}

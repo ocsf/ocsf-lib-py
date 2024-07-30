@@ -1,9 +1,12 @@
+import os
 from typing import Optional
 from ocsf.api import OcsfApiClient
 from ocsf.schema import OcsfSchema, from_file
+from ocsf.repository import read_repo
+from ocsf.compile import Compilation, CompilationOptions
 
 
-def get_schema(versionOrFile: Optional[str] = None, client: Optional[OcsfApiClient] = None) -> OcsfSchema:
+def get_schema(versionOrFile: Optional[str] = None, client: Optional[OcsfApiClient] = None, compile_options: CompilationOptions = CompilationOptions()) -> OcsfSchema:
     """Fetch a schema from a filename or version.
 
     This is a convenience function.
@@ -25,10 +28,13 @@ def get_schema(versionOrFile: Optional[str] = None, client: Optional[OcsfApiClie
             if the requested version is invalid.
     """
     if versionOrFile is not None:
-        try:
+        if os.path.isdir(versionOrFile):
+            repo = read_repo(versionOrFile)
+            compilation = Compilation(repo, options=compile_options)
+            return compilation.build()
+
+        elif os.path.isfile(versionOrFile):
             return from_file(versionOrFile)
-        except FileNotFoundError:
-            pass
 
     if client is None:
         client = OcsfApiClient()

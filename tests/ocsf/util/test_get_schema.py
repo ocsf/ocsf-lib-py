@@ -8,6 +8,9 @@ from ocsf.util import get_schema
 
 LOCATION = os.path.dirname(os.path.abspath(__file__))
 CACHE = os.path.join(LOCATION, "../../..", "schema_cache")
+REPO = os.environ["COMPILE_REPO_PATH"]
+
+
 
 
 def test_get_schema_file():
@@ -28,6 +31,13 @@ def test_get_schema_version_cache():
     assert len(schema.classes) > 0
     assert len(schema.objects) > 0
 
+def test_get_schema_repo():
+    """Test fetching a schema from a repository."""
+    schema = get_schema(REPO)
+    assert isinstance(schema, OcsfSchema)
+    assert schema.version == "1.2.0"
+    assert len(schema.classes) > 0
+    assert len(schema.objects) > 0
 
 @pytest.mark.integration
 def test_get_schema_version_server():

@@ -1,0 +1,66 @@
+{
+  "caption": "Base Event",
+  "category": "other",
+  "description": "The base event is a generic and concrete event. It also defines a set of attributes available in most event classes. As a generic event that does not belong to any event category, it could be used to log events that are not otherwise defined by the schema.",
+  "name": "base_event",
+  "profiles": [
+    "cloud",
+    "datetime"
+  ],
+  "attributes": {
+    "$include": [
+      "includes/classification.json",
+      "includes/occurrence.json",
+      "profiles/cloud.json",
+      "profiles/datetime.json"
+    ],
+    "enrichments": {
+      "group": "context",
+      "requirement": "optional"
+    },
+    "message": {
+      "group": "primary",
+      "requirement": "recommended"
+    },
+    "metadata": {
+      "group": "context",
+      "requirement": "required"
+    },
+    "observables": {
+      "group": "primary",
+      "requirement": "recommended"
+    },
+    "raw_data": {
+      "group": "context",
+      "requirement": "optional"
+    },
+    "severity": {
+      "group": "classification",
+      "requirement": "optional"
+    },
+    "severity_id": {
+      "group": "classification",
+      "requirement": "required"
+    },
+    "status": {
+      "group": "primary",
+      "requirement": "recommended"
+    },
+    "status_code": {
+      "group": "primary",
+      "requirement": "recommended"
+    },
+    "status_detail": {
+      "group": "primary",
+      "requirement": "recommended"
+    },
+    "status_id": {
+      "group": "primary",
+      "requirement": "recommended"
+    },
+    "unmapped": {
+      "group": "context",
+      "requirement": "optional"
+    }
+  }
+}

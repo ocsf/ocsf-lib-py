@@ -1,0 +1,27 @@
+# Example OCSF backwards compatibility validator configuration file.
+
+# The "before" schema
+before = "1.0.0"
+
+# The "after" schema
+after = "1.2.0"
+
+# Optional cache location to prevent lots of requests to the OCSF server
+cache = "./schema_cache"
+
+# Optional global base URL for the OCSF server
+url = "https://schema.ocsf.io"
+
+# Optional base URL for the "before" schema
+# before_url = "https://schema.ocsf.io"
+
+# Optional base URL for the "after" schema
+# after_url = "https://localhost:4000"
+
+
+# Overriding the severity of specific findings
+# The key must be the class name of the finding, and the value must be one of
+# info, warning, error, or fatal.
+[severity]
+ChangedTypeFinding = "info" # Downgrade the severity of ChangedTypeFinding
+RemovedEventFinding = "fatal" # Upgrade the severity of RemovedEventFinding
