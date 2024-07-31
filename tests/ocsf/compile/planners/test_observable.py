@@ -9,7 +9,8 @@ from ocsf.repository import (
 )
 from ocsf.compile import CompilationOptions
 from ocsf.compile.protoschema import ProtoSchema
-from ocsf.compile.planners.observable import MarkObservablesPlanner, MarkObservablesOp, _Registry
+from ocsf.compile.planners.observable import MarkObservablesPlanner, MarkObservablesOp
+from ocsf.compile.planners.observable import _Registry # type: ignore
 
 
 def get_ps():
