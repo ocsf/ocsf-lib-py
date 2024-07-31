@@ -39,6 +39,7 @@ class SpecialFiles(StrEnum):
     CATEGORIES = "categories.json"
     VERSION = "version.json"
     EXTENSION = "extension.json"
+    OBSERVABLE = "objects/observable.json"
 
     @staticmethod
     def contains(path: str) -> bool:
