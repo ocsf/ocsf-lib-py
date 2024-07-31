@@ -31,7 +31,7 @@ from .planners.uid import UidPlanner
 from .planners.object_type import ObjectTypePlanner
 from .planners.uid_names import UidSiblingPlanner
 from .planners.datetime import DateTimePlanner
-from .planners.observable import MarkObservablesPlanner
+from .planners.observable import MarkObservablesPlanner, BuildObservableTypesPlanner
 from .merge import MergeResult
 
 FileOperations = dict[RepoPath, list[Operation]]
@@ -60,6 +60,7 @@ class Compilation:
                 MarkProfilePlanner(self._proto, options),
                 IncludePlanner(self._proto, options),
                 ExtendsPlanner(self._proto, options),
+                BuildObservableTypesPlanner(self._proto, options),
                 ExtensionMergePlanner(self._proto, options),
                 ExcludeProfileAttrsPlanner(self._proto, options),
             ],
