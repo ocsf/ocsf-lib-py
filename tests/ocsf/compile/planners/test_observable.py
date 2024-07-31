@@ -9,7 +9,8 @@ from ocsf.repository import (
 )
 from ocsf.compile import CompilationOptions
 from ocsf.compile.protoschema import ProtoSchema
-from ocsf.compile.planners.observable import MarkObservablesPlanner, MarkObservablesOp, _Registry
+from ocsf.compile.planners.observable import MarkObservablesPlanner, MarkObservablesOp
+from ocsf.compile.planners.observable import _Registry  # type: ignore
 
 
 def get_ps():
@@ -46,8 +47,10 @@ def test_analyze():
     repo = get_ps()
     planner = MarkObservablesPlanner(repo, CompilationOptions(set_observable=True))
     analysis = planner.analyze(repo["objects/thing.json"])
-    assert isinstance(analysis, MarkObservablesOp)
-    assert analysis.target == "objects/thing.json"
+    assert isinstance(analysis, list)
+    assert len(analysis) == 1
+    assert isinstance(analysis[0], MarkObservablesOp)
+    assert analysis[0].target == "objects/thing.json"
 
 
 def test_apply():

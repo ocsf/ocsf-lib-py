@@ -17,7 +17,10 @@ from ocsf.schema import to_json
 def main():
     parser = ArgumentParser(description="Dump an OCSF schema as JSON to STDOUT")
 
-    parser.add_argument("schema", help="Path to a schema JSON file, a version identifier (to retrieve from schema.ocsf.io), or a path to an OCSF repository.")
+    parser.add_argument(
+        "schema",
+        help="Path to a schema JSON file, a version identifier (to retrieve from schema.ocsf.io), or a path to an OCSF repository.",
+    )
     args = parser.parse_args()
 
     print(to_json(get_schema(args.schema)))

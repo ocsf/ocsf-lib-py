@@ -125,6 +125,29 @@ class ProtoSchema:
 
         raise KeyError(f"Extension {name} not found")
 
+    def find_base(self, child: RepoPath, recurse: bool = False) -> RepoPath | None:
+        """Find the path to the base object or event for object or event at a given path."""
+        data = self[child].data
+        if isinstance(data, ObjectDefn):
+            if data.extends is not None:
+                parent = self.find_object(data.extends)
+                assert isinstance(parent.data, ObjectDefn)
+                if parent.data.extends is not None and recurse:
+                    return self.find_base(parent.path)
+                else:
+                    return parent.path
+
+        elif isinstance(data, EventDefn):
+            if data.extends is not None:
+                parent = self.find_event(data.extends)
+                assert isinstance(parent.data, EventDefn)
+                if parent.data.extends is not None and recurse:
+                    return self.find_base(parent.path)
+                else:
+                    return parent.path
+
+        return None
+
     def schema(self) -> OcsfSchema:
         schema = OcsfSchema(version="0.0.0")  # Version updated below
 

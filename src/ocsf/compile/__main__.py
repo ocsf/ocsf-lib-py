@@ -49,6 +49,7 @@ from ocsf.schema import to_json
 from .compiler import Compilation
 from .options import CompilationOptions
 
+
 def main():
     parser = ArgumentParser(description="Compile an OCSF repository into a schema and dump it as JSON to STDOUT")
     parser.add_argument("path", help="Path to the OCSF repository")
@@ -118,6 +119,7 @@ def main():
     compiler = Compilation(repo, options)
 
     print(to_json(compiler.build()))
+
 
 if __name__ == "__main__":
     main()

@@ -167,6 +167,12 @@ def test_versus():
                 ]:
                     check_prop(change, attr)
 
+                if isinstance(change.enum, dict):
+                    for k, value in change.enum.items():
+                        assert isinstance(value, NoChange), f"Expected enum value {k} to be NoChange, got {value}"
+                else:
+                    assert isinstance(change.enum, NoChange), f"Expected enum to be NoChange, got {change.enum}"
+
     for name in sorted(diff.profiles.keys()):
         print("Testing profile:", name)
         profile = diff.profiles[name]
