@@ -43,6 +43,7 @@ from ocsf.repository import (
 
 # TODO build observable object's type_id enum
 
+
 class _Registry:
     """A registry of observable attributes and types from the dictionary.json
     file so that the mapping can be computed once across all operations.
@@ -122,6 +123,7 @@ class MarkObservablesOp(Operation):
 
         return results
 
+
 @dataclass(eq=True, frozen=True)
 class BuildObservableTypeOp(Operation):
     registry: Optional[_Registry] = None
@@ -155,7 +157,9 @@ class BuildObservableTypeOp(Operation):
                 enum_id = str(attrs[key])
                 attr = data.attributes[key]
                 assert isinstance(attr, AttrDefn)
-                enum[enum_id] = EnumMemberDefn(caption=attr.caption, description=f"Observable by Dictionary Attribute.<br>{attr.description}")
+                enum[enum_id] = EnumMemberDefn(
+                    caption=attr.caption, description=f"Observable by Dictionary Attribute.<br>{attr.description}"
+                )
                 results.append(("attributes", "type_id", "enum", enum_id))
 
             # Dictionary type observables
@@ -167,9 +171,10 @@ class BuildObservableTypeOp(Operation):
                 enum_id = str(types[key])
                 type_ = data.types.attributes[key]
                 assert isinstance(type_, TypeDefn)
-                enum[enum_id] = EnumMemberDefn(caption=type_.caption, description=f"Observable by Dictionary Type.<br>{type_.description}")
+                enum[enum_id] = EnumMemberDefn(
+                    caption=type_.caption, description=f"Observable by Dictionary Type.<br>{type_.description}"
+                )
                 results.append(("attributes", "type_id", "enum", enum_id))
-            
 
         elif isinstance(data, EventDefn) or isinstance(data, ObjectDefn):
             if isinstance(data, ObjectDefn) and data.observable is not None:
@@ -184,7 +189,9 @@ class BuildObservableTypeOp(Operation):
                 # Object observable
                 enum_id = str(obj_data.observable)
                 if enum_id not in enum:
-                    enum[enum_id] = EnumMemberDefn(caption=obj_data.caption, description=f"Observable by Object.<br>{obj_data.description}")
+                    enum[enum_id] = EnumMemberDefn(
+                        caption=obj_data.caption, description=f"Observable by Object.<br>{obj_data.description}"
+                    )
                     results.append(("attributes", "type_id", "enum", enum_id))
 
             if isinstance(data.attributes, dict):
@@ -193,12 +200,14 @@ class BuildObservableTypeOp(Operation):
                 for k, v in data.attributes.items():
                     if isinstance(v, AttrDefn) and v.observable is not None:
                         enum_id = str(v.observable)
-                        if enum_id not in enum: # Don't overwrite enum values defined in dictionary.json
-                            enum[enum_id] = EnumMemberDefn(caption=f"{data.caption} {label}: {k}", description=f"Observable by {label}-Specific Attribute.<br>{label}-specific attribute \"{k}\" for the {data.caption} {label}.")
+                        if enum_id not in enum:  # Don't overwrite enum values defined in dictionary.json
+                            enum[enum_id] = EnumMemberDefn(
+                                caption=f"{data.caption} {label}: {k}",
+                                description=f'Observable by {label}-Specific Attribute.<br>{label}-specific attribute "{k}" for the {data.caption} {label}.',
+                            )
                             results.append(("attributes", "type_id", "enum", enum_id))
 
         return results
-
 
 
 class MarkObservablesPlanner(Planner):
@@ -213,7 +222,7 @@ class MarkObservablesPlanner(Planner):
             ops.append(MarkObservablesOp(input.path, registry=self._registry))
 
         return ops
-            
+
 
 class BuildObservableTypesPlanner(Planner):
     def __init__(self, schema: ProtoSchema, options: CompilationOptions):
@@ -223,7 +232,11 @@ class BuildObservableTypesPlanner(Planner):
     def analyze(self, input: DefinitionFile[AnyDefinition]) -> Analysis:
         ops: Analysis = []
 
-        if input.path == SpecialFiles.DICTIONARY or (isinstance(input.data, ObjectDefn) or isinstance(input.data, EventDefn)):
-            ops.append(BuildObservableTypeOp(target=SpecialFiles.OBSERVABLE, prerequisite=input.path, registry=self._registry))
-        
+        if input.path == SpecialFiles.DICTIONARY or (
+            isinstance(input.data, ObjectDefn) or isinstance(input.data, EventDefn)
+        ):
+            ops.append(
+                BuildObservableTypeOp(target=SpecialFiles.OBSERVABLE, prerequisite=input.path, registry=self._registry)
+            )
+
         return ops

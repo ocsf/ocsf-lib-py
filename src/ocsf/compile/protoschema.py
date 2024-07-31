@@ -1,15 +1,13 @@
 import dacite
 
 from copy import deepcopy
-from dataclasses import asdict, dataclass
+from dataclasses import asdict
 from pathlib import PurePath
 from typing import Any, cast, TypeVar
-from enum import IntEnum
 
 from ocsf.schema import OcsfSchema, OcsfObject, OcsfEvent, OcsfType, OcsfProfile, OcsfExtension
 from ocsf.repository import (
     Repository,
-    DefnWithExtends,
     ObjectDefn,
     EventDefn,
     SpecialFiles,
