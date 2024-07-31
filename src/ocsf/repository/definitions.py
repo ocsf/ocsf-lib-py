@@ -229,3 +229,5 @@ DefnWithExtn = ObjectDefn | EventDefn | ProfileDefn
 
 This is only used for definitions that create new record types in the core schema. `dictionary.json` is exempt.
 """
+
+DefnWithExtends = ObjectDefn | EventDefn
