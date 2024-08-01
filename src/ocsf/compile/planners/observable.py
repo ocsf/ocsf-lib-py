@@ -99,7 +99,7 @@ class MarkObservablesOp(Operation):
     registry: Optional[_Registry] = None
 
     def __str__(self):
-        return f"Set observables in {self.target}"
+        return f"Mark observable property of attributes in {self.target}"
 
     def apply(self, schema: ProtoSchema) -> MergeResult:
         assert self.registry is not None

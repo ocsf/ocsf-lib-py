@@ -10,7 +10,7 @@ from ocsf.repository import DefinitionFile, AnyDefinition, SpecialFiles, Diction
 @dataclass(eq=True, frozen=True)
 class DictionaryOp(Operation):
     def __str__(self):
-        return f"Dictionary {self.target} <- {self.prerequisite}"
+        return f"Complete attributes from dictionary {self.target} <- {self.prerequisite}"
 
     def apply(self, schema: ProtoSchema) -> MergeResult:
         target = schema[self.target]

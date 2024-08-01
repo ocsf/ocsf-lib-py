@@ -11,6 +11,9 @@ from .planner import Operation, Planner, Analysis
 class DateTimeOp(Operation):
     """Append the category and class names to the description of the category_name and class_name attributes."""
 
+    def __str__(self):
+        return f"Building datetime attributes in {self.target}"
+
     def apply(self, schema: ProtoSchema) -> MergeResult:
         data = schema[self.target].data
         assert isinstance(data, DefnWithAttrs)

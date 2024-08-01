@@ -52,7 +52,7 @@ class ExcludeProfileAttrsOp(Operation):
         return result
 
     def __str__(self):
-        return f"Exclude Profile {self.target} <- {self.prerequisite}"
+        return f"Exclude profile {self.target} <- {self.prerequisite}"
 
 
 @dataclass(eq=True, frozen=True)
@@ -80,7 +80,7 @@ class MarkProfileOp(Operation):
         return result
 
     def __str__(self):
-        return f"Mark Profile {self.target} <- {self.prerequisite}"
+        return f"Mark profile {self.target} <- {self.prerequisite}"
 
 
 def _find_profile(schema: ProtoSchema, profile_ref: str, relative_to: str) -> str | None:
