@@ -44,7 +44,7 @@ class ObjectTypeOp(Operation):
     types: Optional[_Types] = None
 
     def __str__(self):
-        return f"SetObjectType {self.target}"
+        return f"Set object type in {self.target}"
 
     def apply(self, schema: ProtoSchema) -> MergeResult:
         assert self.types is not None

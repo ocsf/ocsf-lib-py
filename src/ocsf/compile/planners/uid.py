@@ -138,7 +138,7 @@ class UidOp(Operation):
         )
 
     def __str__(self):
-        return f"UIDs for {self.target}"
+        return f"Building UID enums for {self.target}"
 
 
 class UidPlanner(Planner):

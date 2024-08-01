@@ -127,7 +127,7 @@ class MarkExtensionOp(Operation):
         return [("src_extension",)]
 
     def __str__(self):
-        return f"Extension creates {self.target} <- {self.prerequisite}"
+        return f"Mark extension {self.target} <- {self.prerequisite}"
 
 
 class MarkExtensionPlanner(ExtensionPlanner):
@@ -168,7 +168,7 @@ class PrefixKeyOp(Operation):
         return []
 
     def __str__(self):
-        return f"Prepend extension name to {self.target}"
+        return f"Prepend extension in name of {self.target}"
 
 
 class _ExtensionTypeMap:
@@ -231,6 +231,9 @@ class PrefixTypeOp(Operation):
     """This operation prefixes the type references of attributes with an extension name where appropriate."""
 
     map: Optional[_ExtensionTypeMap] = None
+
+    def __str__(self):
+        return f"Prefix types with extensions in {self.target}"
 
     def apply(self, schema: ProtoSchema) -> MergeResult:
         source = schema[self.target]
