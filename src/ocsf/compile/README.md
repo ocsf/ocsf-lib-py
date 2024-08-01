@@ -1,5 +1,7 @@
 # OCSF Compiler
 
+## About
+
 The `ocsf.compiler` package provides an alternative to "compiling" OCSF schemata
 with the OCSF server. It is meant to be transparent and approachable. We have
 preferred to make operations explicit and readable over efficiency.
@@ -36,3 +38,35 @@ definitions into an OCSF schema representation using the `ocsf.schema` package.
 
 Crucially, _no_ operations are completed during planning. This means planners
 err on the side of identifying operations that may later be noops.
+
+## Usage
+
+You can compile a schema from a repository and dump it as JSON to STDOUT with the following:
+
+```sh
+$ python -m ocsf.compile path/to/schema
+```
+
+You can also view the (many) operations performed to build the schema with the `debug` module:
+
+```sh
+$ python -m ocsf.compile.debug path/to/schema
+```
+
+The debug utility can also be used to list the properties changed by each operation and to narrow the list of operations down to just a specific file or a file and all of its prerequisite files. For more information, see its help:
+
+```
+usage: debug.py [-h] [--file FILE] [--prereqs] [--changes] [--no-changes] path
+
+Debugging tool for OCSF compilation
+
+positional arguments:
+  path          Path to the OCSF repository
+
+options:
+  -h, --help    show this help message and exit
+  --file FILE   Narrow output to operations involving <file>.
+  --prereqs     Include operations on prerequisites of <file>.
+  --changes     Show changed properties as well as operations.
+  --no-changes  Show only operations.
+```
