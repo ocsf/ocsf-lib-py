@@ -17,6 +17,7 @@ TODO:
 import logging
 import json
 
+from copy import copy
 from dataclasses import dataclass
 from urllib.request import urlopen
 from urllib.parse import urljoin
@@ -268,26 +269,33 @@ class OcsfApiClient:
             schema = self._fetch_schema(version)
         else:
             # Use the cached schema
-            schema = cached
+            schema = copy(cached)
 
         if schema.profiles is None and self._fetch_profiles:
             # Fetch the profiles for the schema.
+            logging.info(f"Fetching profiles for {schema.version}")
             schema.profiles = self.get_profiles(version)
 
         if schema.extensions is None and self._fetch_extensions:
             # Fetch the extensions for the schema.
+            logging.info(f"Fetching extensions for {schema.version}")
             schema.extensions = self.get_extensions(version)
 
         if schema.categories is None and self._fetch_categories:
             # Fetch the categories for the schema.
+            logging.info(f"Fetching categories for {schema.version}")
             schema.categories = self.get_categories(version)
 
         # Cache the schema if caching is enabled and any of the following are true:
         #   - The schema is not cached
         #   - Profiles were retrieved from the OCSF server
         #   - Extensions were retrieved from the OCSF server
+        logging.debug("Categories are cached: %s", cached is not None and schema.categories == cached.categories)
+        logging.debug("Profiles are cached: %s", cached is not None and schema.profiles == cached.profiles)
+        logging.debug("Extensions are cached: %s", cached is not None and schema.extensions == cached.extensions)
+
         if self._cache_dir is not None and (
-            cached is None or cached.profiles != schema.profiles or cached.extensions != schema.extensions
+            cached is None or cached.profiles != schema.profiles or cached.extensions != schema.extensions or cached.categories != schema.categories
         ):
             ver = Version.parse(schema.version)
             if ver.prerelease != "dev":
