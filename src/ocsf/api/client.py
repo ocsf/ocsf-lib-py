@@ -28,6 +28,7 @@ from dacite import from_dict
 
 from ocsf.schema import (
     OcsfSchema,
+    OcsfCategory,
     OcsfProfile,
     OcsfExtension,
     SchemaOptions,
@@ -97,6 +98,7 @@ class OcsfApiClient:
         schema_options: SchemaOptions = SchemaOptions(),
         fetch_profiles: bool = True,
         fetch_extensions: bool = True,
+        fetch_categories: bool = True,
     ):
         """Create a new client.
 
@@ -111,6 +113,7 @@ class OcsfApiClient:
         self._versions: Optional[SchemaVersions] = None
         self._fetch_profiles = fetch_profiles
         self._fetch_extensions = fetch_extensions
+        self._fetch_categories = fetch_categories
         self._schema_options = schema_options
 
         if cache_dir is not None and not isinstance(cache_dir, Path):
@@ -124,6 +127,7 @@ class OcsfApiClient:
             return urljoin(self._base_url, f"{version}/")
         else:
             return self._base_url
+
 
     def _fetch_schema(self, version: Optional[str] = None) -> OcsfSchema:
         """Fetch a schema from the server."""
@@ -180,6 +184,22 @@ class OcsfApiClient:
             extensions[name] = from_dict(OcsfExtension, data)
 
         return extensions
+
+    def get_categories(self, version: Optional[str] = None) -> dict[str, OcsfCategory]:
+        """Fetch the extensions for a specific schema version."""
+        url = urljoin(self._versioned_url(version), "api/categories")
+        response = cast(dict[str, dict[str, Any]], json.loads(urlopen(url).read()))
+
+        if "attributes" not in response:
+            raise ValueError("Invalid response from server")
+
+        cats = response["attributes"]
+        categories: dict[str, OcsfCategory] = {}
+
+        for name, data in cats.items():
+            categories[name] = from_dict(OcsfCategory, data)
+
+        return categories
 
     def get_versions(self) -> list[str]:
         """Return the available schema versions on the server."""
@@ -257,6 +277,10 @@ class OcsfApiClient:
         if schema.extensions is None and self._fetch_extensions:
             # Fetch the extensions for the schema.
             schema.extensions = self.get_extensions(version)
+
+        if schema.categories is None and self._fetch_categories:
+            # Fetch the categories for the schema.
+            schema.categories = self.get_categories(version)
 
         # Cache the schema if caching is enabled and any of the following are true:
         #   - The schema is not cached
