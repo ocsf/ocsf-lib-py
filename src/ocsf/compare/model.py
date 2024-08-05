@@ -214,3 +214,4 @@ class ChangedSchema(ChangedModel[OcsfSchema]):
     base_event: Difference[Optional[OcsfEvent]] = field(default_factory=NoChange)
     profiles: dict[str, Difference[OcsfProfile]] = field(default_factory=dict)
     extensions: dict[str, Difference[OcsfExtension]] = field(default_factory=dict)
+    categories: dict[str, Difference[OcsfCategory]] = field(default_factory=dict)
