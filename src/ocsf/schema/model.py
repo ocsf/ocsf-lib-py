@@ -125,6 +125,7 @@ class OcsfExtension(OcsfModel):
     description: Optional[str] = None
     deprecated: Optional[OcsfDeprecationInfo] = None
 
+
 @dataclass
 class OcsfCategory(OcsfModel):
     """A category definition."""
@@ -135,6 +136,7 @@ class OcsfCategory(OcsfModel):
     description: Optional[str] = None
     deprecated: Optional[OcsfDeprecationInfo] = None
     classes: Optional[dict[str, OcsfEvent]] = None
+
 
 @dataclass
 class OcsfSchema(OcsfModel):

@@ -1,4 +1,3 @@
-
 from copy import copy
 from dataclasses import dataclass
 
@@ -32,7 +31,7 @@ class MapEventToCategoryOp(Operation):
         # category that is not listed.
         if prereq.category not in target.attributes:
             return []
-        
+
         cat = target.attributes[prereq.category]
         assert isinstance(cat, CategoryDefn)
         if cat.classes is None:

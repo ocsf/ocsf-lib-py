@@ -196,6 +196,7 @@ class CategoryDefn(DefinitionPart):
     type: Optional[str] = None
     classes: Optional[dict[str, EventDefn]] = None
 
+
 @dataclass
 class CategoriesDefn(DefinitionData):
     """A list of categories."""

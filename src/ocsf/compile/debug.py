@@ -1,5 +1,3 @@
-
-
 from argparse import ArgumentParser
 from pprint import pprint
 
@@ -8,6 +6,7 @@ from ocsf.repository import read_repo
 from .compiler import Compilation
 from .planners.planner import Operation
 from .merge import MergeResult
+
 
 def find_prereqs(compilation: Compilation, file: str, found: set[str] | None = None) -> set[str]:
     if found is None:
@@ -19,6 +18,7 @@ def find_prereqs(compilation: Compilation, file: str, found: set[str] | None = N
                     found.add(op.prerequisite)
                     found |= find_prereqs(compilation, op.prerequisite, found)
     return found
+
 
 def operations(compilation: Compilation, file: str | None = None, prereqs: bool = True):
     if prereqs and file is not None:
@@ -34,6 +34,7 @@ def operations(compilation: Compilation, file: str | None = None, prereqs: bool 
     for op in order:
         if file is None or op.target in files:
             print(str(op))
+
 
 def mutations(compilation: Compilation, file: str | None = None, prereqs: bool = True):
     if prereqs and file is not None:
@@ -61,12 +62,17 @@ def mutations(compilation: Compilation, file: str | None = None, prereqs: bool =
             pprint(mutations[op])
             print()
 
+
 def main():
     parser = ArgumentParser(description="Debugging tool for OCSF compilation")
     parser.add_argument("path", help="Path to the OCSF repository")
     parser.add_argument("--file", default=None, help="Narrow output to operations involving <file>.")
-    parser.add_argument("--prereqs", action="store_true", default=False, help="Include operations on prerequisites of <file>.")
-    parser.add_argument("--changes", action="store_true", default=True, help="Show changed properties as well as operations.")
+    parser.add_argument(
+        "--prereqs", action="store_true", default=False, help="Include operations on prerequisites of <file>."
+    )
+    parser.add_argument(
+        "--changes", action="store_true", default=True, help="Show changed properties as well as operations."
+    )
     parser.add_argument("--no-changes", action="store_false", dest="changes", help="Show only operations.")
 
     args = parser.parse_args()
@@ -79,6 +85,7 @@ def main():
         mutations(compilation, file, prereqs)
     else:
         operations(compilation, file, prereqs)
+
 
 if __name__ == "__main__":
     main()

@@ -196,6 +196,7 @@ class ChangedExtension(ChangedModel[OcsfExtension]):
     description: Difference[Optional[str]] = field(default_factory=NoChange)
     deprecated: Difference[Optional[OcsfDeprecationInfo]] = field(default_factory=NoChange)
 
+
 @dataclass
 class ChangedCategory(ChangedModel[OcsfCategory]):
     name: Difference[str] = field(default_factory=NoChange)
@@ -204,6 +205,7 @@ class ChangedCategory(ChangedModel[OcsfCategory]):
     description: Difference[Optional[str]] = field(default_factory=NoChange)
     deprecated: Difference[Optional[OcsfDeprecationInfo]] = field(default_factory=NoChange)
     classes: dict[str, Difference[OcsfEvent]] = field(default_factory=dict)
+
 
 @dataclass
 class ChangedSchema(ChangedModel[OcsfSchema]):

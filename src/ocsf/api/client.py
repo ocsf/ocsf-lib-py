@@ -129,7 +129,6 @@ class OcsfApiClient:
         else:
             return self._base_url
 
-
     def _fetch_schema(self, version: Optional[str] = None) -> OcsfSchema:
         """Fetch a schema from the server."""
         url = urljoin(self._versioned_url(version), "export/schema")
@@ -295,7 +294,10 @@ class OcsfApiClient:
         logging.debug("Extensions are cached: %s", cached is not None and schema.extensions == cached.extensions)
 
         if self._cache_dir is not None and (
-            cached is None or cached.profiles != schema.profiles or cached.extensions != schema.extensions or cached.categories != schema.categories
+            cached is None
+            or cached.profiles != schema.profiles
+            or cached.extensions != schema.extensions
+            or cached.categories != schema.categories
         ):
             ver = Version.parse(schema.version)
             if ver.prerelease != "dev":
