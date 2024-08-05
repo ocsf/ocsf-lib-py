@@ -26,6 +26,7 @@ from ocsf.schema import (
     OcsfT,
     OcsfType,
     OcsfVersion,
+    OcsfCategory,
 )
 from .model import (
     ChangedAttr,
@@ -39,6 +40,7 @@ from .model import (
     ChangedSchema,
     ChangedType,
     ChangedVersion,
+    ChangedCategory,
 )
 
 
@@ -81,6 +83,8 @@ def create_diff(model: OcsfT) -> ChangedModel[OcsfT]:
             ret = ChangedProfile()
         case OcsfType():
             ret = ChangedType()
+        case OcsfCategory():
+            ret = ChangedCategory()
         case _:
             raise ValueError("Unrecognized OCSF model type")
 
