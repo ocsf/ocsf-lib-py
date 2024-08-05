@@ -5,6 +5,7 @@ from ocsf.util import get_schema
 from ocsf.compare import (
     compare,
     ChangedSchema,
+    ChangedCategory,
     ChangedProfile,
     ChangedExtension,
     Change,
@@ -54,6 +55,7 @@ def test_versus():
 
     assert isinstance(diff.version, NoChange)
 
+    # Compare events
     for name in sorted(diff.classes.keys()):
         event = diff.classes[name]
         print("Testing event:", name)
@@ -118,6 +120,7 @@ def test_versus():
                     else:
                         assert isinstance(change.enum, NoChange), f"Expected enum to be NoChange, got {change.enum}"
 
+    # Compare objects
     for name in sorted(diff.objects.keys()):
         obj = diff.objects[name]
         print("Testing object:", name)
@@ -173,6 +176,7 @@ def test_versus():
                 else:
                     assert isinstance(change.enum, NoChange), f"Expected enum to be NoChange, got {change.enum}"
 
+    # Compare profiles
     for name in sorted(diff.profiles.keys()):
         print("Testing profile:", name)
         profile = diff.profiles[name]
@@ -216,6 +220,7 @@ def test_versus():
                 ]:
                     check_prop(change, attr)
 
+    # Compare extensions
     for name in sorted(diff.extensions.keys()):
         extn = diff.extensions[name]
         print("Testing extension:", name)
@@ -234,3 +239,28 @@ def test_versus():
                 assert isinstance(extn.deprecated, ChangedDeprecationInfo)
                 check_prop(extn.deprecated, "message")
                 check_prop(extn.deprecated, "since")
+
+    # Compare categories
+    for name in sorted(diff.categories.keys()):
+        cat = diff.categories[name]
+        print("Testing category:", name)
+
+        if not isinstance(cat, NoChange):
+            assert not isinstance(cat, Removal), f"Category {name} was removed"
+            assert not isinstance(cat, Addition), f"Category {name} was added"
+            assert isinstance(cat, ChangedCategory)
+
+            check_prop(cat, "caption")
+            check_prop(cat, "description")
+            check_prop(cat, "name")
+            check_prop(cat, "uid")
+
+            if not isinstance(cat.deprecated, NoChange):
+                assert isinstance(cat.deprecated, ChangedDeprecationInfo)
+                check_prop(cat.deprecated, "message")
+                check_prop(cat.deprecated, "since")
+
+            for event in sorted(cat.classes):
+                change = cat.classes[event]
+                assert not isinstance(change, Removal), f"Event {event} was removed from category {name}"
+                assert not isinstance(change, Addition), f"Event {event} was added to category {name}"
