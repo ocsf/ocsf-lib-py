@@ -31,3 +31,6 @@ class CompilationOptions:
     """If True, set the observable field on attributes to the corresponding
     Observable Type ID where applicable.
     """
+
+    map_events_to_categories: bool = True
+    """If True, map events to categories in the categories.json file."""

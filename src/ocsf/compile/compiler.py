@@ -32,6 +32,7 @@ from .planners.object_type import ObjectTypePlanner
 from .planners.uid_names import UidSiblingPlanner
 from .planners.datetime import DateTimePlanner
 from .planners.observable import MarkObservablesPlanner, BuildObservableTypesPlanner
+from .planners.category_events import MapEventToCategoryPlanner
 from .merge import MergeResult
 
 FileOperations = dict[RepoPath, list[Operation]]
@@ -41,6 +42,7 @@ CompilationPlan = list[Operation]
 FileMutations = list[tuple[Operation, MergeResult]]
 CompilationMutations = dict[RepoPath, FileMutations]
 PlanningPhase = list[Planner]
+
 
 class Compilation:
     def __init__(self, repo: Repository, options: CompilationOptions = CompilationOptions()):
@@ -57,29 +59,22 @@ class Compilation:
             [
                 # Expand annotations in profiles and includes.
                 AnnotationPlanner(self._proto, options),
-
                 # Set the extension property of objects and events introduced to
                 # core by extensions.
                 MarkExtensionPlanner(self._proto, options),
-                
                 # Set the profile name of attributes to the profile that adds
                 # them to the object or event.
                 MarkProfilePlanner(self._proto, options),
-                
                 # Process $include directives.
                 IncludePlanner(self._proto, options),
-                
                 # Process extends directives.
                 ExtendsPlanner(self._proto, options),
-                
                 # Build the observable type_id enum based on values found across
                 # the schema.
                 BuildObservableTypesPlanner(self._proto, options),
-                
                 # Process definitions in extensions that modify records in core
                 # (reverse extends?).
                 ExtensionMergePlanner(self._proto, options),
-                
                 # Remove attributes from deactivated profiles.
                 ExcludeProfileAttrsPlanner(self._proto, options),
             ],
@@ -91,9 +86,8 @@ class Compilation:
             [
                 # Build the UID enumerations (type_id, class_uid, etc.).
                 UidPlanner(self._proto, options),
-                
                 # Complete missing attribute details using dictionary.json.
-                DictionaryPlanner(self._proto, options)
+                DictionaryPlanner(self._proto, options),
             ],
             [
                 # Prefix the names of objects and events added by extensions
@@ -101,25 +95,22 @@ class Compilation:
                 # references to them. Only performed if
                 # options.prefix_extensions is True.
                 ExtensionPrefixPlanner(self._proto, options),
-                
                 # For attributes with object types, change type to object and
                 # populate the object_type and object_name properties to match
                 # the output of the OCSF server. Only performed if
                 # options.set_object_types is True.
                 ObjectTypePlanner(self._proto, options),
-                
                 # Build the sibling _name fields for UID enumerations.
                 UidSiblingPlanner(self._proto, options),
-                
                 # Apply the datetime synthetic profile.
                 DateTimePlanner(self._proto, options),
-                
                 # Set the observable property of attributes to the corresponding
                 # observable.type_id value to make building the observables
                 # attribute of records easier. Only performed if
                 # options.set_observable is True.
                 MarkObservablesPlanner(self._proto, options),
-                
+                # Map events to categories in the categories.json file.
+                MapEventToCategoryPlanner(self._proto, options),
                 # Copy records that are ONLY defined in extensions to the core
                 # schema so that they are included by ProtoSchema.schema().
                 ExtensionCopyPlanner(self._proto, options),

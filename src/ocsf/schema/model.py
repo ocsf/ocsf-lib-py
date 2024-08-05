@@ -127,6 +127,18 @@ class OcsfExtension(OcsfModel):
 
 
 @dataclass
+class OcsfCategory(OcsfModel):
+    """A category definition."""
+
+    name: str
+    uid: int
+    caption: str
+    description: Optional[str] = None
+    deprecated: Optional[OcsfDeprecationInfo] = None
+    classes: Optional[dict[str, OcsfEvent]] = None
+
+
+@dataclass
 class OcsfSchema(OcsfModel):
     """An OCSF schema as represented in the OCSF server's export endpoint."""
 
@@ -137,6 +149,7 @@ class OcsfSchema(OcsfModel):
     base_event: Optional[OcsfEvent] = None
     profiles: Optional[dict[str, OcsfProfile]] = None
     extensions: Optional[dict[str, OcsfExtension]] = None
+    categories: Optional[dict[str, OcsfCategory]] = None
 
 
 # A type variable constrained to OCSF models.

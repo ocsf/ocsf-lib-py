@@ -1,6 +1,7 @@
 from .model import (
     OcsfAttr,
     OcsfDeprecationInfo,
+    OcsfCategory,
     OcsfElementType,
     OcsfEnumMember,
     OcsfEvent,
@@ -33,6 +34,7 @@ __all__ = [
     "OcsfElementType",
     "OcsfEnumMember",
     "OcsfEvent",
+    "OcsfCategory",
     "OcsfExtension",
     "OcsfModel",
     "OcsfObject",

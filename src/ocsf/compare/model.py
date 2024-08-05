@@ -54,6 +54,7 @@ from ocsf.schema import (
     OcsfEnumMember,
     OcsfEvent,
     OcsfExtension,
+    OcsfCategory,
     OcsfObject,
     OcsfProfile,
     OcsfSchema,
@@ -197,6 +198,16 @@ class ChangedExtension(ChangedModel[OcsfExtension]):
 
 
 @dataclass
+class ChangedCategory(ChangedModel[OcsfCategory]):
+    name: Difference[str] = field(default_factory=NoChange)
+    uid: Difference[int] = field(default_factory=NoChange)
+    caption: Difference[str] = field(default_factory=NoChange)
+    description: Difference[Optional[str]] = field(default_factory=NoChange)
+    deprecated: Difference[Optional[OcsfDeprecationInfo]] = field(default_factory=NoChange)
+    classes: dict[str, Difference[OcsfEvent]] = field(default_factory=dict)
+
+
+@dataclass
 class ChangedSchema(ChangedModel[OcsfSchema]):
     classes: dict[str, Difference[OcsfEvent]] = field(default_factory=dict)
     objects: dict[str, Difference[OcsfObject]] = field(default_factory=dict)
@@ -205,3 +216,4 @@ class ChangedSchema(ChangedModel[OcsfSchema]):
     base_event: Difference[Optional[OcsfEvent]] = field(default_factory=NoChange)
     profiles: dict[str, Difference[OcsfProfile]] = field(default_factory=dict)
     extensions: dict[str, Difference[OcsfExtension]] = field(default_factory=dict)
+    categories: dict[str, Difference[OcsfCategory]] = field(default_factory=dict)

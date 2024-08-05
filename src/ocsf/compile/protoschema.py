@@ -5,7 +5,7 @@ from dataclasses import asdict
 from pathlib import PurePath
 from typing import Any, cast, TypeVar
 
-from ocsf.schema import OcsfSchema, OcsfObject, OcsfEvent, OcsfType, OcsfProfile, OcsfExtension
+from ocsf.schema import OcsfSchema, OcsfObject, OcsfEvent, OcsfType, OcsfProfile, OcsfExtension, OcsfCategory
 from ocsf.repository import (
     Repository,
     ObjectDefn,
@@ -15,6 +15,8 @@ from ocsf.repository import (
     ExtensionDefn,
     ProfileDefn,
     DictionaryDefn,
+    CategoryDefn,
+    CategoriesDefn,
     AnyDefinition,
     VersionDefn,
     DefinitionFile,
@@ -210,6 +212,19 @@ class ProtoSchema:
                     assert isinstance(file.data, VersionDefn)
                     assert file.data.version is not None
                     schema.version = file.data.version
+
+                elif file.path == SpecialFiles.CATEGORIES:
+                    assert file.data is not None
+                    assert isinstance(file.data, CategoriesDefn)
+                    assert file.data.attributes is not None
+                    if schema.categories is None:
+                        schema.categories = {}
+                    for k, v in file.data.attributes.items():
+                        if isinstance(v, CategoryDefn):
+                            data = asdict(v)
+                            _remove_nones(data)
+                            data["name"] = k
+                            schema.categories[k] = dacite.from_dict(OcsfCategory, data)
 
             except Exception as e:
                 raise ValueError(f"Error processing {file.path}: {e}") from e

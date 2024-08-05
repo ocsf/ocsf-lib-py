@@ -17,6 +17,7 @@ TODO:
 import logging
 import json
 
+from copy import copy
 from dataclasses import dataclass
 from urllib.request import urlopen
 from urllib.parse import urljoin
@@ -28,6 +29,7 @@ from dacite import from_dict
 
 from ocsf.schema import (
     OcsfSchema,
+    OcsfCategory,
     OcsfProfile,
     OcsfExtension,
     SchemaOptions,
@@ -97,6 +99,7 @@ class OcsfApiClient:
         schema_options: SchemaOptions = SchemaOptions(),
         fetch_profiles: bool = True,
         fetch_extensions: bool = True,
+        fetch_categories: bool = True,
     ):
         """Create a new client.
 
@@ -111,6 +114,7 @@ class OcsfApiClient:
         self._versions: Optional[SchemaVersions] = None
         self._fetch_profiles = fetch_profiles
         self._fetch_extensions = fetch_extensions
+        self._fetch_categories = fetch_categories
         self._schema_options = schema_options
 
         if cache_dir is not None and not isinstance(cache_dir, Path):
@@ -181,6 +185,22 @@ class OcsfApiClient:
 
         return extensions
 
+    def get_categories(self, version: Optional[str] = None) -> dict[str, OcsfCategory]:
+        """Fetch the extensions for a specific schema version."""
+        url = urljoin(self._versioned_url(version), "api/categories")
+        response = cast(dict[str, dict[str, Any]], json.loads(urlopen(url).read()))
+
+        if "attributes" not in response:
+            raise ValueError("Invalid response from server")
+
+        cats = response["attributes"]
+        categories: dict[str, OcsfCategory] = {}
+
+        for name, data in cats.items():
+            categories[name] = from_dict(OcsfCategory, data)
+
+        return categories
+
     def get_versions(self) -> list[str]:
         """Return the available schema versions on the server."""
         if self._versions is None:
@@ -248,22 +268,36 @@ class OcsfApiClient:
             schema = self._fetch_schema(version)
         else:
             # Use the cached schema
-            schema = cached
+            schema = copy(cached)
 
         if schema.profiles is None and self._fetch_profiles:
             # Fetch the profiles for the schema.
+            logging.info(f"Fetching profiles for {schema.version}")
             schema.profiles = self.get_profiles(version)
 
         if schema.extensions is None and self._fetch_extensions:
             # Fetch the extensions for the schema.
+            logging.info(f"Fetching extensions for {schema.version}")
             schema.extensions = self.get_extensions(version)
+
+        if schema.categories is None and self._fetch_categories:
+            # Fetch the categories for the schema.
+            logging.info(f"Fetching categories for {schema.version}")
+            schema.categories = self.get_categories(version)
 
         # Cache the schema if caching is enabled and any of the following are true:
         #   - The schema is not cached
         #   - Profiles were retrieved from the OCSF server
         #   - Extensions were retrieved from the OCSF server
+        logging.debug("Categories are cached: %s", cached is not None and schema.categories == cached.categories)
+        logging.debug("Profiles are cached: %s", cached is not None and schema.profiles == cached.profiles)
+        logging.debug("Extensions are cached: %s", cached is not None and schema.extensions == cached.extensions)
+
         if self._cache_dir is not None and (
-            cached is None or cached.profiles != schema.profiles or cached.extensions != schema.extensions
+            cached is None
+            or cached.profiles != schema.profiles
+            or cached.extensions != schema.extensions
+            or cached.categories != schema.categories
         ):
             ver = Version.parse(schema.version)
             if ver.prerelease != "dev":
