@@ -194,7 +194,7 @@ class CategoryDefn(DefinitionPart):
     description: Optional[str] = None
     uid: Optional[int] = None
     type: Optional[str] = None
-
+    classes: Optional[dict[str, EventDefn]] = None
 
 @dataclass
 class CategoriesDefn(DefinitionData):
