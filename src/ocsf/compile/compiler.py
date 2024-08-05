@@ -32,6 +32,7 @@ from .planners.object_type import ObjectTypePlanner
 from .planners.uid_names import UidSiblingPlanner
 from .planners.datetime import DateTimePlanner
 from .planners.observable import MarkObservablesPlanner, BuildObservableTypesPlanner
+from .planners.category_events import MapEventToCategoryPlanner
 from .merge import MergeResult
 
 FileOperations = dict[RepoPath, list[Operation]]
@@ -119,6 +120,9 @@ class Compilation:
                 # attribute of records easier. Only performed if
                 # options.set_observable is True.
                 MarkObservablesPlanner(self._proto, options),
+
+                # Map events to categories in the categories.json file.
+                MapEventToCategoryPlanner(self._proto, options),
                 
                 # Copy records that are ONLY defined in extensions to the core
                 # schema so that they are included by ProtoSchema.schema().
