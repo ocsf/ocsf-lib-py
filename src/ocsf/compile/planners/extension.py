@@ -32,6 +32,21 @@ class ExtensionPlanner(Planner):
         super().__init__(schema, options)
 
 
+# TODO Make the merge/"patch extends" case more explicit
+#
+# Extensions may modify the core:
+#  - Dictionary
+#  - Objects
+#  - Events
+#
+# In the case of objects and events, records must _not_ have a `name` property
+# AND must have an `extends` property.
+#
+# While we're at it, events in extensions don't have to be organized in a
+# directory structure that matches the core.
+#
+
+
 @dataclass(eq=True, frozen=True)
 class ExtensionModifyOp(Operation):
     def apply(self, schema: ProtoSchema) -> MergeResult:
