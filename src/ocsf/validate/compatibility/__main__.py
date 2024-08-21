@@ -80,9 +80,9 @@ from .validator import CompatibilityValidator
 
 
 # Various modules use logging. Configure as you see fit.
-# import logging
-# import sys
-# logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+#import logging
+#import sys
+#logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 def main():
@@ -103,7 +103,7 @@ def main():
         help="Path or version number of the old schema. Defaults to 'latest-stable'.",
     )
     parser.add_argument("after", help="Path or version number of the new schema.")
-    parser.add_argument("--cache", help="Path to the schema cache directory.")
+    parser.add_argument("--cache", default="schema_cache", help="Path to the schema cache directory.")
     parser.add_argument("--config", help="Path to the config.toml file.")
     parser.add_argument("--info", nargs="*", action="append", help="A finding to assign an info severity to.")
     parser.add_argument("--warning", nargs="*", action="append", help="A finding to assign a warning severity to.")
