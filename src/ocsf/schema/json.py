@@ -57,13 +57,18 @@ def keys_to_names(d: dict[str, Any]) -> dict[str, Any]:
 
 def names_to_keys(d: dict[str, Any]) -> dict[str, Any]:
     """Transform Python-friendly names to OCSF property names in JSON."""
+    ops: list[tuple[str, str]] = []
+
     for k, v in d.items():
         if k in _NAME_TRANSFORMS:
-            d[_NAME_TRANSFORMS[k]] = d[k]
-            del d[k]
+            ops.append((k, _NAME_TRANSFORMS[k]))
 
-        if isinstance(k, dict):
-            d[k] = names_to_keys(v)
+        if isinstance(v, dict):
+            d[k] = names_to_keys(cast(dict[str, Any], v))
+
+    for op in ops:
+        d[op[1]] = d[op[0]]
+        del d[op[0]]
 
     return d
 

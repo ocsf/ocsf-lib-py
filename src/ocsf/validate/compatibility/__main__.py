@@ -80,9 +80,9 @@ from .validator import CompatibilityValidator
 
 
 # Various modules use logging. Configure as you see fit.
-#import logging
-#import sys
-#logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+# import logging
+# import sys
+# logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 def main():
