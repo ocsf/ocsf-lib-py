@@ -34,7 +34,6 @@ class SetCategoryOp(Operation):
 
         if category not in categories.attributes:
             raise ValueError(f"Unknown category: {category}")
-            return []
 
         target.data.category = category
         return [("category",)]

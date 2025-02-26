@@ -24,7 +24,11 @@ class UidSiblingOp(Operation):
             if data.name != "base_event" and "category_uid" in data.attributes and "category_name" in data.attributes:
                 assert isinstance(data.attributes["category_uid"], AttrDefn)
                 assert isinstance(data.attributes["category_uid"].enum, dict)
-                cat = list(data.attributes["category_uid"].enum.values())[0]
+                members = list(data.attributes["category_uid"].enum.values())
+                if len(members) == 0:
+                    return results
+                assert len(members) > 0, f"category_uid enum is empty in {self.target}"
+                cat = members[0]
 
                 assert isinstance(data.attributes["category_name"], AttrDefn)
                 assert data.attributes["category_name"].description is not None

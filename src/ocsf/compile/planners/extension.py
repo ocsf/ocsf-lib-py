@@ -176,7 +176,7 @@ class PrefixKeyOp(Operation):
             return []
 
         if source.data.src_extension is not None:
-            assert source.data.name is not None
+            assert source.data.name is not None, f"Missing name in {source.path}"
             source.data.key = "/".join((source.data.src_extension, source.data.name))
             return [("name",)]
 

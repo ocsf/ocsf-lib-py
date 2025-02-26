@@ -2,6 +2,7 @@ import dacite
 
 from copy import deepcopy
 from dataclasses import asdict
+from os.path import basename
 from pathlib import PurePath
 from typing import Any, cast, TypeVar
 
@@ -134,7 +135,9 @@ class ProtoSchema:
             if data.extends is not None:
                 parent = self.find_object(data.extends)
                 assert isinstance(parent.data, ObjectDefn)
-                if parent.data.extends is not None and recurse:
+                if parent.path == child:
+                    return None
+                elif parent.data.extends is not None and recurse:
                     return self.find_base(parent.path)
                 else:
                     return parent.path
@@ -143,7 +146,9 @@ class ProtoSchema:
             if data.extends is not None:
                 parent = self.find_event(data.extends)
                 assert isinstance(parent.data, EventDefn)
-                if parent.data.extends is not None and recurse:
+                if parent.path == child:
+                    return None
+                elif parent.data.extends is not None and recurse:
                     return self.find_base(parent.path)
                 else:
                     return parent.path
@@ -155,6 +160,7 @@ class ProtoSchema:
 
         for file in self._files.values():
             try:
+                # TODO why is extension() here and not in events?
                 if file.path.startswith(RepoPaths.OBJECTS.value) and not extension(file.path):
                     assert file.data is not None
                     assert isinstance(file.data, ObjectDefn)
@@ -186,7 +192,7 @@ class ProtoSchema:
                     assert key is not None
                     schema.profiles[key] = dacite.from_dict(OcsfProfile, data)
 
-                elif file.path.endswith(SpecialFiles.EXTENSION.value):
+                elif basename(file.path) == SpecialFiles.EXTENSION.value and extension(file.path):
                     assert file.data is not None
                     assert isinstance(file.data, ExtensionDefn)
                     assert file.data.name is not None
@@ -227,7 +233,7 @@ class ProtoSchema:
                             schema.categories[k] = dacite.from_dict(OcsfCategory, data)
 
             except Exception as e:
-                raise ValueError(f"Error processing {file.path}: {e}") from e
+                raise Exception(f"Error processing {file.path}: {e}") from e
 
         if "base" in schema.classes:
             schema.base_event = schema.classes["base"]
