@@ -15,6 +15,10 @@ options:
                         The short path name (e.g. 'windows') of an extension to be enabled (defaults to all)
   --ignore-extension [IGNORE_EXTENSION ...]
                         The short path name of an extension to be disabled
+  --extension-path [EXTENSION_PATH ...]
+                        Path to a single extension to be loaded. Only needed if the extension is outside of the repository.
+  --extensions-path [EXTENSIONS_PATH ...]
+                        Path to an extra directory of extensions to be loaded. Only needed if the extensions are outside of the repository.
   --prefix-extensions   Prefix object and event names and any attributes that reference them as their type with the extension name
   --no-prefix-extensions
                         Do not prefix object and event names and any attributes that reference them as their type with the extension name
@@ -43,7 +47,7 @@ Build the schema with only the windows extension enabled:
 
 from argparse import ArgumentParser
 
-from ocsf.repository import read_repo
+from ocsf.repository import read_repo, add_extension, add_extensions
 from ocsf.schema import to_json
 
 from .compiler import Compilation
@@ -61,6 +65,16 @@ def main():
         help="The short path name (e.g. 'windows') of an extension to be enabled (defaults to all)",
     )
     parser.add_argument("--ignore-extension", nargs="*", help="The short path name of an extension to be disabled")
+    parser.add_argument(
+        "--extension-path",
+        nargs="*",
+        help="Path to a single extension to be loaded. Only needed if the extension is outside of the repository.",
+    )
+    parser.add_argument(
+        "--extensions-path",
+        nargs="*",
+        help="Path to an extra directory of extensions to be loaded. Only needed if the extensions are outside of the repository.",
+    )
     parser.add_argument(
         "--prefix-extensions",
         default=True,
@@ -116,6 +130,15 @@ def main():
     options.set_observable = args.set_observable
 
     repo = read_repo(args.path, preserve_raw_data=False)
+
+    if args.extension_path:
+        for path in args.extension_path:
+            add_extension(path, repo, preserve_raw_data=False)
+
+    if args.extensions_path:
+        for path in args.extensions_path:
+            add_extensions(path, repo, preserve_raw_data=False)
+
     compiler = Compilation(repo, options)
 
     print(to_json(compiler.build()))

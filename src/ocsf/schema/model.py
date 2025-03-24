@@ -69,7 +69,7 @@ class OcsfAttr(OcsfModel):
     type_name: Optional[str] = None
 
     def is_object(self) -> bool:
-        return self.type[-2:] != "_t" 
+        return self.type[-2:] != "_t"
 
     def is_primitive(self) -> bool:
         return not self.is_object()

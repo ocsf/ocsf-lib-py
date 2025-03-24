@@ -42,7 +42,7 @@ from .helpers import (
     path_defn_t,
 )
 from .repository import Repository, DefinitionFile
-from .reader import read_repo
+from .reader import read_repo, add_extensions, add_extension
 
 __all__ = [
     "AnyDefinition",
@@ -78,6 +78,8 @@ __all__ = [
     "SpecialFiles",
     "TypeDefn",
     "VersionDefn",
+    "add_extension",
+    "add_extensions",
     "as_path",
     "category",
     "categoryless",
