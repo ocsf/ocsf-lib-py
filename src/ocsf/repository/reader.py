@@ -4,6 +4,8 @@ import json
 import dacite
 
 from pathlib import Path
+from typing import Callable
+
 from .repository import Repository, DefinitionFile
 from .definitions import AnyDefinition
 from .helpers import REPO_PATHS, RepoPaths, Pathlike, sanitize_path, path_defn_t
@@ -30,18 +32,28 @@ def _to_defn(path: Pathlike, raw_data: str, preserve_raw_data: bool) -> Definiti
     return defn
 
 
-def _walk_path(path: Path, repo: Repository, preserve_raw_data: bool) -> None:
+RenameFn = Callable[[Path], Path]
+
+
+def _walk_path(path: Path, repo: Repository, preserve_raw_data: bool, rename_fn: RenameFn | None = None) -> None:
     """Recursively walk a directory, reading schema definition files into a Repository."""
+
+    assert path.is_dir(), "Path must be a directory."
+
     for entry in path.iterdir():
         if entry.is_file() and entry.suffix == ".json":
             with open(entry) as file:
-                defn = _to_defn(entry, file.read(), preserve_raw_data)
-                repo[sanitize_path(entry)] = defn
+                if rename_fn is not None:
+                    dest = rename_fn(entry)
+                else:
+                    dest = entry
+                defn = _to_defn(dest, file.read(), preserve_raw_data)
+                repo[sanitize_path(dest)] = defn
 
         elif entry.is_dir() and (
             entry.name in REPO_PATHS or entry.parent.name in REPO_PATHS or RepoPaths.EVENTS.value in entry.parts
         ):
-            _walk_path(entry, repo, preserve_raw_data)
+            _walk_path(entry, repo, preserve_raw_data, rename_fn)
 
 
 def read_repo(path: Pathlike, preserve_raw_data: bool = False) -> Repository:
@@ -53,3 +65,27 @@ def read_repo(path: Pathlike, preserve_raw_data: bool = False) -> Repository:
     _walk_path(path, repo, preserve_raw_data)
 
     return repo
+
+
+def add_extensions(extn_path: Pathlike, repo: Repository, preserve_raw_data: bool = False) -> None:
+    """Add a custom extensions directory to a Repository."""
+    if not isinstance(extn_path, Path):
+        extn_path = Path(extn_path)
+
+    def _rename_extensions(path: Path) -> Path:
+        return RepoPaths.EXTENSIONS.value / path.relative_to(extn_path)
+
+    _walk_path(extn_path, repo, preserve_raw_data, rename_fn=_rename_extensions)
+
+
+def add_extension(extn_path: Pathlike, repo: Repository, preserve_raw_data: bool = False) -> None:
+    """Add a custom extension to a Repository by its path."""
+    if not isinstance(extn_path, Path):
+        extn_path = Path(extn_path)
+
+    extn_base = Path(RepoPaths.EXTENSIONS.value, extn_path.name)
+
+    def _rename_extension(path: Path) -> Path:
+        return extn_base / path.relative_to(extn_path)
+
+    _walk_path(extn_path, repo, preserve_raw_data, rename_fn=_rename_extension)
