@@ -1,8 +1,8 @@
 """A validation rule to identify changed attribute types."""
 
 from dataclasses import dataclass
-from ocsf.compare import ChangedSchema, Change, ChangedEvent, ChangedObject, ChangedAttr
-from ocsf.schema import OcsfElementType
+from ocsf.compare import Difference, ChangedSchema, Change, ChangedEvent, ChangedObject, ChangedAttr
+from ocsf.schema import OcsfElementType, OcsfAttr
 from ocsf.validate.framework import Rule, Finding, RuleMetadata
 
 
@@ -30,32 +30,37 @@ class NoChangedTypesRule(Rule[ChangedSchema]):
     def metadata(self):
         return RuleMetadata("No changed attribute types", description=_RULE_DESCRIPTION)
 
+    def _check(self, name: str, attr_name: str, attr: Difference[OcsfAttr]) -> None | ChangedTypeFinding:
+        if isinstance(attr, ChangedAttr):
+            if isinstance(attr.type, Change):
+                if attr.type.before == "integer_t" and attr.type.after == "long_t":
+                    return None
+
+                # `string_t` -> `file_path_t`
+                # PR#1326 reintroduced `file_path_t` and reassigned several
+                # `string_t` attributes to `file_path_t`. This is technically
+                # type narrowing and not backwards compatible, but it was
+                # decided to allow this change on the OCSF Tuesday call. In the
+                # future, we may want to limit this change to OCSF 1.4 -> 1.5.
+                if attr.type.before == "string_t" and attr.type.after == "file_path_t":
+                    return None
+
+                return ChangedTypeFinding(OcsfElementType.EVENT, name, attr_name, attr.type.before, attr.type.after)
+
     def validate(self, context: ChangedSchema) -> list[Finding]:
         findings: list[Finding] = []
         for name, event in context.classes.items():
             if isinstance(event, ChangedEvent):
                 for attr_name, attr in event.attributes.items():
-                    if isinstance(attr, ChangedAttr):
-                        if isinstance(attr.type, Change):
-                            if attr.type.before == "integer_t" and attr.type.after == "long_t":
-                                continue
-                            findings.append(
-                                ChangedTypeFinding(
-                                    OcsfElementType.EVENT, name, attr_name, attr.type.before, attr.type.after
-                                )
-                            )
+                    finding = self._check(name, attr_name, attr)
+                    if finding:
+                        findings.append(finding)
 
         for name, obj in context.objects.items():
             if isinstance(obj, ChangedObject):
                 for attr_name, attr in obj.attributes.items():
-                    if isinstance(attr, ChangedAttr):
-                        if isinstance(attr.type, Change):
-                            if attr.type.before == "integer_t" and attr.type.after == "long_t":
-                                continue
-                            findings.append(
-                                ChangedTypeFinding(
-                                    OcsfElementType.OBJECT, name, attr_name, attr.type.before, attr.type.after
-                                )
-                            )
+                    finding = self._check(name, attr_name, attr)
+                    if finding:
+                        findings.append(finding)
 
         return findings

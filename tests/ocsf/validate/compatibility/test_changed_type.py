@@ -59,3 +59,26 @@ def test_int_to_long():
     rule = NoChangedTypesRule()
     findings = rule.validate(s)
     assert len(findings) == 0
+
+
+def test_str_to_filepath():
+    """Test that changing from string_t to file_path_t is allowed."""
+    s = ChangedSchema(
+        objects={
+            "process_activity": ChangedObject(
+                attributes={
+                    "process_name": ChangedAttr(type=Change("string_t", "file_path_t")),
+                }
+            ),
+        },
+        classes={
+            "process_activity": ChangedEvent(
+                attributes={
+                    "process_name": ChangedAttr(type=Change("string_t", "file_path_t")),
+                }
+            ),
+        },
+    )
+    rule = NoChangedTypesRule()
+    findings = rule.validate(s)
+    assert len(findings) == 0
