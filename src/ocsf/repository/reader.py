@@ -22,7 +22,10 @@ def _to_defn(path: Pathlike, raw_data: str, preserve_raw_data: bool) -> Definiti
         defn.raw_data = raw_data
 
     data = json.loads(raw_data)
-    defn.data = dacite.from_dict(kind, keys_to_names(data))
+    try:
+        defn.data = dacite.from_dict(kind, keys_to_names(data))
+    except dacite.DaciteError as e:
+        raise Exception(f"Failed to parse {path}: {e}")
 
     return defn
 
