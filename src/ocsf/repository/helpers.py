@@ -29,7 +29,8 @@ class RepoPaths(StrEnum):
     PROFILES = "profiles"
 
 
-REPO_PATHS = tuple([e.value for e in RepoPaths])
+REPO_PATHS = ("objects", "events", "extensions", "includes", "profiles")
+"""Tuple containing strings of the values in the RepoPaths enum."""
 
 
 class SpecialFiles(StrEnum):
@@ -46,7 +47,8 @@ class SpecialFiles(StrEnum):
         return path in [e.value for e in SpecialFiles]
 
 
-SPECIAL_FILES = tuple([e.value for e in SpecialFiles])
+SPECIAL_FILES = ("dictionary.json", "categories.json", "version.json", "extension.json", "objects/observable.json")
+"""Tuple containing strings of the values in the SpecialFiles enum."""
 
 
 def sanitize_path(*path: Pathlike) -> RepoPath:

@@ -28,6 +28,7 @@ without breaking backwards compatibility."""
 
 _ALLOWED = ["category_uid", "activity_id", "class_uid"]
 
+
 class NoIncreasedRequirementsRule(Rule[ChangedSchema]):
     def metadata(self):
         return RuleMetadata("No increased requirements", description=_RULE_DESCRIPTION)
@@ -38,7 +39,11 @@ class NoIncreasedRequirementsRule(Rule[ChangedSchema]):
             if isinstance(event, ChangedEvent):
                 for attr_name, attr in event.attributes.items():
                     if isinstance(attr, ChangedAttr):
-                        if isinstance(attr.requirement, Change) and attr.requirement.after == "required" and attr_name not in _ALLOWED:
+                        if (
+                            isinstance(attr.requirement, Change)
+                            and attr.requirement.after == "required"
+                            and attr_name not in _ALLOWED
+                        ):
                             findings.append(
                                 IncreasedRequirementFinding(
                                     OcsfElementType.EVENT,

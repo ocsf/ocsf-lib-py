@@ -37,6 +37,7 @@ def test_increased_requirement_object():
     assert len(findings) == 1
     assert isinstance(findings[0], IncreasedRequirementFinding)
 
+
 def test_increased_requirement_event_bugfix():
     """Test that the rule allows 'bugfix' increases to requirements for key attributes defined on base_event."""
     s = ChangedSchema(
