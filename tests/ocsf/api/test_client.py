@@ -1,9 +1,8 @@
 import pytest
+from semver import Version
 
 from ocsf.api import OcsfApiClient, SchemaVersion, SchemaVersions
-from ocsf.schema.model import OcsfSchema, OcsfProfile, OcsfExtension
-
-from semver import Version
+from ocsf.schema.model import OcsfExtension, OcsfProfile, OcsfSchema
 
 
 def setup() -> OcsfApiClient:

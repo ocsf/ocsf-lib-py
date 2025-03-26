@@ -1,5 +1,5 @@
-from ocsf.validate.framework.validator import Severity, Finding, Rule, RuleMetadata, ValidationFindings
 from ocsf.validate.framework.summarize import count_severity, summarize_findings
+from ocsf.validate.framework.validator import Finding, Rule, RuleMetadata, Severity, ValidationFindings
 
 
 class FakeFinding(Finding):

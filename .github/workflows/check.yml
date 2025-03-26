@@ -18,6 +18,7 @@ jobs:
         run: |
           source $VENV
           poetry run ruff check
+          poetry run ruff format --check
 
   type-checking:
     runs-on: ubuntu-latest

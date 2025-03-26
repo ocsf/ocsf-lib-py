@@ -1,9 +1,10 @@
 """A validation rule to identify changed attribute types."""
 
 from dataclasses import dataclass
-from ocsf.compare import ChangedSchema, ChangedEvent, ChangedObject, Addition
+
+from ocsf.compare import Addition, ChangedEvent, ChangedObject, ChangedSchema
 from ocsf.schema import OcsfElementType
-from ocsf.validate.framework import Rule, Finding, RuleMetadata
+from ocsf.validate.framework import Finding, Rule, RuleMetadata
 from ocsf.validate.framework.validator import Severity
 
 

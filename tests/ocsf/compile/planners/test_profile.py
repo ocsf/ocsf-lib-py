@@ -1,5 +1,3 @@
-from ocsf.repository import Repository, DefinitionFile, ProfileDefn, AttrDefn, ExtensionDefn
-from ocsf.compile.protoschema import ProtoSchema
 from ocsf.compile.planners.profile import (
     # ExcludeProfileAttrsOp,
     # MarkProfileOp,
@@ -7,6 +5,8 @@ from ocsf.compile.planners.profile import (
     # ExcludeProfileAttrsPlanner,
     _find_profile,  # type: ignore
 )
+from ocsf.compile.protoschema import ProtoSchema
+from ocsf.repository import AttrDefn, DefinitionFile, ExtensionDefn, ProfileDefn, Repository
 
 
 def get_repo():

@@ -1,10 +1,10 @@
 import os
+
 import pytest
 
 from ocsf.api import OcsfApiClient
 from ocsf.schema import OcsfSchema
 from ocsf.util import get_schema
-
 
 LOCATION = os.path.dirname(os.path.abspath(__file__))
 CACHE = os.path.join(LOCATION, "../../..", "schema_cache")

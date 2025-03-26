@@ -23,7 +23,7 @@ class CompilationOptions:
 
     set_object_types: bool = True
     """If True, set type to 'object' and object_type to the object name for type
-    references to objects, as per the original OCSF server. If False, the type 
+    references to objects, as per the original OCSF server. If False, the type
     field will refer directly to the object type.
     """
 

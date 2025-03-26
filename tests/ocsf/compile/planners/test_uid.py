@@ -1,16 +1,16 @@
+from ocsf.compile.options import CompilationOptions
+from ocsf.compile.planners.uid import UidOp, UidPlanner
+from ocsf.compile.protoschema import ProtoSchema
 from ocsf.repository import (
-    Repository,
-    DefinitionFile,
     AttrDefn,
-    EventDefn,
     CategoriesDefn,
     CategoryDefn,
-    ExtensionDefn,
+    DefinitionFile,
     EnumMemberDefn,
+    EventDefn,
+    ExtensionDefn,
+    Repository,
 )
-from ocsf.compile.protoschema import ProtoSchema
-from ocsf.compile.options import CompilationOptions
-from ocsf.compile.planners.uid import UidPlanner, UidOp
 
 
 def get_repo():

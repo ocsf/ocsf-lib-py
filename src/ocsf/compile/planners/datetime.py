@@ -1,10 +1,11 @@
 from copy import deepcopy
 from dataclasses import dataclass
 
-from ocsf.repository import DefinitionFile, DefnWithAttrs, AttrDefn, AnyDefinition
+from ocsf.repository import AnyDefinition, AttrDefn, DefinitionFile, DefnWithAttrs
+
 from ..merge import MergeResult
 from ..protoschema import ProtoSchema
-from .planner import Operation, Planner, Analysis
+from .planner import Analysis, Operation, Planner
 
 
 @dataclass(eq=True, frozen=True)

@@ -1,21 +1,22 @@
 from dataclasses import dataclass
 from pathlib import PurePath
 
-from ..protoschema import ProtoSchema
-from ..merge import merge, MergeResult
-from .planner import Operation, Planner, Analysis
 from ocsf.repository import (
-    RepoPaths,
-    ObjectDefn,
+    AnyDefinition,
+    DefinitionFile,
     EventDefn,
+    ObjectDefn,
+    RepoPath,
+    RepoPaths,
+    Repository,
+    as_path,
     extension,
     extensionless,
-    DefinitionFile,
-    AnyDefinition,
-    Repository,
-    RepoPath,
-    as_path,
 )
+
+from ..merge import MergeResult, merge
+from ..protoschema import ProtoSchema
+from .planner import Analysis, Operation, Planner
 
 
 def _find_base(repo: Repository, subject: str, relative_to: RepoPath) -> RepoPath | None:

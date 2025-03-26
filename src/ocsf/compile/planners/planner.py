@@ -1,12 +1,12 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Optional
 
-from ocsf.repository import DefinitionFile, RepoPath, AnyDefinition
+from ocsf.repository import AnyDefinition, DefinitionFile, RepoPath
 
-from ..protoschema import ProtoSchema
-from ..options import CompilationOptions
 from ..merge import MergeResult
+from ..options import CompilationOptions
+from ..protoschema import ProtoSchema
 
 
 @dataclass(eq=True, frozen=True)
@@ -14,8 +14,8 @@ class Operation(ABC):
     target: RepoPath
     prerequisite: Optional[RepoPath] = None
 
-    def apply(self, schema: ProtoSchema) -> MergeResult:
-        raise NotImplementedError()
+    @abstractmethod
+    def apply(self, schema: ProtoSchema) -> MergeResult: ...
 
 
 Analysis = Operation | list[Operation] | None
@@ -26,5 +26,5 @@ class Planner(ABC):
         self._schema = schema
         self._options = options
 
-    def analyze(self, input: DefinitionFile[AnyDefinition]) -> Analysis:
-        raise NotImplementedError()
+    @abstractmethod
+    def analyze(self, input: DefinitionFile[AnyDefinition]) -> Analysis: ...

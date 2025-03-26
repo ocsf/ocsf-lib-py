@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional
 
+from ocsf.compile.merge import MergeOptions, _can_update  # type: ignore
 from ocsf.repository import DefinitionPart
-from ocsf.compile.merge import _can_update, MergeOptions  # type: ignore
 
 
 @dataclass

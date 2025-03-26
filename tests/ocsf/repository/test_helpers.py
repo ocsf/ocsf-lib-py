@@ -1,16 +1,16 @@
 import pytest
 
-from ocsf.repository.helpers import path_defn_t, RepoPaths, SpecialFiles, REPO_PATHS, SPECIAL_FILES
 from ocsf.repository.definitions import (
-    ObjectDefn,
-    EventDefn,
-    IncludeDefn,
-    ProfileDefn,
-    DictionaryDefn,
     CategoriesDefn,
-    VersionDefn,
+    DictionaryDefn,
+    EventDefn,
     ExtensionDefn,
+    IncludeDefn,
+    ObjectDefn,
+    ProfileDefn,
+    VersionDefn,
 )
+from ocsf.repository.helpers import REPO_PATHS, SPECIAL_FILES, RepoPaths, SpecialFiles, path_defn_t
 
 
 def test_path_defn_t():

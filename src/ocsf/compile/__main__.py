@@ -16,17 +16,22 @@ options:
   --ignore-extension [IGNORE_EXTENSION ...]
                         The short path name of an extension to be disabled
   --extension-path [EXTENSION_PATH ...]
-                        Path to a single extension to be loaded. Only needed if the extension is outside of the repository.
+                        Path to a single extension to be loaded. Only needed if the extension is outside of
+                        the repository.
   --extensions-path [EXTENSIONS_PATH ...]
-                        Path to an extra directory of extensions to be loaded. Only needed if the extensions are outside of the repository.
-  --prefix-extensions   Prefix object and event names and any attributes that reference them as their type with the extension name
+                        Path to an extra directory of extensions to be loaded. Only needed if the extensions
+                        are outside of the repository.
+  --prefix-extensions   Prefix object and event names and any attributes that reference them as their type with the
+                        extension name
   --no-prefix-extensions
-                        Do not prefix object and event names and any attributes that reference them as their type with the extension name
+                        Do not prefix object and event names and any attributes that reference them as their type
+                        with the extension name
   --set-object-types    Set type to 'object' and object_type to the object name for type references to objects
   --no-set-object-types
                         Do not set type to 'object' and object_type to the object name for type references to objects
   --set-observable      Set the observable field on attributes to the corresponding Observable Type ID where applicable
-  --no-set-observable   Do not set the observable field on attributes to the corresponding Observable Type ID where applicable
+  --no-set-observable   Do not set the observable field on attributes to the corresponding Observable Type ID
+                        where applicable
 ```
 
 Examples:
@@ -47,7 +52,7 @@ Build the schema with only the windows extension enabled:
 
 from argparse import ArgumentParser
 
-from ocsf.repository import read_repo, add_extension, add_extensions
+from ocsf.repository import add_extension, add_extensions, read_repo
 from ocsf.schema import to_json
 
 from .compiler import Compilation
@@ -73,19 +78,28 @@ def main():
     parser.add_argument(
         "--extensions-path",
         nargs="*",
-        help="Path to an extra directory of extensions to be loaded. Only needed if the extensions are outside of the repository.",
+        help=(
+            "Path to an extra directory of extensions to be loaded. Only needed if the extensions are "
+            "outside of the repository."
+        ),
     )
     parser.add_argument(
         "--prefix-extensions",
         default=True,
         action="store_true",
-        help="Prefix object and event names and any attributes that reference them as their type with the extension name",
+        help=(
+            "Prefix object and event names and any attributes that reference them as their type "
+            "with the extension name"
+        ),
     )
     parser.add_argument(
         "--no-prefix-extensions",
         dest="prefix_extensions",
         action="store_false",
-        help="Do not prefix object and event names and any attributes that reference them as their type with the extension name",
+        help=(
+            "Do not prefix object and event names and any attributes that reference them as their "
+            "type with the extension name"
+        ),
     )
     parser.add_argument(
         "--set-object-types",

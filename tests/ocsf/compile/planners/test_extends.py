@@ -1,8 +1,11 @@
-from ocsf.repository import Repository, DefinitionFile, AttrDefn, EventDefn
-from ocsf.compile.protoschema import ProtoSchema
 from ocsf.compile.options import CompilationOptions
-from ocsf.compile.planners.extends import ExtendsPlanner, ExtendsOp
-from ocsf.compile.planners.extends import _find_base  # type: ignore
+from ocsf.compile.planners.extends import (
+    ExtendsOp,
+    ExtendsPlanner,
+    _find_base,  # type: ignore
+)
+from ocsf.compile.protoschema import ProtoSchema
+from ocsf.repository import AttrDefn, DefinitionFile, EventDefn, Repository
 
 
 def get_repo():

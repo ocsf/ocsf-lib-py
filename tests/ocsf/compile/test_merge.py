@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional
 
+from ocsf.compile.merge import MergeOptions, merge
 from ocsf.repository import DefinitionPart
-from ocsf.compile.merge import merge, MergeOptions
 
 
 def test_options_init():

@@ -1,7 +1,19 @@
+from .json import (
+    SchemaOptions,
+    from_dict,
+    from_file,
+    from_json,
+    keys_to_names,
+    names_to_keys,
+    resolve_object_types,
+    to_dict,
+    to_file,
+    to_json,
+)
 from .model import (
     OcsfAttr,
-    OcsfDeprecationInfo,
     OcsfCategory,
+    OcsfDeprecationInfo,
     OcsfElementType,
     OcsfEnumMember,
     OcsfEvent,
@@ -14,18 +26,6 @@ from .model import (
     OcsfType,
     OcsfVersion,
     WithAttributes,
-)
-from .json import (
-    SchemaOptions,
-    from_dict,
-    from_file,
-    from_json,
-    keys_to_names,
-    names_to_keys,
-    resolve_object_types,
-    to_dict,
-    to_file,
-    to_json,
 )
 
 __all__ = [

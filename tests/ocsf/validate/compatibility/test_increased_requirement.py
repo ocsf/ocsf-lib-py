@@ -1,4 +1,4 @@
-from ocsf.compare import ChangedSchema, ChangedEvent, ChangedObject, ChangedAttr, Change
+from ocsf.compare import Change, ChangedAttr, ChangedEvent, ChangedObject, ChangedSchema
 from ocsf.validate.compatibility import IncreasedRequirementFinding, NoIncreasedRequirementsRule
 
 

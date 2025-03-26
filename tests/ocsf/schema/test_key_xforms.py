@@ -1,4 +1,4 @@
-from ocsf.schema.json import names_to_keys, keys_to_names
+from ocsf.schema.json import keys_to_names, names_to_keys
 
 
 def test_names_to_keys():

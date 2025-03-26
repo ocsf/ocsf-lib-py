@@ -8,21 +8,22 @@ Profiles are defined in separate files and add attributes to objects and events.
 from dataclasses import dataclass
 from pathlib import PurePath
 
-from ..protoschema import ProtoSchema
-from ..options import CompilationOptions
-from ..merge import MergeResult
-from .planner import Operation, Planner, Analysis
 from ocsf.repository import (
+    AnyDefinition,
+    AttrDefn,
     DefinitionFile,
-    ProfileDefn,
-    ObjectDefn,
     EventDefn,
+    ObjectDefn,
+    ProfileDefn,
+    RepoPaths,
     as_path,
     extension,
-    RepoPaths,
-    AttrDefn,
-    AnyDefinition,
 )
+
+from ..merge import MergeResult
+from ..options import CompilationOptions
+from ..protoschema import ProtoSchema
+from .planner import Analysis, Operation, Planner
 
 
 @dataclass(eq=True, frozen=True)

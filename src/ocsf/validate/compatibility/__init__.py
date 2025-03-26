@@ -1,13 +1,13 @@
-from .changed_type import NoChangedTypesRule, ChangedTypeFinding
-from .increased_requirement import NoIncreasedRequirementsRule, IncreasedRequirementFinding
+from .changed_type import ChangedTypeFinding, NoChangedTypesRule
+from .increased_requirement import IncreasedRequirementFinding, NoIncreasedRequirementsRule
 from .removed_records import (
     NoRemovedRecordsRule,
-    RemovedObjectFinding,
-    RemovedEventFinding,
     RemovedAttrFinding,
     RemovedEnumMemberFinding,
+    RemovedEventFinding,
+    RemovedObjectFinding,
 )
-from .removed_uids import NoChangedClassUidsRule, ChangedClassUidFinding
+from .removed_uids import ChangedClassUidFinding, NoChangedClassUidsRule
 from .validator import CompatibilityValidator
 
 __all__ = [

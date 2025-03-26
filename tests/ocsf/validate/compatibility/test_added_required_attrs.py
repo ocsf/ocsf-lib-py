@@ -1,7 +1,7 @@
+from ocsf.compare import Addition, ChangedEvent, ChangedObject, ChangedSchema
 from ocsf.schema import OcsfAttr, OcsfProfile
-from ocsf.compare import ChangedSchema, ChangedEvent, ChangedObject, Addition
-from ocsf.validate.framework import Severity
 from ocsf.validate.compatibility.added_required_attrs import AddedRequiredAttrFinding, NoAddedRequiredAttrsRule
+from ocsf.validate.framework import Severity
 
 
 def test_added_required_attr_event():

@@ -1,16 +1,16 @@
 """Read schema definition files from a directory into a Repository."""
 
 import json
-import dacite
-
 from pathlib import Path
 from typing import Callable
 
-from .repository import Repository, DefinitionFile
-from .definitions import AnyDefinition
-from .helpers import REPO_PATHS, RepoPaths, Pathlike, sanitize_path, path_defn_t
+import dacite
 
 from ocsf.schema import keys_to_names
+
+from .definitions import AnyDefinition
+from .helpers import REPO_PATHS, Pathlike, RepoPaths, path_defn_t, sanitize_path
+from .repository import DefinitionFile, Repository
 
 
 def _to_defn(path: Pathlike, raw_data: str, preserve_raw_data: bool) -> DefinitionFile[AnyDefinition]:
@@ -26,8 +26,8 @@ def _to_defn(path: Pathlike, raw_data: str, preserve_raw_data: bool) -> Definiti
     data = json.loads(raw_data)
     try:
         defn.data = dacite.from_dict(kind, keys_to_names(data))
-    except dacite.DaciteError as e:
-        raise Exception(f"Failed to parse {path}: {e}")
+    except dacite.DaciteError as de:
+        raise Exception(f"Failed to parse {path}") from de
 
     return defn
 

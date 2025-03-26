@@ -59,25 +59,25 @@ Validate a working copy of the OCSF schema repository against the latest stable 
 
 """
 
-import tomllib
 from argparse import ArgumentParser
 from typing import cast
 from urllib.error import URLError
+
+import tomllib
 from termcolor import colored
 
 from ocsf.api import OcsfApiClient
+from ocsf.compare import ChangedSchema, compare
 from ocsf.util import get_schema
 from ocsf.validate.framework import (
-    Severity,
     ColoringValidationFormatter,
+    Severity,
     ValidationFormatter,
-    validate_severities,
     count_severity,
+    validate_severities,
 )
-from ocsf.compare import compare, ChangedSchema
 
 from .validator import CompatibilityValidator
-
 
 # Various modules use logging. Configure as you see fit.
 # import logging

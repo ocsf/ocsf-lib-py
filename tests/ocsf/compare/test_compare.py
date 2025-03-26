@@ -1,15 +1,15 @@
 # pyright: reportPrivateUsage = false
-from typing import Optional, Any
+from typing import Any, Optional
 
 from ocsf.compare import (
-    compare,
-    compare_dict,
+    Addition,
     Change,
-    NoChange,
     ChangedAttr,
     ChangedEnumMember,
+    NoChange,
     Removal,
-    Addition,
+    compare,
+    compare_dict,
 )
 from ocsf.schema import OcsfAttr, OcsfEnumMember
 

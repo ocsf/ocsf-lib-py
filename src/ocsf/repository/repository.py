@@ -9,13 +9,13 @@ that path – and, optionally, the raw data from the file as a `str`.
 
 """
 
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import PurePath
-from typing import Optional, Iterable, TypeVar, Generic, cast
+from typing import Generic, Optional, TypeVar, cast
 
+from .definitions import AnyDefinition, DefinitionData, ProfileDefn
 from .helpers import RepoPath, RepoPaths, path_defn_t
-from .definitions import AnyDefinition, ProfileDefn, DefinitionData
-
 
 DefnT = TypeVar("DefnT", bound=DefinitionData)
 
@@ -115,6 +115,6 @@ class Repository:
         try:
             assert isinstance(val.data, kind)
             assert path_defn_t(path) == kind
-        except AssertionError:
-            raise TypeError(f"Expected {kind} at {path}, got {type(val.data)}")
+        except AssertionError as ae:
+            raise TypeError(f"Expected {kind} at {path}, got {type(val.data)}") from ae
         return cast(DefinitionFile[DefnT], val)

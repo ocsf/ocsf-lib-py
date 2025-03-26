@@ -9,11 +9,11 @@ caption or class_uid is added to the same set.
 """
 
 from dataclasses import dataclass
-from typing import Optional, Literal
+from typing import Literal, Optional
 
+from ocsf.compare import Addition, ChangedAttr, ChangedEvent, ChangedObject, ChangedSchema, Removal
 from ocsf.schema import OcsfElementType
-from ocsf.compare import ChangedSchema, Removal, Addition, ChangedEvent, ChangedObject, ChangedAttr
-from ocsf.validate.framework import Rule, Finding, RuleMetadata
+from ocsf.validate.framework import Finding, Rule, RuleMetadata
 
 
 def _path(
@@ -76,7 +76,9 @@ class RenamedRecordFinding(Finding):
         return self.root
 
     def message(self) -> str:
-        return f"{_path(self._root(), self.before, self.path)} ({self.caption}) appears to have been renamed to {_path(self._root(), self.after, self.path)}"
+        before_path = _path(self._root(), self.before, self.path)
+        after_path = _path(self._root(), self.after, self.path)
+        return f"{before_path} ({self.caption}) appears to have been renamed to {after_path}"
 
 
 class RenamedEventFinding(RenamedRecordFinding): ...

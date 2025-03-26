@@ -16,6 +16,7 @@ from typing import cast
 
 from ocsf.schema import (
     OcsfAttr,
+    OcsfCategory,
     OcsfDeprecationInfo,
     OcsfEnumMember,
     OcsfEvent,
@@ -26,10 +27,11 @@ from ocsf.schema import (
     OcsfT,
     OcsfType,
     OcsfVersion,
-    OcsfCategory,
 )
+
 from .model import (
     ChangedAttr,
+    ChangedCategory,
     ChangedDeprecationInfo,
     ChangedEnumMember,
     ChangedEvent,
@@ -40,7 +42,6 @@ from .model import (
     ChangedSchema,
     ChangedType,
     ChangedVersion,
-    ChangedCategory,
 )
 
 

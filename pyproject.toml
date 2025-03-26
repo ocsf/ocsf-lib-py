@@ -5,9 +5,7 @@ description = "Tools for working with the OCSF schema"
 authors = ["Jeremy Fisher <jeremy@query.ai>"]
 readme = "README.md"
 license = "Apache-2.0"
-packages = [
-    { include = "ocsf", from = "src" },
-]
+packages = [{ include = "ocsf", from = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -16,7 +14,7 @@ semver = "^3.0.2"
 termcolor = "^2.4.0"
 
 [tool.poetry.group.dev.dependencies]
-ruff = "^0.4.2"
+ruff = "^0.8.4"
 pyright = "^1.1.361"
 pytest = "^8.2.0"
 pytest-env = "^1.1.3"
@@ -34,7 +32,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.pyright]
 typeCheckingMode = "strict"
 strict = ["src/ocsf"]
-reportPrivateUsage = false # Unit testing private/protected things is A-OK in my book
+reportPrivateUsage = false  # Unit testing private/protected things is A-OK in my book
 
 [tool.pytest.ini_options]
 markers = [
@@ -48,3 +46,25 @@ COMPILE_SCHEMA_PATH = "tests/ocsf/compile/ocsf-schema.json"
 
 [tool.ruff]
 line-length = 120
+exclude = ["*.pyi", "*.pyc", "*.pyd"]
+
+[tool.ruff.lint]
+select = [
+    "E",  # Pycodestyle Errors
+    "W",  # Pycodestyle Warnings
+    "F",  # PyFlakes rules
+    "B",  # Bugbear rules (likely bugs & design problems in your code)
+    "N",  # Pep8 naming rules
+    "UP", # Prefer upgraded Python syntax
+    "I",  # Import sorting
+]
+
+# Allow unused variables named "_" or starting with "_"
+dummy-variable-rgx = "^_$"
+
+# Select the classes of fixable errors
+fixable = ["E", "F", "W", "N", "UP", "I"]
+
+unfixable = [
+    "B", # Avoid trying to fix flake8-bugbear (`B`) violations.
+]

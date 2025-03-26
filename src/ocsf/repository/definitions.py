@@ -1,14 +1,12 @@
 """A collection of data classes representing the metaschema of the OCSF."""
 
-from abc import ABC
 from dataclasses import dataclass
 from typing import Any, Optional, TypeVar
-
 
 IncludeTarget = str | list[str]
 
 
-class DefinitionPart(ABC): ...
+class DefinitionPart: ...
 
 
 class DefinitionData(DefinitionPart): ...

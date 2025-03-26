@@ -1,4 +1,4 @@
-from ocsf.validate.framework.validator import Severity, Finding, Rule, RuleMetadata, Validator
+from ocsf.validate.framework.validator import Finding, Rule, RuleMetadata, Severity, Validator
 
 
 class FakeContext: ...

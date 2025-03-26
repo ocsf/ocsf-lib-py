@@ -10,8 +10,8 @@ Example:
 
 from argparse import ArgumentParser
 
-from ocsf.util import get_schema
 from ocsf.schema import to_json
+from ocsf.util import get_schema
 
 
 def main():
@@ -19,7 +19,10 @@ def main():
 
     parser.add_argument(
         "schema",
-        help="Path to a schema JSON file, a version identifier (to retrieve from schema.ocsf.io), or a path to an OCSF repository.",
+        help=(
+            "Path to a schema JSON file, a version identifier (to retrieve from schema.ocsf.io), "
+            "or a path to an OCSF repository."
+        ),
     )
     args = parser.parse_args()
 
