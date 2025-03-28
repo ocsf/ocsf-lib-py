@@ -1,16 +1,19 @@
+from ocsf.compile import CompilationOptions
+from ocsf.compile.planners.observable import (
+    MarkObservablesOp,
+    MarkObservablesPlanner,
+    _Registry,  # type: ignore
+)
+from ocsf.compile.protoschema import ProtoSchema
 from ocsf.repository import (
-    Repository,
+    AttrDefn,
+    DefinitionFile,
     DictionaryDefn,
     DictionaryTypesDefn,
-    DefinitionFile,
     ObjectDefn,
+    Repository,
     TypeDefn,
-    AttrDefn,
 )
-from ocsf.compile import CompilationOptions
-from ocsf.compile.protoschema import ProtoSchema
-from ocsf.compile.planners.observable import MarkObservablesPlanner, MarkObservablesOp
-from ocsf.compile.planners.observable import _Registry  # type: ignore
 
 
 def get_ps():

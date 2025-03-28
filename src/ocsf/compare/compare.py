@@ -12,28 +12,28 @@ result is a dictionary will always have all of the keys from both dictionaries,
 with the values being the differences of the corresponding keys.
 """
 
+from types import NoneType, UnionType
 from typing import (
-    TypeVar,
-    TypeGuard,
-    Union,
-    get_args,
-    get_type_hints,
-    get_origin,
     Any,
+    TypeGuard,
+    TypeVar,
+    Union,
     cast,
+    get_args,
+    get_origin,
+    get_type_hints,
 )
-from types import UnionType, NoneType
 
 from ocsf.schema import OcsfModel
-from .model import (
-    Difference,
-    Addition,
-    Removal,
-    Change,
-    NoChange,
-)
-from .factory import create_diff
 
+from .factory import create_diff
+from .model import (
+    Addition,
+    Change,
+    Difference,
+    NoChange,
+    Removal,
+)
 
 T = TypeVar("T")
 K = TypeVar("K")
@@ -141,7 +141,7 @@ def compare(old_val: T, new_val: T) -> Difference[T]:
     Returns:
         A suitable Difference object representing the comparison of the two values.
     """
-    if isinstance(old_val, OcsfModel) and type(old_val) == type(new_val):
+    if isinstance(old_val, OcsfModel) and type(old_val) is type(new_val):
         ret = create_diff(old_val)
 
         for attr, value in get_type_hints(old_val).items():

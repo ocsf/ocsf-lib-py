@@ -4,15 +4,15 @@ from enum import StrEnum
 from pathlib import PurePath
 
 from .definitions import (
-    ObjectDefn,
-    EventDefn,
-    IncludeDefn,
-    ProfileDefn,
-    DictionaryDefn,
-    CategoriesDefn,
-    VersionDefn,
-    ExtensionDefn,
     AnyDefinition,
+    CategoriesDefn,
+    DictionaryDefn,
+    EventDefn,
+    ExtensionDefn,
+    IncludeDefn,
+    ObjectDefn,
+    ProfileDefn,
+    VersionDefn,
 )
 
 Pathlike = PurePath | str

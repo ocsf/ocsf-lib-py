@@ -1,9 +1,10 @@
 from dataclasses import dataclass
 
-from ocsf.repository import DefinitionFile, EventDefn, AttrDefn, AnyDefinition
+from ocsf.repository import AnyDefinition, AttrDefn, DefinitionFile, EventDefn
+
 from ..merge import MergeResult
 from ..protoschema import ProtoSchema
-from .planner import Operation, Planner, Analysis
+from .planner import Analysis, Operation, Planner
 
 # prepend category_name and class_name caption
 

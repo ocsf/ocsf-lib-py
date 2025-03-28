@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from ..protoschema import ProtoSchema
+from ocsf.repository import AnyDefinition, AttrDefn, DefinitionFile, DefnWithAttrs, EventDefn, ObjectDefn
+
 from ..merge import MergeResult
 from ..options import CompilationOptions
-
-from .planner import Operation, Planner, Analysis
-from ocsf.repository import DefinitionFile, EventDefn, ObjectDefn, AttrDefn, DefnWithAttrs, AnyDefinition
+from ..protoschema import ProtoSchema
+from .planner import Analysis, Operation, Planner
 
 
 class _Types:

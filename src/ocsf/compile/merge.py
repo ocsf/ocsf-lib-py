@@ -1,6 +1,6 @@
 from copy import deepcopy
 from dataclasses import dataclass
-from typing import get_type_hints, cast, Optional, Any
+from typing import Any, Optional, cast, get_type_hints
 
 from ocsf.repository.definitions import DefinitionPart
 
@@ -200,7 +200,8 @@ def merge(
                 and options.merge_lists
             ):
                 simple = False
-                # TODO check to see if these can be cast to list[str] - are there any other types of lists in the JSON definitions?
+                # TODO check to see if these can be cast to list[str] - are there any other types of lists in
+                # the JSON definitions?
                 left_value = cast(list[Any], left_value)
                 right_value = cast(list[Any], right_value)
                 setattr(left, attr, list(set(left_value + right_value)))

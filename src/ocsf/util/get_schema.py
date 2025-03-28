@@ -1,15 +1,16 @@
 import os
 from typing import Optional
+
 from ocsf.api import OcsfApiClient
-from ocsf.schema import OcsfSchema, from_file
-from ocsf.repository import read_repo
 from ocsf.compile import Compilation, CompilationOptions
+from ocsf.repository import read_repo
+from ocsf.schema import OcsfSchema, from_file
 
 
 def get_schema(
-    versionOrFile: Optional[str] = None,
+    version_or_file: Optional[str] = None,
     client: Optional[OcsfApiClient] = None,
-    compile_options: CompilationOptions = CompilationOptions(),
+    compile_options: CompilationOptions | None = None,
 ) -> OcsfSchema:
     """Fetch a schema from a filename or version.
 
@@ -22,7 +23,7 @@ def get_schema(
         ```
 
     Args:
-        versionOrFile: The name of an OCSF schema file or a valid semantic version number.
+        version_or_file: The name of an OCSF schema file or a valid semantic version number.
 
     Returns:
         The requested OcsfSchema.
@@ -31,16 +32,17 @@ def get_schema(
         ValueError: If the version requested is not found on the server or
             if the requested version is invalid.
     """
-    if versionOrFile is not None:
-        if os.path.isdir(versionOrFile):
-            repo = read_repo(versionOrFile)
-            compilation = Compilation(repo, options=compile_options)
+    _compile_options = CompilationOptions() if compile_options is None else compile_options
+    if version_or_file is not None:
+        if os.path.isdir(version_or_file):
+            repo = read_repo(version_or_file)
+            compilation = Compilation(repo, options=_compile_options)
             return compilation.build()
 
-        elif os.path.isfile(versionOrFile):
-            return from_file(versionOrFile)
+        elif os.path.isfile(version_or_file):
+            return from_file(version_or_file)
 
     if client is None:
         client = OcsfApiClient()
 
-    return client.get_schema(versionOrFile)
+    return client.get_schema(version_or_file)

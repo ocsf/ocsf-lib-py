@@ -1,6 +1,6 @@
 import pytest
 
-from ocsf.repository.definitions import DictionaryDefn, ProfileDefn, ObjectDefn, EventDefn, ExtensionDefn
+from ocsf.repository.definitions import DictionaryDefn, EventDefn, ExtensionDefn, ObjectDefn, ProfileDefn
 from ocsf.repository.repository import DefinitionFile, Repository
 
 

@@ -1,16 +1,16 @@
+from ocsf.compile.options import CompilationOptions
+from ocsf.compile.planners.dictionary import DictionaryOp, DictionaryPlanner
+from ocsf.compile.protoschema import ProtoSchema
 from ocsf.repository import (
-    Repository,
+    AttrDefn,
+    CategoriesDefn,
     DefinitionFile,
     DictionaryDefn,
-    ObjectDefn,
-    AttrDefn,
-    ProfileDefn,
     IncludeDefn,
-    CategoriesDefn,
+    ObjectDefn,
+    ProfileDefn,
+    Repository,
 )
-from ocsf.compile.protoschema import ProtoSchema
-from ocsf.compile.options import CompilationOptions
-from ocsf.compile.planners.dictionary import DictionaryPlanner, DictionaryOp
 
 
 def get_repo():

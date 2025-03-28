@@ -1,33 +1,32 @@
-import dacite
-
 from copy import deepcopy
 from dataclasses import asdict
 from os.path import basename
 from pathlib import PurePath
-from typing import Any, cast, TypeVar
+from typing import Any, TypeVar, cast
 
-from ocsf.schema import OcsfSchema, OcsfObject, OcsfEvent, OcsfType, OcsfProfile, OcsfExtension, OcsfCategory
+import dacite
+
 from ocsf.repository import (
-    Repository,
-    ObjectDefn,
-    EventDefn,
-    SpecialFiles,
-    TypeDefn,
-    ExtensionDefn,
-    ProfileDefn,
-    DictionaryDefn,
-    CategoryDefn,
-    CategoriesDefn,
     AnyDefinition,
-    VersionDefn,
-    DefinitionFile,
+    CategoriesDefn,
+    CategoryDefn,
     DefinitionData,
+    DefinitionFile,
+    DictionaryDefn,
+    EventDefn,
+    ExtensionDefn,
+    ObjectDefn,
+    ProfileDefn,
     RepoPath,
     RepoPaths,
+    Repository,
+    SpecialFiles,
+    TypeDefn,
+    VersionDefn,
     as_path,
     extension,
 )
-
+from ocsf.schema import OcsfCategory, OcsfEvent, OcsfExtension, OcsfObject, OcsfProfile, OcsfSchema, OcsfType
 
 DefnT = TypeVar("DefnT", bound=DefinitionData)
 

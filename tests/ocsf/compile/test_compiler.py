@@ -1,14 +1,22 @@
 import os
 
-from ocsf.repository import read_repo, Repository
-from ocsf.compile.planners.planner import Operation
 from ocsf.compile.compiler import Compilation, CompilationOperations
+from ocsf.compile.merge import MergeResult
+from ocsf.compile.planners.planner import Operation
+from ocsf.compile.protoschema import ProtoSchema
+from ocsf.repository import Repository, read_repo
 
 
-class OpTest1(Operation): ...
+class OpTest1(Operation):
+    def apply(self, schema: ProtoSchema) -> MergeResult:
+        result: MergeResult = []
+        return result
 
 
-class OpTest2(Operation): ...
+class OpTest2(Operation):
+    def apply(self, schema: ProtoSchema) -> MergeResult:
+        result: MergeResult = []
+        return result
 
 
 def get_compiler():

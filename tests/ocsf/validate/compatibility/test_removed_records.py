@@ -1,15 +1,15 @@
-from ocsf.schema import OcsfEvent, OcsfObject, OcsfAttr, OcsfEnumMember
-from ocsf.compare import ChangedSchema, Addition, Removal, ChangedEvent, ChangedObject, ChangedAttr
+from ocsf.compare import Addition, ChangedAttr, ChangedEvent, ChangedObject, ChangedSchema, Removal
+from ocsf.schema import OcsfAttr, OcsfEnumMember, OcsfEvent, OcsfObject
 from ocsf.validate.compatibility.removed_records import (
     NoRemovedRecordsRule,
-    RemovedObjectFinding,
-    RemovedEventFinding,
     RemovedAttrFinding,
     RemovedEnumMemberFinding,
-    RenamedEventFinding,
-    RenamedObjectFinding,
+    RemovedEventFinding,
+    RemovedObjectFinding,
     RenamedAttrFinding,
     RenamedEnumMemberFinding,
+    RenamedEventFinding,
+    RenamedObjectFinding,
 )
 
 

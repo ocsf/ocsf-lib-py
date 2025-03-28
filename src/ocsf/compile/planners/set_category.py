@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 from pathlib import PurePath
 
-from .planner import Operation, Planner, Analysis
+from ocsf.repository import AnyDefinition, CategoriesDefn, DefinitionFile, EventDefn, RepoPaths, SpecialFiles
+
 from ..merge import MergeResult
 from ..protoschema import ProtoSchema
-
-from ocsf.repository import DefinitionFile, EventDefn, SpecialFiles, RepoPaths, CategoriesDefn, AnyDefinition
+from .planner import Analysis, Operation, Planner
 
 
 @dataclass(eq=True, frozen=True)

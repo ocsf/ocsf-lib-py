@@ -1,12 +1,11 @@
 """This module contains the dataclasses that represent the OCSF schema."""
 
-from abc import ABC
 from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Any, Optional, TypeVar
 
 
-class OcsfModel(ABC): ...
+class OcsfModel: ...
 
 
 # TODO: is this used?

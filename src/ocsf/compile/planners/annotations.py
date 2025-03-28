@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
-from .planner import Operation, Planner, Analysis
-from ..merge import merge, MergeResult, MergeOptions
-from ..protoschema import ProtoSchema
+from ocsf.repository import AnyDefinition, AttrDefn, DefinitionFile, DefnWithAnnotations
 
-from ocsf.repository import DefinitionFile, DefnWithAnnotations, AttrDefn, AnyDefinition
+from ..merge import MergeOptions, MergeResult, merge
+from ..protoschema import ProtoSchema
+from .planner import Analysis, Operation, Planner
 
 
 @dataclass(eq=True, frozen=True)

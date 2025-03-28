@@ -1,21 +1,22 @@
 from dataclasses import dataclass
 
-from ..protoschema import ProtoSchema
-from ..merge import MergeResult, merge
-from .planner import Operation, Planner, Analysis
 from ocsf.repository import (
-    DefinitionFile,
-    CategoryDefn,
-    EnumMemberDefn,
+    AnyDefinition,
+    AttrDefn,
     CategoriesDefn,
+    CategoryDefn,
+    DefinitionFile,
+    EnumMemberDefn,
     EventDefn,
+    ExtensionDefn,
+    RepoPaths,
     SpecialFiles,
     as_path,
-    RepoPaths,
-    ExtensionDefn,
-    AttrDefn,
-    AnyDefinition,
 )
+
+from ..merge import MergeResult, merge
+from ..protoschema import ProtoSchema
+from .planner import Analysis, Operation, Planner
 
 
 def _find_extn_path(schema: ProtoSchema, target: str) -> str | None:

@@ -2,23 +2,24 @@ from copy import deepcopy
 from dataclasses import dataclass
 from typing import Optional
 
-from ..protoschema import ProtoSchema
-from ..options import CompilationOptions
-from ..merge import merge, MergeResult
-from .planner import Operation, Planner, Analysis
 from ocsf.repository import (
-    DefinitionFile,
-    extension,
-    extensionless,
     AnyDefinition,
-    as_path,
+    AttrDefn,
+    DefinitionFile,
+    DefnWithAttrs,
     DefnWithExtn,
+    ExtensionDefn,
     RepoPaths,
     SpecialFiles,
-    ExtensionDefn,
-    DefnWithAttrs,
-    AttrDefn,
+    as_path,
+    extension,
+    extensionless,
 )
+
+from ..merge import MergeResult, merge
+from ..options import CompilationOptions
+from ..protoschema import ProtoSchema
+from .planner import Analysis, Operation, Planner
 
 
 class ExtensionPlanner(Planner):

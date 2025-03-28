@@ -1,5 +1,4 @@
 from .compare import compare, compare_dict
-
 from .model import (
     Addition,
     Change,

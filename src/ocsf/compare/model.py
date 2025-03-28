@@ -44,17 +44,17 @@ the appropriate dict and NoChange. See ChangedAttr.enum for an example.
 
 """
 
-from dataclasses import dataclass, field
-from typing import Any, TypeVar, Generic, Optional
 from abc import ABC
+from dataclasses import dataclass, field
+from typing import Any, Generic, Optional, TypeVar
 
 from ocsf.schema import (
     OcsfAttr,
+    OcsfCategory,
     OcsfDeprecationInfo,
     OcsfEnumMember,
     OcsfEvent,
     OcsfExtension,
-    OcsfCategory,
     OcsfObject,
     OcsfProfile,
     OcsfSchema,
@@ -62,7 +62,6 @@ from ocsf.schema import (
     OcsfType,
     OcsfVersion,
 )
-
 
 T = TypeVar("T", covariant=True)
 

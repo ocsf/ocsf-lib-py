@@ -1,4 +1,4 @@
-from .validator import Severity, ValidationFindings, Context
+from .validator import Context, Severity, ValidationFindings
 
 
 def count_severity(findings: ValidationFindings[Context], severity: Severity) -> int:

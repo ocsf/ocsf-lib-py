@@ -4,13 +4,14 @@ This modules prints a ChangedModel to stdout in a format similar to diff with
 color coding.
 """
 
+from textwrap import shorten
 from typing import Any, cast
 
-from textwrap import shorten
 from termcolor import colored
 
 from ocsf.schema import OcsfT
-from .model import ChangedModel, Difference, SimpleDifference, Addition, Change, Removal
+
+from .model import Addition, Change, ChangedModel, Difference, Removal, SimpleDifference
 
 
 def _display(value: Any, line_length: int = 80) -> str:

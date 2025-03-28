@@ -21,11 +21,10 @@ merged.
 """
 
 import logging
-
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import StrEnum
-from typing import TypeVar, Generic, Optional
+from typing import Generic, Optional, TypeVar
 
 LOG = logging.getLogger(__name__)
 

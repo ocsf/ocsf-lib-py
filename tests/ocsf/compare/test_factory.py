@@ -1,24 +1,24 @@
-from ocsf.schema import (
-    OcsfSchema,
-    OcsfEvent,
-    OcsfObject,
-    OcsfAttr,
-    OcsfDeprecationInfo,
-    OcsfType,
-    OcsfVersion,
-    OcsfEnumMember,
-)
+from ocsf.compare.factory import create_diff
 from ocsf.compare.model import (
-    ChangedSchema,
-    ChangedEvent,
-    ChangedObject,
     ChangedAttr,
     ChangedDeprecationInfo,
+    ChangedEnumMember,
+    ChangedEvent,
+    ChangedObject,
+    ChangedSchema,
     ChangedType,
     ChangedVersion,
-    ChangedEnumMember,
 )
-from ocsf.compare.factory import create_diff
+from ocsf.schema import (
+    OcsfAttr,
+    OcsfDeprecationInfo,
+    OcsfEnumMember,
+    OcsfEvent,
+    OcsfObject,
+    OcsfSchema,
+    OcsfType,
+    OcsfVersion,
+)
 
 
 def test_create_diff():

@@ -4,8 +4,8 @@ from pprint import pprint
 from ocsf.repository import read_repo
 
 from .compiler import Compilation
-from .planners.planner import Operation
 from .merge import MergeResult
+from .planners.planner import Operation
 
 
 def find_prereqs(compilation: Compilation, file: str, found: set[str] | None = None) -> set[str]:

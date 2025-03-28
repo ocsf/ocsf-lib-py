@@ -22,24 +22,24 @@ across objects and events.
 from dataclasses import dataclass
 from typing import Optional
 
-from ..protoschema import ProtoSchema
-from ..merge import MergeResult
-from ..options import CompilationOptions
-
-from .planner import Operation, Planner, Analysis
 from ocsf.repository import (
-    DefinitionFile,
-    AttrDefn,
-    ObjectDefn,
-    EventDefn,
-    TypeDefn,
-    EnumMemberDefn,
-    DefnWithAttrs,
     AnyDefinition,
-    SpecialFiles,
+    AttrDefn,
+    DefinitionFile,
+    DefnWithAttrs,
     DictionaryDefn,
     DictionaryTypesDefn,
+    EnumMemberDefn,
+    EventDefn,
+    ObjectDefn,
+    SpecialFiles,
+    TypeDefn,
 )
+
+from ..merge import MergeResult
+from ..options import CompilationOptions
+from ..protoschema import ProtoSchema
+from .planner import Analysis, Operation, Planner
 
 # TODO build observable object's type_id enum
 
@@ -203,7 +203,10 @@ class BuildObservableTypeOp(Operation):
                         if enum_id not in enum:  # Don't overwrite enum values defined in dictionary.json
                             enum[enum_id] = EnumMemberDefn(
                                 caption=f"{data.caption} {label}: {k}",
-                                description=f'Observable by {label}-Specific Attribute.<br>{label}-specific attribute "{k}" for the {data.caption} {label}.',
+                                description=(
+                                    f"Observable by {label}-Specific Attribute.<br>{label}-specific "
+                                    f'attribute "{k}" for the {data.caption} {label}.'
+                                ),
                             )
                             results.append(("attributes", "type_id", "enum", enum_id))
 

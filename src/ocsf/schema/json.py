@@ -9,10 +9,10 @@ schema = from_file("schema.json")
 """
 
 import json
-import dacite
-
 from dataclasses import asdict, dataclass
 from typing import Any, cast
+
+import dacite
 
 from .model import OcsfSchema, WithAttributes
 
@@ -92,19 +92,21 @@ def resolve_object_types(things: dict[str, WithAttributes] | OcsfSchema | WithAt
         resolve_object_types(thing)
 
 
-def from_dict(data: dict[str, Any], options: SchemaOptions = SchemaOptions()) -> OcsfSchema:
+def from_dict(data: dict[str, Any], options: SchemaOptions | None = None) -> OcsfSchema:
     """Parse an OCSF schema from a dictionary."""
+    _options = SchemaOptions() if options is None else options
     schema = dacite.from_dict(OcsfSchema, keys_to_names(data))
 
-    if options.resolve_object_types:
+    if _options.resolve_object_types:
         resolve_object_types(schema)
 
     return schema
 
 
-def from_json(data: str, options: SchemaOptions = SchemaOptions()) -> OcsfSchema:
+def from_json(data: str, options: SchemaOptions | None = None) -> OcsfSchema:
     """Parse an OCSF schema from a JSON string."""
-    return from_dict(json.loads(data), options)
+    _options = SchemaOptions() if options is None else options
+    return from_dict(json.loads(data), _options)
 
 
 def to_dict(schema: OcsfSchema) -> dict[str, Any]:
@@ -117,9 +119,9 @@ def to_json(schema: OcsfSchema) -> str:
     return json.dumps(to_dict(schema))
 
 
-def from_file(path: str, options: SchemaOptions = SchemaOptions()) -> OcsfSchema:
+def from_file(path: str, options: SchemaOptions | None = None) -> OcsfSchema:
     """Parse an OCSF schema from a JSON file."""
-    with open(path, "r") as f:
+    with open(path) as f:
         return from_json(f.read())
 
 

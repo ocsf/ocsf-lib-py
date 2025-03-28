@@ -10,14 +10,15 @@ Example:
 
 from argparse import ArgumentParser
 from typing import cast
+
 from termcolor import colored
 
-from ocsf.util import get_schema
 from ocsf.schema import OcsfSchema
+from ocsf.util import get_schema
 
-from .model import ChangedModel
 from .compare import compare
 from .formatter import format
+from .model import ChangedModel
 
 
 def main():

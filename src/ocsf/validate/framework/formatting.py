@@ -1,9 +1,11 @@
 from dataclasses import dataclass
 from textwrap import wrap
 from typing import Literal
+
 from termcolor import colored
-from .validator import Finding, ValidationFindings, Context, Severity
+
 from .summarize import summarize_findings
+from .validator import Context, Finding, Severity, ValidationFindings
 
 
 class ValidationFormatter:

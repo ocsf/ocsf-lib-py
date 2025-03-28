@@ -1,8 +1,9 @@
 """A validation rule to identify changed class UIDs."""
 
 from dataclasses import dataclass
-from ocsf.compare import ChangedSchema, NoChange, ChangedEvent, ChangedAttr, Removal, Addition
-from ocsf.validate.framework import Rule, Finding, RuleMetadata
+
+from ocsf.compare import Addition, ChangedAttr, ChangedEvent, ChangedSchema, NoChange, Removal
+from ocsf.validate.framework import Finding, Rule, RuleMetadata
 
 
 @dataclass

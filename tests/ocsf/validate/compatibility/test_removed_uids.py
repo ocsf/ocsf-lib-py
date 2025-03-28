@@ -1,5 +1,5 @@
+from ocsf.compare import Addition, ChangedAttr, ChangedEvent, ChangedSchema, Removal
 from ocsf.schema import OcsfEnumMember
-from ocsf.compare import ChangedSchema, ChangedEvent, ChangedAttr, Removal, Addition
 from ocsf.validate.compatibility import ChangedClassUidFinding, NoChangedClassUidsRule
 
 

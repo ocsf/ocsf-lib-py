@@ -14,32 +14,30 @@ TODO:
   API. This could be replaced with a more robust OpenAPI client.
 """
 
-import logging
 import json
-
+import logging
 from copy import copy
 from dataclasses import dataclass
-from urllib.request import urlopen
-from urllib.parse import urljoin
-from typing import Optional, Any, cast, ClassVar
-from semver import Version
 from pathlib import Path
+from typing import Any, ClassVar, Optional, cast
+from urllib.parse import urljoin
+from urllib.request import urlopen
 
 from dacite import from_dict
+from semver import Version
 
 from ocsf.schema import (
-    OcsfSchema,
     OcsfCategory,
-    OcsfProfile,
     OcsfExtension,
+    OcsfProfile,
+    OcsfSchema,
     SchemaOptions,
     WithAttributes,
-    from_json,
     from_file,
-    to_file,
+    from_json,
     resolve_object_types,
+    to_file,
 )
-
 
 LOG = logging.getLogger(__name__)
 
@@ -96,7 +94,7 @@ class OcsfApiClient:
         self,
         base_url: Optional[str] = None,
         cache_dir: Optional[str | Path] = None,
-        schema_options: SchemaOptions = SchemaOptions(),
+        schema_options: SchemaOptions | None = None,
         fetch_profiles: bool = True,
         fetch_extensions: bool = True,
         fetch_categories: bool = True,
@@ -115,7 +113,11 @@ class OcsfApiClient:
         self._fetch_profiles = fetch_profiles
         self._fetch_extensions = fetch_extensions
         self._fetch_categories = fetch_categories
-        self._schema_options = schema_options
+
+        if schema_options is None:
+            self._schema_options = SchemaOptions()
+        else:
+            self._schema_options = schema_options
 
         if cache_dir is not None and not isinstance(cache_dir, Path):
             self._cache_dir = Path(cache_dir)

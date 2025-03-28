@@ -1,12 +1,12 @@
 from copy import copy
 from dataclasses import dataclass
 
-from ocsf.repository import EventDefn, CategoriesDefn, CategoryDefn, DefinitionFile, AnyDefinition, SpecialFiles
+from ocsf.repository import AnyDefinition, CategoriesDefn, CategoryDefn, DefinitionFile, EventDefn, SpecialFiles
 
 from ..merge import MergeResult
-from ..protoschema import ProtoSchema
 from ..options import CompilationOptions
-from .planner import Operation, Planner, Analysis
+from ..protoschema import ProtoSchema
+from .planner import Analysis, Operation, Planner
 
 
 @dataclass(eq=True, frozen=True)

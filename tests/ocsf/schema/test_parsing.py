@@ -1,5 +1,6 @@
 import os
-from ocsf.schema import OcsfEvent, from_json, SchemaOptions
+
+from ocsf.schema import OcsfEvent, SchemaOptions, from_json
 
 LOCATION = os.path.dirname(os.path.abspath(__file__))
 SCHEMA_JSON = os.path.join(LOCATION, "../..", "schema_cache/schema-1.1.0.json")
@@ -23,7 +24,7 @@ JSON_DATA = """{
     }
   },
   "objects": {
-  
+
   },
   "types": {
 
@@ -41,7 +42,7 @@ JSON_DATA = """{
             "description": "Event timestamp"
         }
     }
-  
+
   }
 }"""
 
@@ -57,7 +58,7 @@ def test_decode_str():
 def test_decode_file():
     """Test decoding a JSON file into an OCSF schema."""
     json_str: str | None = None
-    with open(SCHEMA_JSON, "r") as f:
+    with open(SCHEMA_JSON) as f:
         json_str = f.read()
     assert json_str is not None
     schema = from_json(json_str)

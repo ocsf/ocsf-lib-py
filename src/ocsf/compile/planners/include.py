@@ -2,21 +2,21 @@ from dataclasses import dataclass
 from pathlib import PurePath
 from typing import Optional
 
-from ..protoschema import ProtoSchema
-from ..merge import merge, MergeResult, FieldList
-from .planner import Operation, Planner, Analysis
-
 from ocsf.repository import (
-    DefinitionFile,
-    DefnWithInclude,
-    DefnWithAttrs,
-    Repository,
     AnyDefinition,
+    DefinitionFile,
+    DefnWithAttrs,
+    DefnWithInclude,
     RepoPath,
+    Repository,
+    as_path,
     extension,
     extensionless,
-    as_path,
 )
+
+from ..merge import FieldList, MergeResult, merge
+from ..protoschema import ProtoSchema
+from .planner import Analysis, Operation, Planner
 
 
 @dataclass(eq=True, frozen=True)

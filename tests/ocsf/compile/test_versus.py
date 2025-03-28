@@ -1,25 +1,25 @@
 import os
 from typing import Any
 
-from ocsf.util import get_schema
 from ocsf.compare import (
-    compare,
-    ChangedSchema,
-    ChangedCategory,
-    ChangedProfile,
-    ChangedExtension,
-    Change,
-    NoChange,
-    ChangedEvent,
-    ChangedDeprecationInfo,
-    ChangedAttr,
-    ChangedObject,
-    Removal,
     Addition,
+    Change,
+    ChangedAttr,
+    ChangedCategory,
+    ChangedDeprecationInfo,
+    ChangedEvent,
+    ChangedExtension,
+    ChangedObject,
+    ChangedProfile,
+    ChangedSchema,
     Difference,
+    NoChange,
+    Removal,
+    compare,
 )
-from ocsf.repository import read_repo
 from ocsf.compile.compiler import Compilation
+from ocsf.repository import read_repo
+from ocsf.util import get_schema
 
 
 def get_diff():
