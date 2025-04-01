@@ -32,10 +32,11 @@ options:
   --set-observable      Set the observable field on attributes to the corresponding Observable Type ID where applicable
   --no-set-observable   Do not set the observable field on attributes to the corresponding Observable Type ID
                         where applicable
-  --category-classes    Include classes in the category section of the schema output. This duplicates classes in each category without attributes in the
-                        same way as the OCSF Server's category export.
+  --category-classes    Include classes in the category section of the schema output. This duplicates classes in each
+                        category without attributes in the same way as the OCSF Server's category export.
   --no-category-classes
-                        Do not include classes in the category section of the schema output. This is the default behavior.
+                        Do not include classes in the category section of the schema output. This is the default
+                        behavior.
 ```
 
 Examples:
@@ -143,7 +144,10 @@ def main():
         "--no-category-classes",
         dest="category_classes",
         action="store_false",
-        help=("Do not include classes in the category section of the schema output. " "This is the default behavior."),
+        help=(
+            "Do not include classes in the category section of the schema output. "
+            "This is the default behavior."
+        ),
     )
 
     args = parser.parse_args()
