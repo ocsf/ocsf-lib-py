@@ -2,9 +2,10 @@
 
 from dataclasses import dataclass
 
-from ocsf.compare import Addition, ChangedAttr, ChangedEvent, ChangedSchema, NoChange, Removal
+from ocsf.compare import Addition, ChangedAttr, ChangedEvent, NoChange, Removal
 from ocsf.validate.framework import Finding, Rule, RuleMetadata
 
+from .validator import CompatibilityContext
 
 @dataclass
 class ChangedClassUidFinding(Finding):
@@ -22,13 +23,13 @@ is because the class was moved to a new category or from an extension to
 core."""
 
 
-class NoChangedClassUidsRule(Rule[ChangedSchema]):
+class NoChangedClassUidsRule(Rule[CompatibilityContext]):
     def metadata(self):
         return RuleMetadata("No changed class UIDs", description=_RULE_DESCRIPTION)
 
-    def validate(self, context: ChangedSchema) -> list[Finding]:
+    def validate(self, context: CompatibilityContext) -> list[Finding]:
         findings: list[Finding] = []
-        for name, event in context.classes.items():
+        for name, event in context.change.classes.items():
             if isinstance(event, ChangedEvent):
                 if "class_uid" in event.attributes and isinstance(event.attributes["class_uid"], ChangedAttr):
                     uid = event.attributes["class_uid"]

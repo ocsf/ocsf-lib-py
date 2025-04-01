@@ -8,11 +8,12 @@ from .removed_records import (
     RemovedObjectFinding,
 )
 from .removed_uids import ChangedClassUidFinding, NoChangedClassUidsRule
-from .validator import CompatibilityValidator
+from .validator import CompatibilityValidator, CompatibilityContext
 
 __all__ = [
     "ChangedClassUidFinding",
     "ChangedTypeFinding",
+    "CompatibilityContext",
     "CompatibilityValidator",
     "IncreasedRequirementFinding",
     "NoChangedClassUidsRule",

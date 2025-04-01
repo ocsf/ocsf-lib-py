@@ -11,10 +11,11 @@ caption or class_uid is added to the same set.
 from dataclasses import dataclass
 from typing import Literal, Optional
 
-from ocsf.compare import Addition, ChangedAttr, ChangedEvent, ChangedObject, ChangedSchema, Removal
+from ocsf.compare import Addition, ChangedAttr, ChangedEvent, ChangedObject, Removal
 from ocsf.schema import OcsfElementType
 from ocsf.validate.framework import Finding, Rule, RuleMetadata
 
+from .validator import CompatibilityContext
 
 def _path(
     root: Literal[OcsfElementType.OBJECT] | Literal[OcsfElementType.EVENT],
@@ -104,13 +105,13 @@ removal, and so is still a breaking change.
 """
 
 
-class NoRemovedRecordsRule(Rule[ChangedSchema]):
+class NoRemovedRecordsRule(Rule[CompatibilityContext]):
     """A rule to identify removed or renamed objects, events, attributes, and enums."""
 
     def metadata(self):
         return RuleMetadata("No removed or renamed schema elements", description=_RULE_DESCRIPTION)
 
-    def validate(self, context: ChangedSchema) -> list[Finding]:
+    def validate(self, context: CompatibilityContext) -> list[Finding]:
         """Search changed objects and events in the schema to identify any removed or renamed elements."""
 
         # This rule has a lot of loops. It could be rewritten as one large outer
@@ -134,10 +135,10 @@ class NoRemovedRecordsRule(Rule[ChangedSchema]):
         #             add renamed event finding
         #     if no renamed event finding was added:
         #         add removed event finding
-        for name, event in context.classes.items():
+        for name, event in context.change.classes.items():
             if isinstance(event, Removal):
                 found = False
-                for _, added in context.classes.items():
+                for _, added in context.change.classes.items():
                     if isinstance(added, Addition):
                         # An addition with the same caption or class_uid as the removed event is probably a rename
                         if (added.after.caption == event.before.caption) or (
@@ -164,10 +165,10 @@ class NoRemovedRecordsRule(Rule[ChangedSchema]):
         #             add renamed object finding
         #     if no renamed object finding was added:
         #         add removed object finding
-        for name, obj in context.objects.items():
+        for name, obj in context.change.objects.items():
             if isinstance(obj, Removal):
                 found = False
-                for _, added in context.objects.items():
+                for _, added in context.change.objects.items():
                     if isinstance(added, Addition):
                         # An addition with the same caption as the removed object is probably a rename
                         if added.after.caption == obj.before.caption:
@@ -204,11 +205,11 @@ class NoRemovedRecordsRule(Rule[ChangedSchema]):
         # First, build a combined list of changed events and objects
         changed_records = [
             (name, OcsfElementType.EVENT, event)
-            for name, event in context.classes.items()
+            for name, event in context.change.classes.items()
             if isinstance(event, ChangedEvent)
         ] + [
             (name, OcsfElementType.OBJECT, obj)
-            for name, obj in context.objects.items()
+            for name, obj in context.change.objects.items()
             if isinstance(obj, ChangedObject)
         ]
 

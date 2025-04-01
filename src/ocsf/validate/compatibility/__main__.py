@@ -77,7 +77,7 @@ from ocsf.validate.framework import (
     validate_severities,
 )
 
-from .validator import CompatibilityValidator
+from .validator import CompatibilityValidator, CompatibilityContext
 
 # Various modules use logging. Configure as you see fit.
 # import logging
@@ -208,7 +208,12 @@ def main():
         exit(1)
 
     # Configure a validator and run it
-    validator = CompatibilityValidator(cast(ChangedSchema, compare(before, after)), severities)
+    context = CompatibilityContext(
+        change=cast(ChangedSchema, compare(before, after)),
+        before=before,
+        after=after,
+    )
+    validator = CompatibilityValidator(context, severities)
     results = validator.validate()
 
     print()

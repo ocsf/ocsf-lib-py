@@ -2,9 +2,11 @@
 
 from dataclasses import dataclass
 
-from ocsf.compare import Change, ChangedAttr, ChangedEvent, ChangedObject, ChangedSchema, Difference
+from ocsf.compare import Change, ChangedAttr, ChangedEvent, ChangedObject, Difference
 from ocsf.schema import OcsfAttr, OcsfElementType
 from ocsf.validate.framework import Finding, Rule, RuleMetadata
+
+from .validator import CompatibilityContext
 
 
 @dataclass
@@ -27,7 +29,7 @@ compatibility in some encodings, so any change to an attribute's data type is
 considered breaking."""
 
 
-class NoChangedTypesRule(Rule[ChangedSchema]):
+class NoChangedTypesRule(Rule[CompatibilityContext]):
     def metadata(self):
         return RuleMetadata("No changed attribute types", description=_RULE_DESCRIPTION)
 
@@ -48,16 +50,16 @@ class NoChangedTypesRule(Rule[ChangedSchema]):
 
                 return ChangedTypeFinding(OcsfElementType.EVENT, name, attr_name, attr.type.before, attr.type.after)
 
-    def validate(self, context: ChangedSchema) -> list[Finding]:
+    def validate(self, context: CompatibilityContext) -> list[Finding]:
         findings: list[Finding] = []
-        for name, event in context.classes.items():
+        for name, event in context.change.classes.items():
             if isinstance(event, ChangedEvent):
                 for attr_name, attr in event.attributes.items():
                     finding = self._check(name, attr_name, attr)
                     if finding:
                         findings.append(finding)
 
-        for name, obj in context.objects.items():
+        for name, obj in context.change.objects.items():
             if isinstance(obj, ChangedObject):
                 for attr_name, attr in obj.attributes.items():
                     finding = self._check(name, attr_name, attr)

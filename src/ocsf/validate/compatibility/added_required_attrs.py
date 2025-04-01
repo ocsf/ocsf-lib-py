@@ -7,6 +7,7 @@ from ocsf.schema import OcsfElementType
 from ocsf.validate.framework import Finding, Rule, RuleMetadata
 from ocsf.validate.framework.validator import Severity
 
+from .validator import CompatibilityContext
 
 @dataclass
 class AddedRequiredAttrFinding(Finding):
@@ -33,30 +34,30 @@ def attr_in_added_profile(attr_name: str, context: ChangedSchema) -> bool:
     return False
 
 
-class NoAddedRequiredAttrsRule(Rule[ChangedSchema]):
+class NoAddedRequiredAttrsRule(Rule[CompatibilityContext]):
     def metadata(self):
         return RuleMetadata("No added required attributes", description=_RULE_DESCRIPTION)
 
-    def validate(self, context: ChangedSchema) -> list[Finding]:
+    def validate(self, context: CompatibilityContext) -> list[Finding]:
         findings: list[Finding] = []
 
-        for name, event in context.classes.items():
+        for name, event in context.change.classes.items():
             if isinstance(event, ChangedEvent):
                 for attr_name, attr in event.attributes.items():
                     if isinstance(attr, Addition):
-                        if attr.after.requirement == "required" and not attr_in_added_profile(attr_name, context):
+                        if attr.after.requirement == "required" and not attr_in_added_profile(attr_name, context.change):
                             findings.append(AddedRequiredAttrFinding(OcsfElementType.EVENT, (name, attr_name)))
 
-        for name, obj in context.objects.items():
+        for name, obj in context.change.objects.items():
             if isinstance(obj, ChangedObject):
                 for attr_name, attr in obj.attributes.items():
                     if isinstance(attr, Addition):
-                        if attr.after.requirement == "required" and not attr_in_added_profile(attr_name, context):
+                        if attr.after.requirement == "required" and not attr_in_added_profile(attr_name, context.change):
                             findings.append(AddedRequiredAttrFinding(OcsfElementType.OBJECT, (name, attr_name)))
 
         # If there are no profiles, downgrade all findings to warnings because we can't be sure they
         # weren't added in a new profile.
-        if len(context.profiles) == 0:
+        if len(context.change.profiles) == 0:
             for finding in findings:
                 finding.set_severity(Severity.WARNING)
 
