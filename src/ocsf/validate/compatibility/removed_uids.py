@@ -5,7 +5,8 @@ from dataclasses import dataclass
 from ocsf.compare import Addition, ChangedAttr, ChangedEvent, NoChange, Removal
 from ocsf.validate.framework import Finding, Rule, RuleMetadata
 
-from .validator import CompatibilityContext
+from .context import CompatibilityContext
+
 
 @dataclass
 class ChangedClassUidFinding(Finding):

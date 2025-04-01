@@ -7,7 +7,8 @@ from ocsf.schema import OcsfElementType
 from ocsf.validate.framework import Finding, Rule, RuleMetadata
 from ocsf.validate.framework.validator import Severity
 
-from .validator import CompatibilityContext
+from .context import CompatibilityContext
+
 
 @dataclass
 class AddedRequiredAttrFinding(Finding):
@@ -45,14 +46,18 @@ class NoAddedRequiredAttrsRule(Rule[CompatibilityContext]):
             if isinstance(event, ChangedEvent):
                 for attr_name, attr in event.attributes.items():
                     if isinstance(attr, Addition):
-                        if attr.after.requirement == "required" and not attr_in_added_profile(attr_name, context.change):
+                        if attr.after.requirement == "required" and not attr_in_added_profile(
+                            attr_name, context.change
+                        ):
                             findings.append(AddedRequiredAttrFinding(OcsfElementType.EVENT, (name, attr_name)))
 
         for name, obj in context.change.objects.items():
             if isinstance(obj, ChangedObject):
                 for attr_name, attr in obj.attributes.items():
                     if isinstance(attr, Addition):
-                        if attr.after.requirement == "required" and not attr_in_added_profile(attr_name, context.change):
+                        if attr.after.requirement == "required" and not attr_in_added_profile(
+                            attr_name, context.change
+                        ):
                             findings.append(AddedRequiredAttrFinding(OcsfElementType.OBJECT, (name, attr_name)))
 
         # If there are no profiles, downgrade all findings to warnings because we can't be sure they

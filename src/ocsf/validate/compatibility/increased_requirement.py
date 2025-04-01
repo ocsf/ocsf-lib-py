@@ -6,7 +6,8 @@ from ocsf.compare import Change, ChangedAttr, ChangedEvent, ChangedObject
 from ocsf.schema import OcsfElementType
 from ocsf.validate.framework import Finding, Rule, RuleMetadata
 
-from .validator import CompatibilityContext
+from .context import CompatibilityContext
+
 
 @dataclass
 class IncreasedRequirementFinding(Finding):

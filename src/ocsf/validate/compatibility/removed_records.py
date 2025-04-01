@@ -15,7 +15,8 @@ from ocsf.compare import Addition, ChangedAttr, ChangedEvent, ChangedObject, Rem
 from ocsf.schema import OcsfElementType
 from ocsf.validate.framework import Finding, Rule, RuleMetadata
 
-from .validator import CompatibilityContext
+from .context import CompatibilityContext
+
 
 def _path(
     root: Literal[OcsfElementType.OBJECT] | Literal[OcsfElementType.EVENT],
