@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from ocsf.compare import Change, ChangedAttr, ChangedEvent, ChangedObject, Difference
 from ocsf.schema import OcsfAttr, OcsfElementType
-from ocsf.validate.framework import Finding, Rule, RuleMetadata
+from ocsf.validate.framework import Finding, Rule, RuleMetadata, Severity
 
 from .context import CompatibilityContext
 
@@ -70,7 +70,11 @@ class NoChangedTypesRule(Rule[CompatibilityContext]):
                     and attr.type.before in context.before.types
                     and context.before.types[attr.type.before].type == context.after.types[attr.type.after].type
                 ):
-                    return None
+                    found = ChangedTypeFinding(
+                        OcsfElementType.EVENT, name, attr_name, attr.type.before, attr.type.after
+                    )
+                    found.set_severity(Severity.WARNING)
+                    return found
 
                 return ChangedTypeFinding(OcsfElementType.EVENT, name, attr_name, attr.type.before, attr.type.after)
 

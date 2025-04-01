@@ -5,6 +5,7 @@ from ocsf.validate.compatibility import CompatibilityContext
 types = {
     "string_t": OcsfType(caption="String", type="string_t"),
     "file_path_t": OcsfType(caption="File Path", type="string_t"),
+    "hostname_t": OcsfType(caption="Hostname", type="string_t"),
 }
 
 
