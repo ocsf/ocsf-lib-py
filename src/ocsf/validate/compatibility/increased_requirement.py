@@ -2,9 +2,11 @@
 
 from dataclasses import dataclass
 
-from ocsf.compare import Change, ChangedAttr, ChangedEvent, ChangedObject, ChangedSchema
+from ocsf.compare import Change, ChangedAttr, ChangedEvent, ChangedObject
 from ocsf.schema import OcsfElementType
 from ocsf.validate.framework import Finding, Rule, RuleMetadata
+
+from .context import CompatibilityContext
 
 
 @dataclass
@@ -30,13 +32,13 @@ without breaking backwards compatibility."""
 _ALLOWED = ["category_uid", "activity_id", "class_uid"]
 
 
-class NoIncreasedRequirementsRule(Rule[ChangedSchema]):
+class NoIncreasedRequirementsRule(Rule[CompatibilityContext]):
     def metadata(self):
         return RuleMetadata("No increased requirements", description=_RULE_DESCRIPTION)
 
-    def validate(self, context: ChangedSchema) -> list[Finding]:
+    def validate(self, context: CompatibilityContext) -> list[Finding]:
         findings: list[Finding] = []
-        for name, event in context.classes.items():
+        for name, event in context.change.classes.items():
             if isinstance(event, ChangedEvent):
                 for attr_name, attr in event.attributes.items():
                     if isinstance(attr, ChangedAttr):
@@ -54,7 +56,7 @@ class NoIncreasedRequirementsRule(Rule[ChangedSchema]):
                                 )
                             )
 
-        for name, obj in context.objects.items():
+        for name, obj in context.change.objects.items():
             if isinstance(obj, ChangedObject):
                 for attr_name, attr in obj.attributes.items():
                     if isinstance(attr, ChangedAttr):

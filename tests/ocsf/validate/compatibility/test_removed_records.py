@@ -12,6 +12,8 @@ from ocsf.validate.compatibility.removed_records import (
     RenamedObjectFinding,
 )
 
+from .helpers import get_context
+
 
 def test_removed_event():
     """Test that a RemovedEventFinding is created when an event is removed."""
@@ -19,7 +21,7 @@ def test_removed_event():
     s.classes["email_delivery_activity"] = Removal(OcsfEvent("email_delivery_activity", "Email Delivery Activity"))
 
     rule = NoRemovedRecordsRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 1
     assert isinstance(findings[0], RemovedEventFinding)
 
@@ -30,7 +32,7 @@ def test_removed_object():
     s.objects["kill_chain"] = Removal(OcsfObject("kill_chain", "Kill Chain"))
 
     rule = NoRemovedRecordsRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 1
     assert isinstance(findings[0], RemovedObjectFinding)
 
@@ -46,7 +48,7 @@ def test_removed_attr():
     )
 
     rule = NoRemovedRecordsRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 2
     assert isinstance(findings[0], RemovedAttrFinding)
     assert isinstance(findings[1], RemovedAttrFinding)
@@ -63,7 +65,7 @@ def test_removed_enum_member():
     )
 
     rule = NoRemovedRecordsRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 2
     assert isinstance(findings[0], RemovedEnumMemberFinding)
     assert isinstance(findings[1], RemovedEnumMemberFinding)
@@ -78,7 +80,7 @@ def test_renamed_event_caption():
     s.classes["email_delivery"] = Addition(OcsfEvent(name="email_delivery", caption="Email Delivery Activity"))
 
     rule = NoRemovedRecordsRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 1
     assert isinstance(findings[0], RenamedEventFinding)
 
@@ -94,7 +96,7 @@ def test_renamed_event_uid():
     s.classes["email_delivery"] = Addition(OcsfEvent(name="email_delivery", caption="Email Activity", attributes=attrs))
 
     rule = NoRemovedRecordsRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 1
     assert isinstance(findings[0], RenamedEventFinding)
 
@@ -106,7 +108,7 @@ def test_renamed_object():
     s.objects["kill_chain_phases"] = Addition(OcsfObject(name="kill_chain_phases", caption="Kill Chain"))
 
     rule = NoRemovedRecordsRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 1
     assert isinstance(findings[0], RenamedObjectFinding)
 
@@ -122,7 +124,7 @@ def test_renamed_attr():
     )
 
     rule = NoRemovedRecordsRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 1
     assert isinstance(findings[0], RenamedAttrFinding)
 
@@ -142,6 +144,6 @@ def test_renamed_enum_member():
     )
 
     rule = NoRemovedRecordsRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 1
     assert isinstance(findings[0], RenamedEnumMemberFinding)

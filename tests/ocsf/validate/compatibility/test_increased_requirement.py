@@ -1,6 +1,8 @@
 from ocsf.compare import Change, ChangedAttr, ChangedEvent, ChangedObject, ChangedSchema
 from ocsf.validate.compatibility import IncreasedRequirementFinding, NoIncreasedRequirementsRule
 
+from .helpers import get_context
+
 
 def test_increased_requirement_event():
     """Test that the rule finds an increased requirement in an event."""
@@ -15,7 +17,7 @@ def test_increased_requirement_event():
     )
 
     rule = NoIncreasedRequirementsRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 1
     assert isinstance(findings[0], IncreasedRequirementFinding)
 
@@ -33,7 +35,7 @@ def test_increased_requirement_object():
     )
 
     rule = NoIncreasedRequirementsRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 1
     assert isinstance(findings[0], IncreasedRequirementFinding)
 
@@ -51,5 +53,5 @@ def test_increased_requirement_event_bugfix():
     )
 
     rule = NoIncreasedRequirementsRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 0

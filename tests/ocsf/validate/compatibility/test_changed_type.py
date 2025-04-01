@@ -1,5 +1,8 @@
 from ocsf.compare import Change, ChangedAttr, ChangedEvent, ChangedObject, ChangedSchema
 from ocsf.validate.compatibility import ChangedTypeFinding, NoChangedTypesRule
+from ocsf.validate.framework import Severity
+
+from .helpers import get_context
 
 
 def test_changed_type_event():
@@ -8,14 +11,14 @@ def test_changed_type_event():
         classes={
             "process_activity": ChangedEvent(
                 attributes={
-                    "process_name": ChangedAttr(type=Change("str_t", "process_name_t")),
+                    "process_name": ChangedAttr(type=Change("string_t", "long_t")),
                 }
             ),
         }
     )
 
     rule = NoChangedTypesRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 1
     assert isinstance(findings[0], ChangedTypeFinding)
 
@@ -26,14 +29,14 @@ def test_changed_type_object():
         objects={
             "process_activity": ChangedObject(
                 attributes={
-                    "process_name": ChangedAttr(type=Change("str_t", "process_name_t")),
+                    "process_name": ChangedAttr(type=Change("string_t", "long_t")),
                 }
             ),
         }
     )
 
     rule = NoChangedTypesRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 1
     assert isinstance(findings[0], ChangedTypeFinding)
 
@@ -57,7 +60,7 @@ def test_int_to_long():
         },
     )
     rule = NoChangedTypesRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 0
 
 
@@ -80,5 +83,30 @@ def test_str_to_filepath():
         },
     )
     rule = NoChangedTypesRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 0
+
+
+def test_hostname_to_filepath():
+    """Test that changing from hostname_t to file_path_t is allowed but generates a warning."""
+    s = ChangedSchema(
+        objects={
+            "process_activity": ChangedObject(
+                attributes={
+                    "process_name": ChangedAttr(type=Change("hostname_t", "file_path_t")),
+                }
+            ),
+        },
+        classes={
+            "process_activity": ChangedEvent(
+                attributes={
+                    "process_name": ChangedAttr(type=Change("hostname_t", "file_path_t")),
+                }
+            ),
+        },
+    )
+    rule = NoChangedTypesRule()
+    findings = rule.validate(get_context(s))
+    assert len(findings) == 2
+    assert findings[0].severity == Severity.WARNING
+    assert findings[1].severity == Severity.WARNING
