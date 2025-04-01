@@ -48,7 +48,14 @@ class SpecialFiles(StrEnum):
         return path in [e.value for e in SpecialFiles]
 
 
-SPECIAL_FILES = ("dictionary.json", "categories.json", "version.json", "extension.json", "objects/observable.json")
+SPECIAL_FILES = (
+    "dictionary.json",
+    "categories.json",
+    "version.json",
+    "extension.json",
+    "objects/observable.json",
+    "base_event.json",
+)
 """Tuple containing strings of the values in the SpecialFiles enum."""
 
 
