@@ -144,10 +144,7 @@ def main():
         "--no-category-classes",
         dest="category_classes",
         action="store_false",
-        help=(
-            "Do not include classes in the category section of the schema output. "
-            "This is the default behavior."
-        ),
+        help=("Do not include classes in the category section of the schema output. " "This is the default behavior."),
     )
 
     args = parser.parse_args()
