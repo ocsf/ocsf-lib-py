@@ -111,7 +111,7 @@ class Compilation:
                 # attribute of records easier. Only performed if
                 # options.set_observable is True.
                 MarkObservablesPlanner(self._proto, _options),
-                # Map events to categories in the categories.json file.
+                # Map events to the `classes` dictionary of each category.
                 MapEventToCategoryPlanner(self._proto, _options),
                 # Copy records that are ONLY defined in extensions to the core
                 # schema so that they are included by ProtoSchema.schema().
