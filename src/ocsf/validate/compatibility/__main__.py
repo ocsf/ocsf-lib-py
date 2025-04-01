@@ -77,7 +77,7 @@ from ocsf.validate.framework import (
     validate_severities,
 )
 
-from .validator import CompatibilityValidator, CompatibilityContext
+from .validator import CompatibilityContext, CompatibilityValidator
 
 # Various modules use logging. Configure as you see fit.
 # import logging

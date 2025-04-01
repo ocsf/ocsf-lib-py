@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from ocsf.schema import OcsfSchema
+
 from ocsf.compare import ChangedSchema
+from ocsf.schema import OcsfSchema
 
 
 @dataclass

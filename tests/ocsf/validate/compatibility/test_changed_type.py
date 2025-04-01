@@ -1,5 +1,6 @@
 from ocsf.compare import Change, ChangedAttr, ChangedEvent, ChangedObject, ChangedSchema
 from ocsf.validate.compatibility import ChangedTypeFinding, NoChangedTypesRule
+
 from .helpers import get_context
 
 
