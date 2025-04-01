@@ -9,7 +9,7 @@ def test_changed_type_event():
         classes={
             "process_activity": ChangedEvent(
                 attributes={
-                    "process_name": ChangedAttr(type=Change("str_t", "process_name_t")),
+                    "process_name": ChangedAttr(type=Change("string_t", "long_t")),
                 }
             ),
         }
@@ -27,7 +27,7 @@ def test_changed_type_object():
         objects={
             "process_activity": ChangedObject(
                 attributes={
-                    "process_name": ChangedAttr(type=Change("str_t", "process_name_t")),
+                    "process_name": ChangedAttr(type=Change("string_t", "long_t")),
                 }
             ),
         }

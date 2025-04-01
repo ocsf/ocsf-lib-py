@@ -43,15 +43,28 @@ class NoChangedTypesRule(Rule[CompatibilityContext]):
                 if attr.type.before == "integer_t" and attr.type.after == "long_t":
                     return None
 
-                # `string_t` -> `file_path_t`
                 # PR#1326 reintroduced `file_path_t` and reassigned several
                 # `string_t` attributes to `file_path_t`. This is technically
                 # type narrowing and not backwards compatible, but it was
-                # decided to allow this change on the OCSF Tuesday call. In the
-                # future, we may want to limit this change to OCSF 1.4 -> 1.5.
-                # if attr.type.before == "string_t" and attr.type.after == "file_path_t":
-                #    return None
+                # decided to allow this change on the OCSF Tuesday call. In
+                # addition, it was decided that type changes that don't change
+                # the underlying primitive type should be allowed.
 
+                # string_t => file_path_t
+                if (
+                    attr.type.after in context.after.types
+                    and context.after.types[attr.type.after].type == attr.type.before
+                ):
+                    return None
+
+                # file_path_t => string_t
+                if (
+                    attr.type.before in context.before.types
+                    and context.before.types[attr.type.before].type == attr.type.after
+                ):
+                    return None
+
+                # file_path_t => hostname_t
                 if (
                     attr.type.after in context.after.types
                     and attr.type.before in context.before.types
