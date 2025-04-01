@@ -1,5 +1,6 @@
 from ocsf.compare import Change, ChangedAttr, ChangedEvent, ChangedObject, ChangedSchema
 from ocsf.validate.compatibility import ChangedTypeFinding, NoChangedTypesRule
+from .helpers import get_context
 
 
 def test_changed_type_event():
@@ -15,7 +16,7 @@ def test_changed_type_event():
     )
 
     rule = NoChangedTypesRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 1
     assert isinstance(findings[0], ChangedTypeFinding)
 
@@ -33,7 +34,7 @@ def test_changed_type_object():
     )
 
     rule = NoChangedTypesRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 1
     assert isinstance(findings[0], ChangedTypeFinding)
 
@@ -57,7 +58,7 @@ def test_int_to_long():
         },
     )
     rule = NoChangedTypesRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 0
 
 
@@ -80,5 +81,5 @@ def test_str_to_filepath():
         },
     )
     rule = NoChangedTypesRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 0

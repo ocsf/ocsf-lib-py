@@ -2,6 +2,7 @@ from ocsf.compare import Addition, ChangedEvent, ChangedObject, ChangedSchema
 from ocsf.schema import OcsfAttr, OcsfProfile
 from ocsf.validate.compatibility.added_required_attrs import AddedRequiredAttrFinding, NoAddedRequiredAttrsRule
 from ocsf.validate.framework import Severity
+from .helpers import get_context
 
 
 def test_added_required_attr_event():
@@ -17,7 +18,7 @@ def test_added_required_attr_event():
     )
 
     rule = NoAddedRequiredAttrsRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 1
     assert isinstance(findings[0], AddedRequiredAttrFinding)
     assert findings[0].severity == Severity.WARNING
@@ -36,7 +37,7 @@ def test_added_required_attr_object():
     )
 
     rule = NoAddedRequiredAttrsRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 1
     assert isinstance(findings[0], AddedRequiredAttrFinding)
     assert findings[0].severity == Severity.WARNING
@@ -66,7 +67,7 @@ def test_added_required_attr_profile():
     )
 
     rule = NoAddedRequiredAttrsRule()
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 0
 
     s.classes["file_activity"] = ChangedEvent(
@@ -74,7 +75,7 @@ def test_added_required_attr_profile():
             "file_name": Addition(OcsfAttr(caption="", type="str_t", requirement="required")),
         }
     )
-    findings = rule.validate(s)
+    findings = rule.validate(get_context(s))
     assert len(findings) == 1
     assert isinstance(findings[0], AddedRequiredAttrFinding)
     assert findings[0].severity == Severity.ERROR
