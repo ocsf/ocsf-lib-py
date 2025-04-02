@@ -41,13 +41,21 @@ class SpecialFiles(StrEnum):
     VERSION = "version.json"
     EXTENSION = "extension.json"
     OBSERVABLE = "objects/observable.json"
+    BASE_EVENT = "base_event.json"
 
     @staticmethod
     def contains(path: str) -> bool:
         return path in [e.value for e in SpecialFiles]
 
 
-SPECIAL_FILES = ("dictionary.json", "categories.json", "version.json", "extension.json", "objects/observable.json")
+SPECIAL_FILES = (
+    "dictionary.json",
+    "categories.json",
+    "version.json",
+    "extension.json",
+    "objects/observable.json",
+    "base_event.json",
+)
 """Tuple containing strings of the values in the SpecialFiles enum."""
 
 

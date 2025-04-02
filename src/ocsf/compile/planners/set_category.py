@@ -21,11 +21,16 @@ class SetCategoryOp(Operation):
             return []
 
         path = PurePath(target.path).parts
+        if path[-1] == SpecialFiles.BASE_EVENT.value:
+            return []
+
         if RepoPaths.EVENTS.value not in path:
             raise ValueError(f"Cannot assign category to non-event: {target.path}")
             return []
 
         category = path[path.index(RepoPaths.EVENTS.value) + 1]
+        if category == "base_event.json":
+            return []
 
         categories = schema[SpecialFiles.CATEGORIES].data
         assert isinstance(categories, CategoriesDefn)
