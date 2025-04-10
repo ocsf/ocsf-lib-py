@@ -73,7 +73,6 @@ class Finding(ABC):
             return self._default_severity()
 
     def set_severity(self, severity: Severity) -> None:
-        print("blah")
         self._severity = severity
 
     def del_severity(self) -> None:
