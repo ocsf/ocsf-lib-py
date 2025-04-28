@@ -39,38 +39,34 @@ class SchemaOptions:
 
 def keys_to_names(d: dict[str, Any]) -> dict[str, Any]:
     """Transform OCSF property names in JSON to Python-friendly names."""
-    ops: list[tuple[str, str]] = []
+    xform: dict[str, Any] = {}
 
     for k, v in d.items():
         if k in _KEY_TRANSFORMS:
-            ops.append((k, _KEY_TRANSFORMS[k]))
+            k = _KEY_TRANSFORMS[k]
 
         if isinstance(v, dict):
-            d[k] = keys_to_names(cast(dict[str, Any], v))
+            xform[k] = keys_to_names(cast(dict[str, Any], v))
+        else:
+            xform[k] = v
 
-    for op in ops:
-        d[op[1]] = d[op[0]]
-        del d[op[0]]
-
-    return d
+    return xform
 
 
 def names_to_keys(d: dict[str, Any]) -> dict[str, Any]:
     """Transform Python-friendly names to OCSF property names in JSON."""
-    ops: list[tuple[str, str]] = []
+    xform: dict[str, Any] = {}
 
     for k, v in d.items():
         if k in _NAME_TRANSFORMS:
-            ops.append((k, _NAME_TRANSFORMS[k]))
+            k = _NAME_TRANSFORMS[k]
 
         if isinstance(v, dict):
-            d[k] = names_to_keys(cast(dict[str, Any], v))
+            xform[k] = names_to_keys(cast(dict[str, Any], v))
+        else:
+            xform[k] = v
 
-    for op in ops:
-        d[op[1]] = d[op[0]]
-        del d[op[0]]
-
-    return d
+    return xform
 
 
 def resolve_object_types(things: dict[str, WithAttributes] | OcsfSchema | WithAttributes) -> None:
