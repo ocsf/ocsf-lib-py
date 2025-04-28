@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from ocsf.compare import Addition, ChangedEvent, ChangedObject, ChangedSchema
+from ocsf.compare import Addition, ChangedEvent, ChangedObject, ChangedSchema, NoChange
 from ocsf.schema import OcsfElementType
 from ocsf.validate.framework import Finding, Rule, RuleMetadata
 from ocsf.validate.framework.validator import Severity
@@ -62,7 +62,7 @@ class NoAddedRequiredAttrsRule(Rule[CompatibilityContext]):
 
         # If there are no profiles, downgrade all findings to warnings because we can't be sure they
         # weren't added in a new profile.
-        if len(context.change.profiles) == 0:
+        if isinstance(context.change.profiles, NoChange) or len(context.change.profiles) == 0:
             for finding in findings:
                 finding.set_severity(Severity.WARNING)
 
