@@ -41,8 +41,6 @@ from ..options import CompilationOptions
 from ..protoschema import ProtoSchema
 from .planner import Analysis, Operation, Planner
 
-# TODO build observable object's type_id enum
-
 
 class _Registry:
     """A registry of observable attributes and types from the dictionary.json
@@ -53,6 +51,7 @@ class _Registry:
         self._schema = schema
         self._types: Optional[dict[str, int]] = None
         self._attrs: Optional[dict[str, int]] = None
+        self._objects: dict[str, int | None] = {}
 
     def _build(self):
         if self._types is not None or self._attrs is not None:
@@ -93,6 +92,18 @@ class _Registry:
         assert self._attrs is not None
         return self._attrs
 
+    def find_object(self, name: str) -> int | None:
+        if name not in self._objects:
+            try:
+                defn = self._schema.find_object(name)
+                if defn.data is not None and defn.data.observable:
+                    self._objects[name] = defn.data.observable
+                else:
+                    self._objects[name] = None
+            except KeyError:
+                self._objects[name] = None
+        return self._objects[name]
+
 
 @dataclass(eq=True, frozen=True)
 class MarkObservablesOp(Operation):
@@ -114,12 +125,34 @@ class MarkObservablesOp(Operation):
         if data.attributes is not None:
             for name, attr in data.attributes.items():
                 if isinstance(attr, AttrDefn):
+                    # Observable by dictionary attribute name
                     if name in attrs:
                         attr.observable = attrs[name]
                         results.append(("attributes", name, "observable"))
+
+                    # Observable by primitive dictionary type
                     elif attr.type in types:
                         attr.observable = types[attr.type]
                         results.append(("attributes", name, "observable"))
+
+                    # Observable by object type
+                    else:
+                        # The OCSF server sets type to "object" and assigns the
+                        # object name to object_type.
+                        if attr.type == "object" and attr.object_type is not None:
+                            obs_id = self.registry.find_object(attr.object_type)
+
+                        # Some other implementations (OK, they're all mine) set
+                        # type to the object name.
+                        elif attr.type is not None:
+                            obs_id = self.registry.find_object(attr.type)
+
+                        else:
+                            obs_id = None
+
+                        if obs_id is not None:
+                            attr.observable = obs_id
+                            results.append(("attributes", name, "observable"))
 
         return results
 

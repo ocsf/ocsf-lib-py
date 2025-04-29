@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ocsf-lib"
-version = "0.10.1"
+version = "0.10.2"
 description = "Tools for working with the OCSF schema"
 authors = ["Jeremy Fisher <jeremy@query.ai>"]
 readme = "README.md"

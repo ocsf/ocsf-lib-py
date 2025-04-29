@@ -16,7 +16,7 @@ from ocsf.repository import (
     extensionless,
 )
 
-from ..merge import MergeResult, merge
+from ..merge import MergeOptions, MergeResult, merge
 from ..options import CompilationOptions
 from ..protoschema import ProtoSchema
 from .planner import Analysis, Operation, Planner
@@ -59,7 +59,7 @@ class ExtensionModifyOp(Operation):
         source = schema[self.prerequisite]
         assert source.data is not None
 
-        return merge(effected.data, source.data)
+        return merge(effected.data, source.data, options=MergeOptions(overwrite=True))
 
     def __str__(self):
         return f"Extension modifies {self.target} <- {self.prerequisite}"
