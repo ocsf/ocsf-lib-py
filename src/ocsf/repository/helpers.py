@@ -120,6 +120,16 @@ def extensionless(*args: Pathlike) -> RepoPath:
         return p
 
 
+def as_if_extension(extension: str, *args: Pathlike) -> RepoPath:
+    """What would a path be if it were in a given extension?"""
+    p = as_path(*args)
+
+    if p.startswith(RepoPaths.EXTENSIONS):
+        return as_if_extension(extension, *PurePath(*args).parts[2:])
+
+    return as_path(RepoPaths.EXTENSIONS.value, extension, *args)
+
+
 def category(*args: Pathlike) -> str | None:
     """The category of a repository path to an event."""
     k = PurePath(extensionless(*args))

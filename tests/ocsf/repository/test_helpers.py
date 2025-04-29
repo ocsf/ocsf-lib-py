@@ -10,7 +10,7 @@ from ocsf.repository.definitions import (
     ProfileDefn,
     VersionDefn,
 )
-from ocsf.repository.helpers import REPO_PATHS, SPECIAL_FILES, RepoPaths, SpecialFiles, path_defn_t
+from ocsf.repository.helpers import REPO_PATHS, SPECIAL_FILES, RepoPaths, SpecialFiles, path_defn_t, as_if_extension
 
 
 def test_path_defn_t():
@@ -68,3 +68,8 @@ def test_special_files_tuple_values():
 
     for e in SpecialFiles:
         assert e.value in SPECIAL_FILES, f"SPECIAL_FILES tuple is missing `{e.value}`"
+
+def test_as_if_extension():
+    """Test the as_if_extension function."""
+    assert as_if_extension("bar", "foo.json") == "extensions/bar/foo.json"
+    assert as_if_extension("bar", "extensions/baz/foo.json") == "extensions/bar/foo.json"

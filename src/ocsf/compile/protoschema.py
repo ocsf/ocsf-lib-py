@@ -63,6 +63,9 @@ class ProtoSchema:
         file.path = path
         self._files[path] = file
 
+    def __contains__(self, path: RepoPath) -> bool:
+        return path in self._files or path in self.repo
+
     def object_path(self, name: str) -> RepoPath:
         return as_path(RepoPaths.OBJECTS.value, name, ".json")
 
