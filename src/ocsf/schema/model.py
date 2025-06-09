@@ -14,7 +14,7 @@ class OcsfVersion(OcsfModel):
     version: str
 
 
-@dataclass
+@dataclass(slots=True)
 class OcsfEnumMember(OcsfModel):
     """An enum member. Enums are dictionaries of str: OcsfEnumMember."""
 
@@ -23,7 +23,7 @@ class OcsfEnumMember(OcsfModel):
     notes: Optional[str] = None
 
 
-@dataclass
+@dataclass(slots=True)
 class OcsfDeprecationInfo(OcsfModel):
     """Deprecation information for an object, event, or attribute."""
 
@@ -31,7 +31,7 @@ class OcsfDeprecationInfo(OcsfModel):
     since: str
 
 
-@dataclass
+@dataclass(slots=True)
 class OcsfType(OcsfModel):
     """A data type definition."""
 
@@ -48,7 +48,7 @@ class OcsfType(OcsfModel):
     values: Optional[list[Any]] = None
 
 
-@dataclass
+@dataclass(slots=True)
 class OcsfAttr(OcsfModel):
     """An attribute definition."""
 
@@ -74,14 +74,14 @@ class OcsfAttr(OcsfModel):
         return not self.is_object()
 
 
-@dataclass
+@dataclass(slots=True)
 class OcsfObject(OcsfModel):
     """An object definition."""
 
     caption: str
     name: str
     description: Optional[str] = None
-    attributes: dict[str, OcsfAttr] = field(default_factory=dict)
+    attributes: dict[str, OcsfAttr] = field(default_factory=lambda: dict())
     extends: Optional[str] = None
     observable: Optional[int] = None
     profiles: Optional[list[str]] = None
@@ -89,13 +89,13 @@ class OcsfObject(OcsfModel):
     deprecated: Optional[OcsfDeprecationInfo] = None
 
 
-@dataclass
+@dataclass(slots=True)
 class OcsfEvent(OcsfModel):
     """An event definition."""
 
     caption: str
     name: str
-    attributes: dict[str, OcsfAttr] = field(default_factory=dict)
+    attributes: dict[str, OcsfAttr] = field(default_factory=lambda: dict())
     description: Optional[str] = None
     uid: Optional[int] = None
     category: Optional[str] = None
@@ -114,7 +114,7 @@ class OcsfProfile(OcsfModel):
     name: str
     meta: str = "profile"
     description: Optional[str] = None
-    attributes: dict[str, OcsfAttr] = field(default_factory=dict)
+    attributes: dict[str, OcsfAttr] = field(default_factory=lambda: dict())
     deprecated: Optional[OcsfDeprecationInfo] = None
     annotations: Optional[dict[str, str]] = None
 
@@ -131,7 +131,7 @@ class OcsfExtension(OcsfModel):
     deprecated: Optional[OcsfDeprecationInfo] = None
 
 
-@dataclass
+@dataclass(slots=True)
 class OcsfCategory(OcsfModel):
     """A category definition."""
 
@@ -143,14 +143,14 @@ class OcsfCategory(OcsfModel):
     classes: Optional[dict[str, OcsfEvent]] = None
 
 
-@dataclass
+@dataclass(slots=True)
 class OcsfSchema(OcsfModel):
     """An OCSF schema as represented in the OCSF server's export endpoint."""
 
     version: str
-    classes: dict[str, OcsfEvent] = field(default_factory=dict)
-    objects: dict[str, OcsfObject] = field(default_factory=dict)
-    types: dict[str, OcsfType] = field(default_factory=dict)
+    classes: dict[str, OcsfEvent] = field(default_factory=lambda: dict())
+    objects: dict[str, OcsfObject] = field(default_factory=lambda: dict())
+    types: dict[str, OcsfType] = field(default_factory=lambda: dict())
     base_event: Optional[OcsfEvent] = None
     profiles: Optional[dict[str, OcsfProfile]] = None
     extensions: Optional[dict[str, OcsfExtension]] = None
