@@ -234,6 +234,30 @@ class BuildObservableTypeOp(Operation):
                     if isinstance(v, AttrDefn) and v.observable is not None:
                         enum_id = str(v.observable)
                         if enum_id not in enum:  # Don't overwrite enum values defined in dictionary.json
+                            # Walk up the schema to find the base object or
+                            # event that introduced the observable.
+                            #
+                            # In the case of Resource Details and Databucket
+                            # Object, the observable enum member caption should
+                            # be derived from the former, but the latter is
+                            # processed first. So we walk up the "inheritance" tree
+                            # to find the first base object or event that
+                            # introduced this attribute with an `observable`
+                            # marker to derive the caption.
+                            obj = self.prerequisite
+                            while (base := schema.find_base(obj)) is not None:
+                                base_data = schema[base].data
+                                obj = base
+                                if isinstance(base_data, ObjectDefn) or isinstance(base_data, EventDefn):
+                                    if (
+                                        base_data.attributes
+                                        and k in base_data.attributes
+                                        and isinstance(attr := base_data.attributes[k], AttrDefn)
+                                        and attr.observable is not None
+                                    ):
+                                        data = base_data
+
+                            # Build the enum member for the observable
                             enum[enum_id] = EnumMemberDefn(
                                 caption=f"{data.caption} {label}: {k}",
                                 description=(
@@ -241,6 +265,7 @@ class BuildObservableTypeOp(Operation):
                                     f'attribute "{k}" for the {data.caption} {label}.'
                                 ),
                             )
+
                             results.append(("attributes", "type_id", "enum", enum_id))
 
         return results

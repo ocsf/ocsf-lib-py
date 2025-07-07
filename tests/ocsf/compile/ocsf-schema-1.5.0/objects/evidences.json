@@ -1,0 +1,190 @@
+{
+  "caption": "Evidence Artifacts",
+  "description": "A collection of evidence artifacts associated to the activity/activities that triggered a security detection.",
+  "extends": "_entity",
+  "name": "evidences",
+  "attributes": {
+    "actor": {
+      "description": "Describes details about the user/role/process that was the source of the activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "api": {
+      "description": "Describes details about the API call associated to the activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "connection_info": {
+      "description": "Describes details about the network connection associated to the activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "container": {
+      "description": "Describes details about the container associated to the activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "data": {
+      "description": "Additional evidence data that is not accounted for in the specific evidence attributes.<code> Use only when absolutely necessary.</code>",
+      "requirement": "optional"
+    },
+    "database": {
+      "description": "Describes details about the database associated to the activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "databucket": {
+      "description": "Describes details about the databucket associated to the activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "device": {
+      "description": "An addressable device, computer system or host associated to the activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "dst_endpoint": {
+      "description": "Describes details about the destination of the network activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "email": {
+      "description": "The email object associated to the activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "file": {
+      "description": "Describes details about the file associated to the activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "http_request": {
+      "description": "Describes details about the http request associated to the activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "http_response": {
+      "description": "Describes details about the http response associated to the activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "ja4_fingerprint_list": {
+      "description": "Describes details about the JA4+ fingerprints that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "job": {
+      "description": "Describes details about the scheduled job that was associated with the activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "name": {
+      "description": "The naming convention or type identifier of the evidence associated with the security detection. For example, the <code>@odata.type</code> from Microsoft Graph Alerts V2 or <code>display_name</code> from CrowdStrike Falcon Incident Behaviors.",
+      "requirement": "optional"
+    },
+    "process": {
+      "description": "Describes details about the process associated to the activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "query": {
+      "description": "Describes details about the DNS query associated to the activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "resources": {
+      "caption": "Cloud Resources",
+      "description": "Describes details about the cloud resources directly related to activity that triggered the detection. For resources impacted by the detection, use <code>Affected Resources</code> at the top-level of the finding.",
+      "requirement": "recommended"
+    },
+    "script": {
+      "description": "Describes details about the script that was associated with the activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "src_endpoint": {
+      "description": "Describes details about the source of the network activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "tls": {
+      "description": "Describes details about the Transport Layer Security (TLS) activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "uid": {
+      "description": "The unique identifier of the evidence associated with the security detection. For example, the <code>activity_id</code> from CrowdStrike Falcon Alerts or <code>behavior_id</code> from CrowdStrike Falcon Incident Behaviors.",
+      "requirement": "optional"
+    },
+    "url": {
+      "description": "The URL object that pertains to the event or object associated to the activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "user": {
+      "description": "Describes details about the user that was the target or somehow else associated with the activity that triggered the detection.",
+      "requirement": "recommended"
+    },
+    "verdict": {
+      "description": "The normalized verdict of the evidence associated with the security detection. ",
+      "requirement": "optional"
+    },
+    "verdict_id": {
+      "description": "The normalized verdict (or status) ID of the evidence associated with the security detection. For example, Microsoft Graph Security Alerts contain a <code>verdict</code> enumeration for each type of <code>evidence</code> associated with the Alert. This is typically set by an automated investigation process or an analyst/investigator assigned to the finding.",
+      "enum": {
+        "0": {
+          "caption": "Unknown",
+          "description": "The type is unknown."
+        },
+        "1": {
+          "caption": "False Positive",
+          "description": "The verdict for the evidence has been identified as a False Positive."
+        },
+        "2": {
+          "caption": "True Positive",
+          "description": "The verdict for the evidence has been identified as a True Positive."
+        },
+        "3": {
+          "caption": "Disregard",
+          "description": "The verdict for the evidence is that is should be Disregarded."
+        },
+        "4": {
+          "caption": "Suspicious",
+          "description": "The verdict for the evidence is that the behavior has been identified as Suspicious."
+        },
+        "5": {
+          "caption": "Benign",
+          "description": "The verdict for the evidence is that the behavior has been identified as Benign."
+        },
+        "6": {
+          "caption": "Test",
+          "description": "The evidence is part of a Test, or other sanctioned behavior(s)."
+        },
+        "7": {
+          "caption": "Insufficient Data",
+          "description": "There is insufficient data to render a verdict on the evidence."
+        },
+        "8": {
+          "caption": "Security Risk",
+          "description": "The verdict for the evidence is that the behavior has been identified as a Security Risk."
+        },
+        "9": {
+          "caption": "Managed Externally",
+          "description": "The verdict for the evidence is Managed Externally, such as in a case management tool."
+        },
+        "10": {
+          "caption": "Duplicate",
+          "description": "This evidence duplicates existing evidence related to this finding."
+        },
+        "99": {
+          "caption": "Other",
+          "description": "The type is not mapped. See the <code>type</code> attribute, which contains a data source specific value."
+        }
+      },
+      "requirement": "optional",
+      "sibling": "verdict"
+    }
+  },
+  "constraints": {
+    "at_least_one": [
+      "actor",
+      "api",
+      "connection_info",
+      "data",
+      "database",
+      "databucket",
+      "device",
+      "dst_endpoint",
+      "email",
+      "file",
+      "process",
+      "query",
+      "resources",
+      "src_endpoint",
+      "url",
+      "user",
+      "job",
+      "script"
+    ]
+  }
+}

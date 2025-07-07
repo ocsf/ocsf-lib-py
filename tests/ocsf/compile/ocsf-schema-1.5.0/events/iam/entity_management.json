@@ -1,0 +1,86 @@
+{
+  "uid": 4,
+  "caption": "Entity Management",
+  "description": "Entity Management events report activity by a managed client, a micro service, or a user at a management console. The activity can be a create, read, update, and delete operation on a managed entity.",
+  "extends": "iam",
+  "name": "entity_management",
+  "attributes": {
+    "access_list": {
+      "group": "context",
+      "requirement": "optional"
+    },
+    "access_mask": {
+      "group": "context",
+      "requirement": "optional"
+    },
+    "activity_id": {
+      "enum": {
+        "1": {
+          "caption": "Create",
+          "description": "Create a new managed entity."
+        },
+        "2": {
+          "caption": "Read",
+          "description": "Read an existing managed entity."
+        },
+        "3": {
+          "caption": "Update",
+          "description": "Update an existing managed entity."
+        },
+        "4": {
+          "caption": "Delete",
+          "description": "Delete a managed entity."
+        },
+        "5": {
+          "caption": "Move",
+          "description": "Move or rename an existing managed entity."
+        },
+        "6": {
+          "caption": "Enroll",
+          "description": "Enroll an existing managed entity."
+        },
+        "7": {
+          "caption": "Unenroll",
+          "description": "Unenroll an existing managed entity."
+        },
+        "8": {
+          "caption": "Enable",
+          "description": "Enable an existing managed entity. Note: This is typically regarded as a semi-permanent, editor visible, syncable change."
+        },
+        "9": {
+          "caption": "Disable",
+          "description": "Disable an existing managed entity. Note: This is typically regarded as a semi-permanent, editor visible, syncable change."
+        },
+        "10": {
+          "caption": "Activate",
+          "description": "Activate an existing managed entity. Note: This is a typically regarded as a transient change, a change of state of the engine."
+        },
+        "11": {
+          "caption": "Deactivate",
+          "description": "Deactivate an existing managed entity. Note: This is a typically regarded as a transient change, a change of state of the engine."
+        },
+        "12": {
+          "caption": "Suspend",
+          "description": "Suspend an existing managed entity."
+        },
+        "13": {
+          "caption": "Resume",
+          "description": "Resume (unsuspend) an existing managed entity."
+        }
+      }
+    },
+    "comment": {
+      "description": "The user provided comment about why the entity was changed.",
+      "group": "primary",
+      "requirement": "recommended"
+    },
+    "entity": {
+      "group": "primary",
+      "requirement": "required"
+    },
+    "entity_result": {
+      "group": "primary",
+      "requirement": "recommended"
+    }
+  }
+}

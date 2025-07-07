@@ -1,0 +1,7 @@
+{
+  "caption": "Application Activity",
+  "category": "application",
+  "extends": "base_event",
+  "name": "application",
+  "attributes": {}
+}
