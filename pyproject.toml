@@ -43,6 +43,7 @@ markers = [
 [tool.pytest_env]
 COMPILE_REPO_PATH = "tests/ocsf/compile/ocsf-schema"
 COMPILE_SCHEMA_PATH = "tests/ocsf/compile/ocsf-schema.json"
+COMPILE_REPO_150 = "tests/ocsf/compile/ocsf-schema-1.5.0"
 
 [tool.ruff]
 line-length = 120

@@ -1,0 +1,7 @@
+{
+  "uid": 1,
+  "caption": "Linux",
+  "description": "The Linux extension defines Linux specific attributes, objects and classes.",
+  "name": "linux",
+  "version": "1.6.0-dev"
+}

@@ -1,0 +1,51 @@
+{
+  "uid": 2,
+  "caption": "Application Lifecycle",
+  "description": "Application Lifecycle events report installation, removal, start, stop of an application or service.",
+  "extends": "application",
+  "name": "application_lifecycle",
+  "attributes": {
+    "activity_id": {
+      "requirement": "required",
+      "enum": {
+        "1": {
+          "caption": "Install",
+          "description": "Install the application."
+        },
+        "2": {
+          "caption": "Remove",
+          "description": "Remove the application."
+        },
+        "3": {
+          "caption": "Start",
+          "description": "Start the application."
+        },
+        "4": {
+          "caption": "Stop",
+          "description": "Stop the application."
+        },
+        "5": {
+          "caption": "Restart",
+          "description": "Restart the application."
+        },
+        "6": {
+          "caption": "Enable",
+          "description": "Enable the application."
+        },
+        "7": {
+          "caption": "Disable",
+          "description": "Disable the application."
+        },
+        "8": {
+          "caption": "Update",
+          "description": "Update the application."
+        }
+      }
+    },
+    "app": {
+      "description": "The application that was affected by the lifecycle event.  This also applies to self-updating application systems.",
+      "group": "primary",
+      "requirement": "required"
+    }
+  }
+}

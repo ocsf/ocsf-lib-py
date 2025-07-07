@@ -1,0 +1,28 @@
+{
+  "caption": "MITRE Tactic",
+  "description": "The MITRE Tactic object describes the ATT&CK® or ATLAS™ Tactic ID and/or name that is associated to an attack.",
+  "extends": "_entity",
+  "name": "tactic",
+  "attributes": {
+    "name": {
+      "description": "The Tactic name that is associated with the attack technique. For example: <code>Reconnaissance</code> or <code>ML Model Access</code>."
+    },
+    "src_url": {
+      "description": "The versioned permalink of the Tactic. For example: <code>https://attack.mitre.org/versions/v14/tactics/TA0043/</code>.",
+      "requirement": "optional"
+    },
+    "uid": {
+      "description": "The Tactic ID that is associated with the attack technique. For example: <code>TA0043</code>, or <code>AML.TA0000</code>."
+    }
+  },
+  "references": [
+    {
+      "description": "ATT&CK® Matrix",
+      "url": "https://attack.mitre.org/wiki/ATT&CK_Matrix"
+    },
+    {
+      "description": "ATLAS™ Matrix",
+      "url": "https://atlas.mitre.org/matrices/ATLAS"
+    }
+  ]
+}

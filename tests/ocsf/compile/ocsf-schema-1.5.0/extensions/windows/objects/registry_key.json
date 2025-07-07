@@ -1,0 +1,33 @@
+{
+  "observable": 28,
+  "caption": "Registry Key",
+  "description": "The registry key object describes a Windows registry key.",
+  "extends": "object",
+  "name": "reg_key",
+  "attributes": {
+    "is_system": {
+      "requirement": "optional"
+    },
+    "modified_time": {
+      "description": "The time when the registry key was last modified.",
+      "requirement": "optional"
+    },
+    "path": {
+      "caption": "Path",
+      "description": "The full path to the registry key.",
+      "requirement": "required",
+      "type": "reg_key_path_t"
+    },
+    "security_descriptor": {
+      "caption": "Security Descriptor",
+      "description": "The security descriptor of the registry key.",
+      "requirement": "optional"
+    }
+  },
+  "references": [
+    {
+      "description": "D3FEND™ Ontology d3f:WindowsRegistryKey.",
+      "url": "https://d3fend.mitre.org/dao/artifact/d3f:WindowsRegistryKey/"
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "uid": 5,
+  "caption": "Incident Finding",
+  "category": "findings",
+  "description": "An Incident Finding reports the creation, update, or closure of security incidents as a result of detections and/or analytics. <br><strong>Note: </strong><code>Incident Finding</code> implicitly includes the <code>incident</code> profile and it should be added to the <code>metadata.profiles[]</code> array.",
+  "extends": "base_event",
+  "name": "incident_finding",
+  "attributes": {
+    "activity_id": {
+      "description": "The normalized identifier of the Incident activity.",
+      "requirement": "required",
+      "enum": {
+        "1": {
+          "caption": "Create",
+          "description": "Reports the creation of an Incident."
+        },
+        "2": {
+          "caption": "Update",
+          "description": "Reports updates to an Incident."
+        },
+        "3": {
+          "caption": "Close",
+          "description": "Reports closure of an Incident ."
+        }
+      }
+    },
+    "activity_name": {
+      "description": "The Incident activity name, as defined by the <code>activity_id</code>.",
+      "requirement": "optional"
+    },
+    "assignee": {
+      "group": "context",
+      "requirement": "optional"
+    },
+    "assignee_group": {
+      "group": "context",
+      "requirement": "optional"
+    },
+    "attacks": {
+      "description": "An array of <a target='_blank' href='https://attack.mitre.org'>MITRE ATT&CK®</a> objects describing the tactics, techniques & sub-techniques associated to the Incident.",
+      "group": "context",
+      "requirement": "optional",
+      "profile": null
+    },
+    "comment": {
+      "description": "Additional user supplied details for updating or closing the incident.",
+      "group": "context",
+      "requirement": "optional"
+    },
+    "confidence": {
+      "group": "context",
+      "requirement": "optional",
+      "profile": null
+    },
+    "confidence_id": {
+      "group": "context",
+      "requirement": "recommended",
+      "profile": null
+    },
+    "confidence_score": {
+      "group": "context",
+      "requirement": "optional",
+      "profile": null
+    },
+    "desc": {
+      "description": "The short description of the Incident.",
+      "group": "primary",
+      "requirement": "recommended"
+    },
+    "end_time": {
+      "description": "The time of the most recent event included in the incident.",
+      "requirement": "optional"
+    },
+    "finding_info_list": {
+      "group": "primary",
+      "requirement": "required"
+    },
+    "impact": {
+      "group": "primary",
+      "requirement": "recommended"
+    },
+    "impact_id": {
+      "group": "primary",
+      "requirement": "recommended"
+    },
+    "impact_score": {
+      "group": "primary",
+      "requirement": "recommended"
+    },
+    "is_suspected_breach": {
+      "group": "context",
+      "requirement": "optional"
+    },
+    "priority": {
+      "group": "context",
+      "requirement": "optional"
+    },
+    "priority_id": {
+      "group": "context",
+      "requirement": "recommended"
+    },
+    "src_url": {
+      "description": "A Url link used to access the original incident.",
+      "group": "primary",
+      "requirement": "recommended"
+    },
+    "start_time": {
+      "description": "The time of the least recent event included in the incident.",
+      "requirement": "optional"
+    },
+    "status": {
+      "description": "The normalized status of the Incident normalized to the caption of the status_id value. In the case of 'Other', it is defined by the source.",
+      "group": "primary",
+      "requirement": "recommended"
+    },
+    "status_id": {
+      "description": "The normalized status identifier of the Incident.",
+      "group": "primary",
+      "requirement": "required",
+      "enum": {
+        "1": {
+          "caption": "New",
+          "description": "The service desk has received the incident but has not assigned it to an agent."
+        },
+        "2": {
+          "caption": "In Progress",
+          "description": "The incident has been assigned to an agent but has not been resolved. The agent is actively working with the user to diagnose and resolve the incident."
+        },
+        "3": {
+          "caption": "On Hold",
+          "description": "The incident requires some information or response from the user or from a third party."
+        },
+        "4": {
+          "caption": "Resolved",
+          "description": "The service desk has confirmed that the incident is resolved."
+        },
+        "5": {
+          "caption": "Closed",
+          "description": "The incident is resolved and no further action is necessary."
+        }
+      }
+    },
+    "ticket": {
+      "@deprecated": {
+        "message": "Use <code>tickets</code> instead.",
+        "since": "1.5.0"
+      },
+      "group": "context",
+      "requirement": "optional"
+    },
+    "tickets": {
+      "group": "context",
+      "requirement": "optional"
+    },
+    "vendor_attributes": {
+      "requirement": "optional"
+    },
+    "verdict": {
+      "group": "primary",
+      "requirement": "recommended"
+    },
+    "verdict_id": {
+      "group": "primary",
+      "requirement": "recommended"
+    }
+  },
+  "constraints": {
+    "at_least_one": [
+      "assignee",
+      "assignee_group"
+    ]
+  },
+  "profiles": [
+    "incident"
+  ]
+}

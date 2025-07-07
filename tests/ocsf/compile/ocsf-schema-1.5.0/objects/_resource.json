@@ -1,0 +1,50 @@
+{
+  "caption": "Resource",
+  "description": "The Resource object contains attributes that provide information about a particular resource. It serves as a base object, offering attributes that help identify and classify the resource effectively.",
+  "extends": "_entity",
+  "name": "_resource",
+  "attributes": {
+    "$include": [
+      "profiles/data_classification.json"
+    ],
+    "created_time": {
+      "description": "The time when the resource was created.",
+      "requirement": "optional"
+    },
+    "data": {
+      "description": "Additional data describing the resource.",
+      "requirement": "optional"
+    },
+    "labels": {
+      "description": "The list of labels associated to the resource.",
+      "requirement": "optional"
+    },
+    "name": {
+      "description": "The name of the resource."
+    },
+    "modified_time": {
+      "description": "The time when the resource was last modified.",
+      "requirement": "optional"
+    },
+    "tags": {
+      "description": "The list of tags; <code>{key:value}</code> pairs associated to the resource.",
+      "requirement": "optional"
+    },
+    "type": {
+      "description": "The resource type as defined by the event source.",
+      "requirement": "optional"
+    },
+    "uid": {
+      "description": "The unique identifier of the resource.",
+      "type": "resource_uid_t"
+    },
+    "uid_alt": {
+      "description": "The alternative unique identifier of the resource.",
+      "requirement": "optional",
+      "type": "resource_uid_t"
+    }
+  },
+  "profiles": [
+    "data_classification"
+  ]
+}
