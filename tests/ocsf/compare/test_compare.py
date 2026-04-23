@@ -1,4 +1,5 @@
 # pyright: reportPrivateUsage = false
+from dataclasses import asdict
 from typing import Any, Optional
 
 from ocsf.compare import (
@@ -6,12 +7,13 @@ from ocsf.compare import (
     Change,
     ChangedAttr,
     ChangedEnumMember,
+    ChangedType,
     NoChange,
     Removal,
     compare,
     compare_dict,
 )
-from ocsf.schema import OcsfAttr, OcsfEnumMember
+from ocsf.schema import OcsfAttr, OcsfEnumMember, OcsfType
 
 
 def test_compare_primitives():
@@ -56,6 +58,49 @@ def test_compare_optional_property():
 
     assert isinstance(diff, ChangedAttr)
     assert diff.group == Change(after=None, before="test")
+
+
+def test_compare_type_metadata_fields():
+    """Test compare() on OcsfType metadata fields exposed by the current schema model."""
+
+    old_type = OcsfType(caption="UUID", type="string_t", type_name="String")
+    new_type = OcsfType(caption="UUID", type="string_t", type_name="Text")
+    diff = compare(old_type, new_type)
+
+    assert isinstance(diff, ChangedType)
+    serialized = asdict(diff)
+    assert "type_name" in serialized
+    assert diff.type == NoChange()
+    assert diff.type_name == Change(before="String", after="Text")
+
+
+def test_compare_attr_metadata_fields():
+    """Test compare() on OcsfAttr metadata fields that should not be dropped."""
+
+    old_attr = OcsfAttr(
+        caption="Raw Header",
+        description="",
+        requirement="required",
+        type="string_t",
+        type_name="String",
+    )
+    new_attr = OcsfAttr(
+        caption="Raw Header",
+        description="",
+        requirement="required",
+        type="string_t",
+        type_name="Text",
+    )
+    diff = compare(old_attr, new_attr)
+
+    assert isinstance(diff, ChangedAttr)
+    serialized = asdict(diff)
+    assert "object_type" in serialized
+    assert "object_name" in serialized
+    assert "type_name" in serialized
+    assert diff.object_type == NoChange()
+    assert diff.object_name == NoChange()
+    assert diff.type_name == Change(before="String", after="Text")
 
 
 def test_compare_optional_dict_property():

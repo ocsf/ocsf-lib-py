@@ -20,6 +20,7 @@ from copy import copy
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, ClassVar, Optional, cast
+from urllib.error import HTTPError
 from urllib.parse import urljoin
 from urllib.request import urlopen
 
@@ -54,6 +55,9 @@ def _is_semver(version: str) -> bool:
 def _semver_sort_key(version: Version) -> int:
     """Return a sort key for a semantic version."""
     return version.major * 1000 + version.minor * 10 + version.patch
+
+
+_V2_SCHEMA_EXPORT_MIN_VERSION = Version.parse("1.8.0")
 
 
 # Models representing the response from the OCSF server's /api/versions endpoint.
@@ -131,13 +135,31 @@ class OcsfApiClient:
         else:
             return self._base_url
 
+    def _schema_export_path(self, version: str) -> str:
+        """Return the schema export path for a resolved version."""
+        if Version.parse(version) >= _V2_SCHEMA_EXPORT_MIN_VERSION:
+            return "export/v2/schema"
+
+        return "export/schema"
+
     def _fetch_schema(self, version: Optional[str] = None) -> OcsfSchema:
         """Fetch a schema from the server."""
-        url = urljoin(self._versioned_url(version), "export/schema")
+        version = self.get_default_version() if version is None else version
+        url = urljoin(self._versioned_url(version), self._schema_export_path(version))
 
         LOG.debug(f"Fetching schema from {url} (version {version})")
-        json_str = urlopen(url).read()
-        return from_json(json_str, self._schema_options)
+        try:
+            json_str = urlopen(url).read()
+        except HTTPError as exc:
+            body = exc.read().decode("utf-8", errors="replace")
+            raise ValueError(f"Failed to fetch schema {version} from {url}: {exc.code} {exc.reason}: {body}") from exc
+
+        schema = from_json(json_str, self._schema_options)
+        if not self._fetch_extensions and schema.extensions is not None:
+            if Version.parse(schema.version) >= _V2_SCHEMA_EXPORT_MIN_VERSION:
+                schema.extensions = None
+
+        return schema
 
     def _fetch_versions(self) -> SchemaVersions:
         """Fetch the available versions from the server."""

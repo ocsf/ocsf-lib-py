@@ -76,8 +76,11 @@ the OCSF server does (with very few exceptions). It is meant to provide:
 
 The `ocsf.api` package exports an `OcsfApiClient`, which is a lightweight HTTP
 client that can retrieve a version of the schema over HTTP and cache it on the
-local filesystem. It uses thes `export/schema`, `api/versions`, `api/profiles`,
-and `api/extensions` endpoints of the OCSF server.
+local filesystem. It uses the legacy `export/schema` endpoint for schema
+versions through `1.7.0`, the `export/v2/schema` endpoint for `1.8.0` and
+newer, plus the `api/versions`, `api/profiles`, and `api/extensions` endpoints
+of the OCSF server. The client normalizes the newer export payload into the
+existing Python schema model before deserializing it.
 
 ### ocsf.compare: The Compare Package
 

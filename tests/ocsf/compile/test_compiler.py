@@ -73,3 +73,14 @@ def test_order_live():
 
     # No duplicate ops
     assert len(order) == len(set(order))
+
+
+def test_build_keeps_dictionary_attributes_out_of_types():
+    schema = get_compiler().build()
+
+    assert "string_t" in schema.types
+    assert "uuid_t" in schema.types
+    assert schema.types["uuid_t"].type == "string_t"
+    assert schema.types["uuid_t"].type_name == "String"
+    assert "product" not in schema.types
+    assert "raw_header" not in schema.types
