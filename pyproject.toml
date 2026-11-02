@@ -16,7 +16,7 @@ termcolor = "^2.4.0"
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.8.4"
 pyright = "^1.1.361"
-pytest = "^8.2.0"
+pytest = ">=8.2,<10.0"
 pytest-env = "^1.1.3"
 
 [tool.poetry.scripts]
